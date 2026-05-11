@@ -10,7 +10,7 @@ CST = timezone(timedelta(hours=8))
 README = Path('README.md')
 MARKER = '<!-- more -->'
 SECTION = '## Learning Log'
-TABLE_HEAD = '| Time | Course | Commit | Summary | Author |\n| --- | --- | --- | --- | --- |'
+TABLE_HEAD = '| Time | Batch | Hash | Summary | Δ | Files |\n| --- | --- | --- | --- | --- | --- |'
 HINT = '> Records of every commit on a course branch. A commit titled `completed: all done.` marks the course as finished.'
 COURSE_NAME = {'6.1910': 'MIT 6.1910', '6.1920': 'MIT 6.1920', '6.5900': 'MIT 6.5900'}
 ROW_RE = re.compile(r'^\| `\d{4}-')
@@ -32,10 +32,50 @@ def render_title(title):
     return title
 
 
-def entry_line(branch, sha, msg, author, ts, repo_url):
+def numstat(sha):
+    try:
+        r = subprocess.run(
+            ['git', 'show', '--shortstat', '--format=', sha],
+            capture_output=True, text=True, check=False,
+        )
+        out = r.stdout.strip().splitlines()
+        line = out[-1] if out else ''
+        ins = re.search(r'(\d+) insertion', line)
+        dele = re.search(r'(\d+) deletion', line)
+        return (int(ins.group(1)) if ins else 0, int(dele.group(1)) if dele else 0)
+    except Exception:
+        return (0, 0)
+
+
+def filestat(sha):
+    try:
+        r = subprocess.run(
+            ['git', 'show', '--name-status', '--format=', sha],
+            capture_output=True, text=True, check=False,
+        )
+        a = d = 0
+        for line in r.stdout.splitlines():
+            if not line.strip():
+                continue
+            ch = line[0]
+            if ch == 'A':
+                a += 1
+            elif ch == 'D':
+                d += 1
+        return (a, d)
+    except Exception:
+        return (0, 0)
+
+
+def entry_line(branch, sha, msg, ts, repo_url):
     short = sha[:7]
     title = msg.split('\n', 1)[0].replace('|', '\\|')
-    return f"| `{fmt_ts(ts)}` | `{branch}` | [`{short}`]({repo_url}/commit/{sha}) | {render_title(title)} | {author} |"
+    if len(title) > 45:
+        title = title[:42] + '...'
+    ins, dele = numstat(sha)
+    fa, fd = filestat(sha)
+    return (f"| `{fmt_ts(ts)}` | `{branch}` | [`{short}`]({repo_url}/commit/{sha})"
+            f" | {render_title(title)} | `+{ins} / −{dele}` | `+{fa} / −{fd}` |")
 
 
 def parse_log(text):
@@ -167,7 +207,7 @@ def main():
     for c in commits:
         if c['id'][:7] in seen:
             continue
-        new_lines.append(entry_line(branch, c['id'], c['message'], c['author']['name'], c['timestamp'], repo_url))
+        new_lines.append(entry_line(branch, c['id'], c['message'], c['timestamp'], repo_url))
 
     if not new_lines:
         Path(os.environ['GITHUB_OUTPUT']).open('a').write('changed=false\n')

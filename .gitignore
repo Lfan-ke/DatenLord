@@ -1,0 +1,7 @@
+_site/
+public/index.md
+public/stats.md
+public/timeline.md
+public/timeline-*.md
+__pycache__/
+*.pyc

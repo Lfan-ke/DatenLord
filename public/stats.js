@@ -406,6 +406,55 @@
       series: { type: 'heatmap', coordinateSystem: 'calendar', data: data.cal_data },
     }));
 
+    var fs = data.files_series || [];
+    var fsCats = fs.map(function (f) { return f.sha; });
+    var fsAdded = fs.map(function (f) { return f.added || 0; });
+    var fsDeleted = fs.map(function (f) { return -(f.deleted || 0); });
+    var fsTouched = fs.map(function (f) { return f.touched || 0; });
+    charts.push(mount('chart-files', {
+      tooltip: { trigger: 'axis', axisPointer: { type: 'cross', crossStyle: { color: t.sub } },
+        formatter: function (params) {
+          var idx = params[0] ? params[0].dataIndex : 0;
+          var f = fs[idx] || {};
+          return '<b>' + (f.sha || '') + '</b> · ' + (f.branch || '') +
+                 '<br/>' + (f.time || '') +
+                 '<br/>+' + (f.added || 0) + ' / −' + (f.deleted || 0) + ' files' +
+                 '<br/>' + (f.touched || 0) + ' total touched';
+        },
+      },
+      legend: { data: ['Files added', 'Files deleted', 'Files touched'],
+        bottom: 0, textStyle: { color: t.fg } },
+      grid: { left: 56, right: 60, top: 28, bottom: 56 },
+      xAxis: [{ type: 'category', data: fsCats,
+        axisLabel: { color: t.sub },
+        axisLine: { lineStyle: { color: t.grid } },
+        splitLine: { show: true, lineStyle: { color: t.grid, type: 'dashed' } },
+      }],
+      yAxis: [
+        { type: 'value', name: 'files',
+          nameTextStyle: { color: t.sub },
+          axisLabel: { color: t.sub, formatter: '{value}' },
+          splitLine: { lineStyle: { color: t.grid } } },
+        { type: 'value', name: 'touched',
+          nameTextStyle: { color: t.sub },
+          axisLabel: { color: t.sub, formatter: '{value}' },
+          splitLine: { show: false } },
+      ],
+      series: [
+        { name: 'Files added', type: 'bar', stack: 'fs', barWidth: 18,
+          itemStyle: { color: '#22c55e', borderRadius: [4, 4, 0, 0] },
+          data: fsAdded },
+        { name: 'Files deleted', type: 'bar', stack: 'fs', barWidth: 18,
+          itemStyle: { color: '#ef4444', borderRadius: [0, 0, 4, 4] },
+          data: fsDeleted },
+        { name: 'Files touched', type: 'line', yAxisIndex: 1,
+          symbol: 'circle', symbolSize: 8, smooth: false,
+          lineStyle: { width: 2.4, color: '#3b82f6' },
+          itemStyle: { color: '#3b82f6', borderColor: t.bg, borderWidth: 2 },
+          data: fsTouched },
+      ],
+    }));
+
     var ringDetailOffsets = ['-20%', '17%', '54%'];
     var ringNameTops = ['34.5%', '50%', '65.5%'];
     var ringData = data.push_per_branch.map(function (b, i) {

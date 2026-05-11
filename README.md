@@ -45,19 +45,19 @@
 
 > Records of every commit on a course branch. A commit titled `completed: all done.` marks the course as finished.
 
-| Time | Course | Commit | Summary | Author |
-| --- | --- | --- | --- | --- |
-| `2026-05-11 19:40` | `6.1910` | [`6a58165`](https://github.com/Lfan-ke/DatenLord/commit/6a581652d380b9ea4f1dfe8d218f8b863fb7e06b) | tests: change something to trigger ci. | heke1228 |
-| `2026-05-11 15:31` | `6.5900` | [`bce5409`](https://github.com/Lfan-ke/DatenLord/commit/bce5409c278c090845b45dee7477cbfe97014806) | init: learning branch for MIT 6.5900. | heke1228 |
+| Time | Batch | Hash | Summary | Δ | Files |
+| --- | --- | --- | --- | --- | --- |
+| `2026-05-11 19:40:58` | `6.1910` | [`6a58165`](https://github.com/Lfan-ke/DatenLord/commit/6a581652d380b9ea4f1dfe8d218f8b863fb7e06b) | tests: change something to trigger ci. | `+50 / −3` | `+1 / −0` |
+| `2026-05-11 15:31:24` | `6.5900` | [`bce5409`](https://github.com/Lfan-ke/DatenLord/commit/bce5409c278c090845b45dee7477cbfe97014806) | init: learning branch for MIT 6.5900. | `+45 / −0` | `+1 / −0` |
 
 <!-- more -->
 
 <details>
 <summary><b>Older records</b></summary>
 
-| Time | Course | Commit | Summary | Author |
-| --- | --- | --- | --- | --- |
-| `2026-05-11 15:31` | `6.1920` | [`0ac5192`](https://github.com/Lfan-ke/DatenLord/commit/0ac51923423017b5cd094936e54d2fad05530c19) | init: learning branch for MIT 6.1920. | heke1228 |
-| `2026-05-11 15:31` | `6.1910` | [`be3111b`](https://github.com/Lfan-ke/DatenLord/commit/be3111bbf051acb800e1da89fd2a7d069ba3e247) | init: learning branch for MIT 6.1910. | heke1228 |
+| Time | Batch | Hash | Summary | Δ | Files |
+| --- | --- | --- | --- | --- | --- |
+| `2026-05-11 15:31:23` | `6.1920` | [`0ac5192`](https://github.com/Lfan-ke/DatenLord/commit/0ac51923423017b5cd094936e54d2fad05530c19) | init: learning branch for MIT 6.1920. | `+45 / −0` | `+1 / −0` |
+| `2026-05-11 15:31:22` | `6.1910` | [`be3111b`](https://github.com/Lfan-ke/DatenLord/commit/be3111bbf051acb800e1da89fd2a7d069ba3e247) | init: learning branch for MIT 6.1910. | `+0 / −0` | `+0 / −0` |
 
 </details>

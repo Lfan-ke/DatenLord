@@ -15,7 +15,7 @@ ISSUE_URL = 'https://github.com/datenlord/training/issues/74'
 COMPLETION = 'completed: all done.'
 
 ROW_RE = re.compile(
-    r'^\| `(?P<time>[^`]+)` \| `(?P<branch>[^`]+)` \| \[`(?P<sha>[^`]+)`\]\((?P<url>[^)]+)\) \| (?P<title>.+?) \| (?P<author>[^|]+?) \|\s*$'
+    r'^\| `(?P<time>[^`]+)` \| `(?P<branch>[^`]+)` \| \[`(?P<sha>[^`]+)`\]\((?P<url>[^)]+)\) \| (?P<title>.+?) \| `?\+(?P<ins_t>\d+) / −(?P<dele_t>\d+)`? \| `?\+(?P<fadd_t>\d+) / −(?P<fdel_t>\d+)`? \|\s*$'
 )
 
 COURSES = [
@@ -87,6 +87,10 @@ def parse_entries():
         seen.add(d['sha'])
         d['title'] = d['title'].replace('\\|', '|')
         d['is_completion'] = COMPLETION in d['title'].lower()
+        d['files_added'] = int(d.pop('fadd_t', 0) or 0)
+        d['files_deleted'] = int(d.pop('fdel_t', 0) or 0)
+        d['ins_readme'] = int(d.pop('ins_t', 0) or 0)
+        d['dele_readme'] = int(d.pop('dele_t', 0) or 0)
         d.update(shortstat(d['sha']))
         out.append(d)
     return out
@@ -141,7 +145,7 @@ def stats_grid(entries):
 
 
 def recent_table(entries, n=5):
-    rows = ['| Time | Course | Commit | Summary |', '| --- | --- | --- | --- |']
+    rows = ['| Time | Batch | Hash | Summary |', '| --- | --- | --- | --- |']
     for e in entries[:n]:
         rows.append(f'| `{e["time"]}` | `{e["branch"]}` | [`{e["sha"]}`]({e["url"]}) | {e["title"]} |')
     return '\n'.join(rows)
@@ -155,8 +159,8 @@ def timeline_block(entries):
     out = ['::timeline:: alternate']
     for e in entries:
         title = f'{"🏆 " if e["is_completion"] else ""}{e["time"]}'
-        sub_title = f'`{e["branch"]}` · [`{e["sha"]}`]({e["url"]}) · +{e["insertions"]}/-{e["deletions"]}'
-        content = f'{e["title"]} *— {e["author"]}*'
+        sub_title = f'`{e["branch"]}` · [`{e["sha"]}`]({e["url"]}) · +{e["insertions"]}/-{e["deletions"]} · {e["files_added"]}A/{e["files_deleted"]}D files'
+        content = e["title"]
         icon = ':material-trophy:' if e['is_completion'] else ':material-source-commit:'
         out += [
             f'- title: {yq(title)}',
@@ -176,12 +180,12 @@ def hero(entries):
         return (
             '!!! success "🎉 Latest Milestone"\n'
             f'    **Course `{e["branch"]}` completed** at `{e["time"]}`\n\n'
-            f'    [`{e["sha"]}`]({e["url"]}) — {e["title"]} *— {e["author"]}*\n'
+            f'    [`{e["sha"]}`]({e["url"]}) — {e["title"]}\n'
         )
     return (
         f'!!! tip "Latest · `{e["branch"]}`"\n'
-        f'    `{e["time"]}` · [`{e["sha"]}`]({e["url"]}) · +{e["insertions"]}/-{e["deletions"]}\n\n'
-        f'    {e["title"]} *— {e["author"]}*\n'
+        f'    `{e["time"]}` · [`{e["sha"]}`]({e["url"]}) · +{e["insertions"]}/-{e["deletions"]} · {e["files_added"]}A/{e["files_deleted"]}D files\n\n'
+        f'    {e["title"]}\n'
     )
 
 
@@ -301,6 +305,17 @@ def render_stats(entries):
         })
         running += net
 
+    files_series = []
+    for e in sorted_entries:
+        files_series.append({
+            'sha': e['sha'][:7],
+            'time': e['time'],
+            'branch': e['branch'],
+            'added': e['files_added'],
+            'deleted': e['files_deleted'],
+            'touched': e['files'],
+        })
+
     candle = []
     for e in sorted_entries:
         ins = e['insertions']
@@ -406,6 +421,7 @@ def render_stats(entries):
         'line_series': [{'branch': b, 'data': line_series[b]} for b in branches],
         'waterfall': waterfall,
         'candle': candle,
+        'files_series': files_series,
         'rose': rose,
         'scatter': scatter,
         'bar_branch': bar_branch,
@@ -444,6 +460,8 @@ def render_stats(entries):
         '<div id="chart-calendar" class="echart" style="height:220px"></div>\n\n'
         '### :material-chart-areaspline-variant: Candlestick · Per-commit insertions (up) vs deletions (down)\n\n'
         '<div id="chart-candle" class="echart" style="height:380px"></div>\n\n'
+        '### :material-file-tree: File Δ · Files added (↑) vs deleted (↓) per commit + lines net\n\n'
+        '<div id="chart-files" class="echart" style="height:380px"></div>\n\n'
         '### :material-graph-outline: Commit Flow · Calendar graph with branch arrows\n\n'
         '<div id="chart-calgraph" class="echart" style="height:240px"></div>\n\n'
         '### :material-podium: Score Ring · per-branch share of ' + str(push_total) + ' commits\n\n'
