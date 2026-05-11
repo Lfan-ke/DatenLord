@@ -3,9 +3,10 @@
 <h1>BSV Learning Repo</h1>
 
 <p>
-  <a href="https://github.com/datenlord/training"><img src="https://img.shields.io/badge/DatenLord-MIT_Architecture-2563eb?style=for-the-badge&labelColor=0f172a" alt="DatenLord"></a>
+  <a href="https://github.com/datenlord/training"><img src="https://img.shields.io/badge/DatenLord-MIT_BSV-2563eb?style=for-the-badge&labelColor=0f172a" alt="DatenLord"></a>
   <a href="https://github.com/datenlord/training/issues/74"><img src="https://img.shields.io/badge/Student-D202605002-16a34a?style=for-the-badge&labelColor=0f172a" alt="Student"></a>
   <a href="https://github.com/B-Lang-org/bsc"><img src="https://img.shields.io/badge/Lang-Bluespec_SV-eab308?style=for-the-badge&labelColor=0f172a" alt="Bluespec"></a>
+  <img src="https://img.shields.io/badge/CODE-%2B140%20%7C%20%E2%88%923-22c55e?style=for-the-badge&labelColor=0f172a" alt="Code stats">
 </p>
 
 <sub>Bluespec SystemVerilog learning repository for <b>MIT 6.1910</b> · <b>6.1920</b> · <b>6.5900</b></sub>

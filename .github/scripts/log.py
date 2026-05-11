@@ -105,6 +105,25 @@ def write_log(head, entries):
     return out
 
 
+CODE_BADGE_RE = re.compile(r'(https://img\.shields\.io/badge/CODE-)[^?]+(\?[^"]+)')
+
+
+def total_delta(entry_lines):
+    ins = dele = 0
+    for line in entry_lines:
+        m = re.search(r'`\+(\d+) / −(\d+)` \| `\+\d+ / −\d+` \|\s*$', line)
+        if m:
+            ins += int(m.group(1))
+            dele += int(m.group(2))
+    return ins, dele
+
+
+def refresh_code_badge(text, entry_lines):
+    ins, dele = total_delta(entry_lines)
+    new_msg = f'%2B{ins}%20%7C%20%E2%88%92{dele}'
+    return CODE_BADGE_RE.sub(r'\g<1>' + new_msg + r'-22c55e\g<2>', text)
+
+
 def build_comment(branch, sha, msg, author, ts, repo_url, diffstat):
     short = sha[:7]
     title = msg.split('\n', 1)[0]
@@ -214,7 +233,8 @@ def main():
         return
 
     entries = list(reversed(new_lines)) + existing
-    README.write_text(write_log(head, entries), encoding='utf-8')
+    new_text = refresh_code_badge(write_log(head, entries), entries)
+    README.write_text(new_text, encoding='utf-8')
 
     head_commit = commits[-1]
     stat = diffstat(head_commit['id'])
