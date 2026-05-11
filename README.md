@@ -1,3 +1,5 @@
-# BSV Learning Repo
+# MIT 6.004 / 6.1910 — Computation Structures
 
-DatenLord open-source learning repo for MIT 6.1910 / 6.1920 / 6.5900, using Bluespec SV.
+Bluespec SystemVerilog working branch · D202605002.
+
+Topics: digital circuits, ISA, single-cycle and pipelined RISC-V processors.
