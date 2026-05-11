@@ -262,8 +262,6 @@
         width: '100%', height: '100%',
         visibleMin: 0, childrenVisibleMin: 0,
         squareRatio: 0.62,
-        label: { show: true, formatter: '{b}' },
-        upperLabel: { show: true, height: 28, color: '#fff' },
         itemStyle: { borderColor: t.bg, borderWidth: 0, gapWidth: 6 },
         levels: [
           {
@@ -271,6 +269,7 @@
               gapWidth: 14, borderWidth: 0, borderRadius: 14,
               color: t.dark ? 'rgba(148,163,184,0.10)' : 'rgba(241,245,249,0.92)',
             },
+            label: { show: false },
             upperLabel: {
               show: true, height: 34, color: t.fg, fontWeight: 800, fontSize: 15,
               formatter: '{b}', overflow: 'truncate', padding: [0, 14, 0, 14],
@@ -281,6 +280,7 @@
             itemStyle: {
               gapWidth: 4, borderWidth: 4, borderColor: t.bg, borderRadius: 10,
             },
+            label: { show: false },
             upperLabel: {
               show: true, height: 26, color: '#fff', fontWeight: 700, fontSize: 13,
               formatter: '{b}', overflow: 'truncate', padding: [0, 10, 0, 10],
@@ -294,24 +294,23 @@
               gapWidth: 2, borderWidth: 2, borderColor: t.bg, borderRadius: 6,
               borderColorSaturation: 0.7,
             },
+            upperLabel: { show: false },
             label: {
               show: true, position: 'insideTopLeft',
-              color: '#fff', fontSize: 11, padding: [4, 6],
-              overflow: 'truncate',
+              color: '#fff', fontSize: 12, fontWeight: 700,
+              padding: [5, 7], overflow: 'truncate',
+              lineHeight: 14,
               formatter: function (p) {
                 var d = p.data || {};
                 var n = (d.name || '').slice(0, 7);
-                if (d.ins == null && d.dele == null) return '{title|' + n + '}';
-                return '{title|' + n + '}\n{body|+' + (d.ins || 0) + ' / −' + (d.dele || 0) + '}';
-              },
-              rich: {
-                title: { fontSize: 12, fontWeight: 700, color: '#fff', lineHeight: 16 },
-                body: { fontSize: 10, color: 'rgba(255,255,255,0.88)', lineHeight: 14 },
+                var ins = d.ins || 0;
+                var dele = d.dele || 0;
+                return n + '\n+' + ins + ' / −' + dele;
               },
             },
             emphasis: {
               itemStyle: { borderColor: '#fff', borderWidth: 3 },
-              label: { fontSize: 12 },
+              label: { fontSize: 13 },
             },
           },
         ],

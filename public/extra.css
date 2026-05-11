@@ -167,47 +167,46 @@ body,
   font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
-.md-content,
-.md-content *,
-.md-typeset,
-.md-typeset *,
-.md-tabs,
-.md-tabs *,
-.md-header,
-.md-header *,
-.md-footer,
-.md-footer *,
-.md-sidebar,
-.md-sidebar *,
-.md-nav,
-.md-nav * {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+html,
+html body,
+body *:not(input):not(textarea):not(code):not(pre):not(kbd):not(samp):not(code *):not(pre *) {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
 }
 
+code,
+code *,
+pre,
+pre *,
+kbd,
+samp,
 .md-typeset code,
-.md-typeset pre,
 .md-typeset code *,
+.md-typeset pre,
 .md-typeset pre *,
 .md-typeset a code,
 .md-typeset table code,
-.md-typeset .highlight code {
-  -webkit-user-select: text;
-  -moz-user-select: text;
-  -ms-user-select: text;
-  user-select: text;
+.md-typeset .highlight,
+.md-typeset .highlight *,
+.md-clipboard,
+[class*="codehilite"],
+[class*="codehilite"] * {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  user-select: text !important;
   cursor: text;
 }
 
-.md-search,
-.md-search *,
-.md-search-result,
-.md-search-result *,
-.md-search__input {
-  -webkit-user-select: auto;
-  -moz-user-select: auto;
-  -ms-user-select: auto;
-  user-select: auto;
+input,
+textarea,
+.md-search__input,
+.md-search__inner,
+.md-search__inner * {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  user-select: text !important;
 }
