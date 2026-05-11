@@ -170,7 +170,7 @@ def build_comment(branch, sha, msg, author, ts, repo_url, diffstat):
             '<div align="center">',
             '',
             f'<img src="{badge("Branch", branch, "2563eb")}" alt="Branch">',
-            f'<img src="{badge("Time", fmt_ts(ts), "64748b")}" alt="Time">',
+            f'<img src="{badge(fmt_ts(ts)[:10], fmt_ts(ts)[11:], "64748b")}" alt="Time">',
             f'<img src="{badge("Hash", short, "7c3aed")}" alt="Hash">',
             '',
             '</div>',
