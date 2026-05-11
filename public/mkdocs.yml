@@ -1,0 +1,103 @@
+site_name: Heke1228 MIT Learning Log
+site_description: MIT 6.1910 / 6.1920 / 6.5900 — D202605002
+site_url: https://lfan-ke.github.io/DatenLord/
+repo_url: https://github.com/Lfan-ke/DatenLord
+repo_name: Lfan-ke/DatenLord
+edit_uri: edit/main/README.md
+docs_dir: .
+site_dir: ../_site
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - content.code.copy
+    - content.action.edit
+    - search.suggest
+    - search.highlight
+    - search.share
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: blue
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: blue
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  font:
+    text: Inter
+    code: JetBrains Mono
+  icon:
+    repo: fontawesome/brands/github
+    edit: material/file-edit-outline
+
+extra_css:
+  - extra.css
+
+extra_javascript:
+  - stats.js
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - tables
+  - attr_list
+  - md_in_html
+  - footnotes
+  - def_list
+  - neoteroi.timeline
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.smartsymbols
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Lfan-ke
+    - icon: material/bookmark-multiple
+      link: https://github.com/datenlord/training/issues/74
+    - icon: material/school
+      link: https://github.com/datenlord/training
+  generator: false
+
+nav:
+  - Home: index.md
+  - Dashboard: stats.md
+  - Timeline:
+      - All: timeline.md
+      - "6.1910": timeline-6.1910.md
+      - "6.1920": timeline-6.1920.md
+      - "6.5900": timeline-6.5900.md

@@ -1,0 +1,168 @@
+.md-typeset .admonition,
+.md-typeset details {
+  border-radius: 12px;
+}
+
+.md-typeset .admonition.abstract,
+.md-typeset details.abstract {
+  background: rgba(63, 81, 181, 0.05);
+}
+
+[data-md-color-scheme="slate"] .md-typeset .admonition.abstract,
+[data-md-color-scheme="slate"] .md-typeset details.abstract {
+  background: rgba(121, 134, 203, 0.10);
+}
+
+.md-typeset .grid.cards > ul > li,
+.md-typeset .grid.cards > ol > li {
+  border-radius: 14px;
+  border: 1px solid rgba(100, 116, 139, 0.22);
+  background: var(--md-default-bg-color);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .grid.cards > ul > li,
+[data-md-color-scheme="slate"] .md-typeset .grid.cards > ol > li {
+  border-color: rgba(148, 163, 184, 0.28);
+  background: rgba(148, 163, 184, 0.04);
+}
+
+.md-typeset .grid.cards > ul > li:hover,
+.md-typeset .grid.cards > ol > li:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+  border-color: var(--md-accent-fg-color);
+}
+
+[data-md-color-scheme="slate"] .md-typeset .grid.cards > ul > li:hover,
+[data-md-color-scheme="slate"] .md-typeset .grid.cards > ol > li:hover {
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55);
+}
+
+.md-typeset .md-button {
+  border-radius: 999px;
+  padding: 0.5em 1.2em;
+}
+
+.completed {
+  color: #16a34a !important;
+}
+
+[data-md-color-scheme="slate"] .completed {
+  color: #4ade80 !important;
+}
+
+.md-typeset h1,
+.md-typeset h2 {
+  letter-spacing: -0.015em;
+}
+
+.md-typeset h2 {
+  margin-top: 2em;
+}
+
+.md-typeset table:not([class]) {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.nt-timeline,
+.nt-timeline-title,
+.nt-timeline-sub-title,
+.nt-timeline-content,
+.nt-timeline-content p,
+.nt-timeline-content strong,
+.nt-timeline-item {
+  color: var(--md-default-fg-color);
+}
+
+.nt-timeline-sub-title {
+  color: var(--md-default-fg-color--light);
+  font-size: 0.85em;
+}
+
+.nt-timeline a {
+  color: var(--md-accent-fg-color);
+}
+
+[data-md-color-scheme="slate"] .nt-timeline-dot {
+  background: var(--md-accent-fg-color);
+  border-color: var(--md-default-bg-color);
+}
+
+[data-md-color-scheme="slate"] .nt-timeline-item {
+  background: rgba(148, 163, 184, 0.05);
+  border-radius: 10px;
+  padding: 0.5em 0.8em;
+}
+
+.md-typeset .stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 1.2em;
+  margin: 0.6em 0 2em;
+  align-items: stretch;
+}
+
+.md-typeset .echart {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  background: rgba(148, 163, 184, 0.04);
+  border: 1px solid rgba(100, 116, 139, 0.18);
+  border-radius: 14px;
+  padding: 0.6em 0.6em 0.2em;
+  margin: 0.6em 0 2em;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.md-typeset .stats-grid > .echart {
+  margin: 0;
+}
+
+.md-typeset .echart > div {
+  width: 100% !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .echart {
+  background: rgba(148, 163, 184, 0.06);
+  border-color: rgba(148, 163, 184, 0.25);
+}
+
+.md-typeset .echart:hover {
+  border-color: var(--md-accent-fg-color);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.10);
+}
+
+[data-md-color-scheme="slate"] .md-typeset .echart:hover {
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45);
+}
+
+body,
+.md-typeset {
+  font-family: 'HarmonyOS Sans SC', 'HarmonyOS Sans', 'Microsoft YaHei UI Light', 'Microsoft YaHei UI', 'Microsoft YaHei', 'Inter', system-ui, sans-serif;
+}
+
+.md-nav__title,
+.md-nav__link,
+.md-tabs__link,
+.md-tabs__item {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+}
+
+.md-typeset table:not([class]) td,
+.md-typeset table:not([class]) th,
+.md-typeset code,
+.nt-timeline-title,
+.nt-timeline-sub-title {
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+}
+
+.nt-timeline-title {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
