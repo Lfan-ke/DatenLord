@@ -406,16 +406,19 @@
       series: { type: 'heatmap', coordinateSystem: 'calendar', data: data.cal_data },
     }));
 
-    var ringOffsets = ['-30%', '0%', '30%'];
+    var ringTitleOffsets = ['-42%', '-2%', '38%'];
+    var ringDetailOffsets = ['-22%', '18%', '58%'];
     var ringData = data.push_per_branch.map(function (b, i) {
       var pct = data.push_total ? Math.round(b.value / data.push_total * 100) : 0;
-      var off = ringOffsets[i] || '0%';
-      var detOff = (parseInt(off, 10) + 10) + '%';
       return {
         value: pct, name: b.branch,
         itemStyle: { color: palette[i] },
-        title: { offsetCenter: ['0%', off] },
-        detail: { valueAnimation: true, offsetCenter: ['0%', detOff], color: palette[i] },
+        title: { offsetCenter: ['0%', ringTitleOffsets[i] || '0%'] },
+        detail: {
+          valueAnimation: true,
+          offsetCenter: ['0%', ringDetailOffsets[i] || '10%'],
+          color: palette[i],
+        },
       };
     });
     charts.push(mount('chart-score-ring', {
