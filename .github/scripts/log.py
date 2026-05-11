@@ -118,9 +118,17 @@ def total_delta(entry_lines):
     return ins, dele
 
 
+def humanize(n):
+    if n >= 1_000_000:
+        return f'{n / 1_000_000:.1f}'.rstrip('0').rstrip('.') + 'm'
+    if n >= 1_000:
+        return f'{n / 1_000:.1f}'.rstrip('0').rstrip('.') + 'k'
+    return str(n)
+
+
 def refresh_code_badge(text, entry_lines):
     ins, dele = total_delta(entry_lines)
-    new_msg = f'%2B{ins}%20%7C%20%E2%88%92{dele}'
+    new_msg = f'%2B{humanize(ins)}%20%7C%20%E2%88%92{humanize(dele)}'
     return CODE_BADGE_RE.sub(r'\g<1>' + new_msg + r'-22c55e\g<2>', text)
 
 
