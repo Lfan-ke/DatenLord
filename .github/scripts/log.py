@@ -15,6 +15,32 @@ HINT = '> Records of every commit on a course branch. A commit titled `completed
 COURSE_NAME = {'6.1910': 'MIT 6.1910', '6.1920': 'MIT 6.1920', '6.5900': 'MIT 6.5900'}
 ROW_RE = re.compile(r'^\| `\d{4}-')
 COMPLETION = 'completed: all done.'
+TRAILER_RE = re.compile(r'^[A-Za-z][A-Za-z0-9-]*:\s+\S')
+
+
+def split_msg(msg):
+    lines = msg.rstrip('\n').splitlines()
+    if not lines:
+        return '', '', ''
+    title = lines[0]
+    rest = lines[1:]
+    while rest and not rest[0].strip():
+        rest.pop(0)
+    if not rest:
+        return title, '', ''
+    last_blank = -1
+    for i in range(len(rest) - 1, -1, -1):
+        if not rest[i].strip():
+            last_blank = i
+            break
+    tail = rest[last_blank + 1:] if last_blank >= 0 else rest
+    trailers = ''
+    if tail and all(TRAILER_RE.match(l) for l in tail if l.strip()):
+        trailers = '\n'.join(l for l in tail if l.strip())
+        rest = rest[:last_blank] if last_blank >= 0 else []
+    while rest and not rest[-1].strip():
+        rest.pop()
+    return title, '\n'.join(rest), trailers
 
 
 def fmt_ts(iso):
@@ -153,11 +179,12 @@ def refresh_code_badge(text, entry_lines):
 
 def build_comment(branch, sha, msg, author, ts, repo_url, diffstat):
     short = sha[:7]
-    title = msg.split('\n', 1)[0]
+    title, body_text, trailers = split_msg(msg)
     course = COURSE_NAME.get(branch, branch)
     finished = is_completion(title)
     commit_url = f'{repo_url}/commit/{sha}'
     branch_url = f'{repo_url}/tree/{branch}'
+    issue_url = 'https://github.com/datenlord/training/issues/74'
 
     def badge(label, value, color):
         l = label.replace(' ', '_').replace('-', '--')
@@ -171,11 +198,11 @@ def build_comment(branch, sha, msg, author, ts, repo_url, diffstat):
             '',
             f'# 🎉 Course Completed',
             '',
-            f'### `{branch}` · {course}',
+            f'### {course}',
             '',
             f'<img src="{badge("Status", "Completed", "22c55e")}" alt="Completed">',
-            f'<img src="{badge("Branch", branch, "2563eb")}" alt="Branch">',
-            f'<img src="{badge("Student", "D202605002", "7c3aed")}" alt="Student">',
+            f'<a href="{branch_url}"><img src="{badge("Branch", branch, "2563eb")}" alt="Branch"></a>',
+            f'<a href="{issue_url}"><img src="{badge("Student", "D202605002", "7c3aed")}" alt="Student"></a>',
             '',
             '**All labs done — milestone reached!** 🎓',
             '',
@@ -188,22 +215,21 @@ def build_comment(branch, sha, msg, author, ts, repo_url, diffstat):
         body += [
             '<div align="center">',
             '',
-            f'<img src="{badge("Branch", branch, "2563eb")}" alt="Branch">',
-            f'<img src="{badge(fmt_ts(ts)[:10], fmt_ts(ts)[11:], "64748b")}" alt="Time">',
-            f'<img src="{badge("Hash", short, "7c3aed")}" alt="Hash">',
+            f'<a href="{branch_url}"><img src="{badge("Branch", branch, "2563eb")}" alt="Branch"></a>',
+            f'<a href="{commit_url}"><img src="{badge(fmt_ts(ts)[:10], fmt_ts(ts)[11:], "64748b")}" alt="Time"></a>',
+            f'<a href="{commit_url}"><img src="{badge("Hash", short, "7c3aed")}" alt="Hash"></a>',
             '',
             '</div>',
             '',
-            f'### `{branch}` · [`{short}`]({commit_url})',
-            '',
-            f'**{title}**  ',
-            f'<sub>by <b>{author}</b> · `{fmt_ts(ts)}` UTC+8 · [branch]({branch_url})</sub>',
+            f'#### {title}',
+            f'<sub>by <b>{author}</b> · `{fmt_ts(ts)}` UTC+8</sub>',
             '',
         ]
 
-    extra = '\n'.join(msg.splitlines()[1:]).strip()
-    if extra:
-        body += ['> ' + l for l in extra.splitlines()]
+    if body_text:
+        body += [body_text, '']
+    if trailers:
+        body += ['> ' + l for l in trailers.splitlines()]
         body.append('')
 
     if diffstat:
