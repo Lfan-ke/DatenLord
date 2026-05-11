@@ -262,10 +262,19 @@ def diffstat(sha):
         return ''
 
 
+def keep_commit(c):
+    if (c.get('author') or {}).get('name', '') == 'github-actions[bot]':
+        return False
+    files = (c.get('added') or []) + (c.get('removed') or []) + (c.get('modified') or [])
+    if files and all(f.startswith('.github/') for f in files):
+        return False
+    return True
+
+
 def main():
     branch = os.environ['BRANCH_NAME']
     repo_url = os.environ['REPO_URL']
-    commits = json.loads(os.environ['COMMITS_JSON'])
+    commits = [c for c in json.loads(os.environ['COMMITS_JSON']) if keep_commit(c)]
     if not commits:
         Path(os.environ['GITHUB_OUTPUT']).open('a').write('changed=false\n')
         return
