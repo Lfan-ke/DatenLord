@@ -191,7 +191,7 @@ def humanize(n):
 
 def recent_table(entries, n=5):
     rows = ['| Time | Batch | Hash | Summary | Codes | Files |',
-            '| --- | --- | --- | --- | --- | --- |']
+            '| :---: | :---: | :---: | :---: | :---: | :---: |']
     for e in entries[:n]:
         rows.append(
             f'| `{e["time"]}` | `{e["branch"]}` | [`{e["sha"][:7]}`]({e["url"]})'

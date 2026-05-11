@@ -10,7 +10,7 @@ CST = timezone(timedelta(hours=8))
 README = Path('README.md')
 MARKER = '<!-- more -->'
 SECTION = '## Learning Log'
-TABLE_HEAD = '| Time | Batch | Hash | Summary | Δ | Files |\n| --- | --- | --- | --- | --- | --- |'
+TABLE_HEAD = '| Time | Batch | Hash | Summary | Δ | Files |\n| :---: | :---: | :---: | :---: | :---: | :---: |'
 HINT = '> Records of every commit on a course branch. A commit titled `completed: all done.` marks the course as finished.'
 COURSE_NAME = {'6.1910': 'MIT 6.1910', '6.1920': 'MIT 6.1920', '6.5900': 'MIT 6.5900'}
 ROW_RE = re.compile(r'^\| `\d{4}-')
