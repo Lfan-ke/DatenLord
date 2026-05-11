@@ -406,18 +406,29 @@
       series: { type: 'heatmap', coordinateSystem: 'calendar', data: data.cal_data },
     }));
 
-    var ringTitleOffsets = ['-42%', '-2%', '38%'];
-    var ringDetailOffsets = ['-22%', '18%', '58%'];
+    var ringDetailOffsets = ['-20%', '17%', '54%'];
+    var ringNameTops = ['34.5%', '50%', '65.5%'];
     var ringData = data.push_per_branch.map(function (b, i) {
       var pct = data.push_total ? Math.round(b.value / data.push_total * 100) : 0;
       return {
-        value: pct, name: b.branch,
+        value: pct, name: '',
         itemStyle: { color: palette[i] },
-        title: { offsetCenter: ['0%', ringTitleOffsets[i] || '0%'] },
+        title: { show: false },
         detail: {
           valueAnimation: true,
           offsetCenter: ['0%', ringDetailOffsets[i] || '10%'],
           color: palette[i],
+        },
+      };
+    });
+    var ringNamesGraphic = data.push_per_branch.map(function (b, i) {
+      return {
+        type: 'text', left: 'center', top: ringNameTops[i] || '50%',
+        z: 1000, silent: true,
+        style: {
+          text: b.branch, fill: t.fg,
+          font: '700 13px ' + GLOBAL_FONT.fontFamily,
+          textAlign: 'center', textVerticalAlign: 'middle',
         },
       };
     });
@@ -429,6 +440,7 @@
                  ' / ' + (data.push_total || 0) + ' · ' + (p.value || 0) + '%';
         },
       },
+      graphic: ringNamesGraphic,
       series: [{
         type: 'gauge',
         startAngle: 90, endAngle: -270,
@@ -439,17 +451,16 @@
           show: true, overlap: false, roundCap: true, clip: false,
           itemStyle: { borderWidth: 1, borderColor: t.bg },
         },
-        axisLine: { lineStyle: { width: 32,
+        axisLine: { lineStyle: { width: 30,
           color: [[1, t.dark ? 'rgba(148,163,184,0.12)' : 'rgba(148,163,184,0.22)']] } },
         splitLine: { show: false },
         axisTick: { show: false },
         axisLabel: { show: false },
-        title: { fontSize: 13, color: t.fg, fontWeight: 600,
-          fontFamily: GLOBAL_FONT.fontFamily },
+        title: { show: false },
         detail: {
-          width: 60, height: 16, fontSize: 13,
+          width: 52, height: 16, fontSize: 12,
           color: 'inherit', borderColor: 'inherit',
-          borderRadius: 20, borderWidth: 1,
+          borderRadius: 8, borderWidth: 1,
           formatter: '{value}%',
           fontFamily: GLOBAL_FONT.fontFamily,
         },
