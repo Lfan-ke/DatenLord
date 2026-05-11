@@ -163,10 +163,41 @@ def stats_grid(entries):
     return grid(cards)
 
 
+def humanize(n):
+    import math
+    if n < 1000:
+        return str(n)
+    suffixes = ['', 'k', 'm', 'g']
+    val = float(n)
+    mag = 0
+    while val >= 1000 and mag < len(suffixes) - 1:
+        val /= 1000
+        mag += 1
+    x = math.floor(val * 10 + 0.5) / 10
+    if x >= 1000 and mag < len(suffixes) - 1:
+        val /= 1000
+        mag += 1
+        x = math.floor(val * 10 + 0.5) / 10
+    if x < 10:
+        return f'{x:.1f}{suffixes[mag]}'
+    xi = math.floor(val + 0.5)
+    if xi >= 1000 and mag < len(suffixes) - 1:
+        val /= 1000
+        mag += 1
+        x = math.floor(val * 10 + 0.5) / 10
+        return f'{x:.1f}{suffixes[mag]}'
+    return f'{int(xi)}{suffixes[mag]}'
+
+
 def recent_table(entries, n=5):
-    rows = ['| Time | Batch | Hash | Summary |', '| --- | --- | --- | --- |']
+    rows = ['| Time | Batch | Hash | Summary | Δ | Files |',
+            '| --- | --- | --- | --- | --- | --- |']
     for e in entries[:n]:
-        rows.append(f'| `{e["time"]}` | `{e["branch"]}` | [`{e["sha"]}`]({e["url"]}) | {e["title"]} |')
+        rows.append(
+            f'| `{e["time"]}` | `{e["branch"]}` | [`{e["sha"][:7]}`]({e["url"]})'
+            f' | {e["title"]} | `+{humanize(e["insertions"])} / −{humanize(e["deletions"])}`'
+            f' | `+{humanize(e["files_added"])} / −{humanize(e["files_deleted"])}` |'
+        )
     return '\n'.join(rows)
 
 
