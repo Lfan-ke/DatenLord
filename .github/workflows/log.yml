@@ -3,7 +3,6 @@ name: log
 on:
   push:
     branches-ignore: ['main', 'gh-pages']
-    paths-ignore: ['.github/**']
 
 permissions:
   contents: write
