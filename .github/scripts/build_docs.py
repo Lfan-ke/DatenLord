@@ -25,18 +25,20 @@ def filestat(sha):
             ['git', 'show', '--name-status', '--format=', sha],
             capture_output=True, text=True, check=False,
         )
-        a = d = 0
+        a = m = d = 0
         for line in r.stdout.splitlines():
             if not line.strip():
                 continue
             ch = line[0]
-            if ch == 'A':
+            if ch in ('A', 'C'):
                 a += 1
+            elif ch in ('M', 'R', 'T'):
+                m += 1
             elif ch == 'D':
                 d += 1
-        return (a, d)
+        return (a, m, d)
     except Exception:
-        return (0, 0)
+        return (0, 0, 0)
 
 COURSES = [
     {'old': '6.004', 'new': '6.1910', 'name': 'Computation Structures',
@@ -107,8 +109,9 @@ def parse_entries():
         seen.add(d['sha'])
         d['title'] = d['title'].replace('\\|', '|')
         d['is_completion'] = COMPLETION in d['title'].lower()
-        fa, fd = filestat(d['sha'])
+        fa, fm, fd = filestat(d['sha'])
         d['files_added'] = fa
+        d['files_modified'] = fm
         d['files_deleted'] = fd
         d.update(shortstat(d['sha']))
         out.append(d)
@@ -195,8 +198,8 @@ def recent_table(entries, n=5):
     for e in entries[:n]:
         rows.append(
             f'| `{e["time"]}` | `{e["branch"]}` | [`{e["sha"][:7]}`]({e["url"]})'
-            f' | {e["title"]} | `+{humanize(e["insertions"])} / −{humanize(e["deletions"])}`'
-            f' | `+{humanize(e["files_added"])} / −{humanize(e["files_deleted"])}` |'
+            f' | {e["title"]} | `+{humanize(e["insertions"])}/−{humanize(e["deletions"])}`'
+            f' | `+{humanize(e["files_added"])}/${humanize(e["files_modified"])}/−{humanize(e["files_deleted"])}` |'
         )
     return '\n'.join(rows)
 
@@ -209,7 +212,7 @@ def timeline_block(entries):
     out = ['::timeline:: alternate']
     for e in entries:
         title = f'{"🏆 " if e["is_completion"] else ""}{e["time"]}'
-        sub_title = f'`{e["branch"]}` · [`{e["sha"]}`]({e["url"]}) · +{e["insertions"]}/-{e["deletions"]} · {e["files_added"]}A/{e["files_deleted"]}D files'
+        sub_title = f'`{e["branch"]}` · [`{e["sha"]}`]({e["url"]}) · +{e["insertions"]}/−{e["deletions"]} · {e["files_added"]}A/{e["files_modified"]}M/{e["files_deleted"]}D files'
         content = e["title"]
         icon = ':material-trophy:' if e['is_completion'] else ':material-source-commit:'
         out += [
@@ -234,7 +237,7 @@ def hero(entries):
         )
     return (
         f'!!! tip "Latest · `{e["branch"]}`"\n'
-        f'    `{e["time"]}` · [`{e["sha"]}`]({e["url"]}) · +{e["insertions"]}/-{e["deletions"]} · {e["files_added"]}A/{e["files_deleted"]}D files\n\n'
+        f'    `{e["time"]}` · [`{e["sha"]}`]({e["url"]}) · +{e["insertions"]}/−{e["deletions"]} · {e["files_added"]}A/{e["files_modified"]}M/{e["files_deleted"]}D files\n\n'
         f'    {e["title"]}\n'
     )
 
@@ -362,6 +365,7 @@ def render_stats(entries):
             'time': e['time'],
             'branch': e['branch'],
             'added': e['files_added'],
+            'modified': e['files_modified'],
             'deleted': e['files_deleted'],
             'touched': e['files'],
         })

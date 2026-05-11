@@ -79,18 +79,20 @@ def filestat(sha):
             ['git', 'show', '--name-status', '--format=', sha],
             capture_output=True, text=True, check=False,
         )
-        a = d = 0
+        a = m = d = 0
         for line in r.stdout.splitlines():
             if not line.strip():
                 continue
             ch = line[0]
-            if ch == 'A':
+            if ch in ('A', 'C'):
                 a += 1
+            elif ch in ('M', 'R', 'T'):
+                m += 1
             elif ch == 'D':
                 d += 1
-        return (a, d)
+        return (a, m, d)
     except Exception:
-        return (0, 0)
+        return (0, 0, 0)
 
 
 def entry_line(branch, sha, msg, ts, repo_url):
@@ -99,10 +101,10 @@ def entry_line(branch, sha, msg, ts, repo_url):
     if len(title) > 41:
         title = title[:38] + '...'
     ins, dele = numstat(sha)
-    fa, fd = filestat(sha)
+    fa, fm, fd = filestat(sha)
     return (f"| `{fmt_ts(ts)}` | `{branch}` | [`{short}`]({repo_url}/commit/{sha})"
-            f" | {render_title(title)} | `+{humanize(ins)} / −{humanize(dele)}`"
-            f" | `+{humanize(fa)} / −{humanize(fd)}` |")
+            f" | {render_title(title)} | `+{humanize(ins)}/−{humanize(dele)}`"
+            f" | `+{humanize(fa)}/${humanize(fm)}/−{humanize(fd)}` |")
 
 
 def parse_log(text):
@@ -133,15 +135,25 @@ def write_log(head, entries):
 
 
 CODE_BADGE_RE = re.compile(r'(https://img\.shields\.io/badge/CODE-)[^?]+(\?[^"]+)')
+DELTA_CELL_RE = re.compile(r'`\+([\d.]+[kmg]?)\s*/\s*−([\d.]+[kmg]?)`', re.IGNORECASE)
+SUFFIX = {'': 1, 'k': 1000, 'm': 1_000_000, 'g': 1_000_000_000}
+
+
+def parse_humanize(s):
+    m = re.match(r'^(\d+(?:\.\d+)?)([kmg]?)$', s.strip().lower())
+    return int(float(m.group(1)) * SUFFIX[m.group(2)]) if m else 0
 
 
 def total_delta(entry_lines):
     ins = dele = 0
     for line in entry_lines:
-        m = re.search(r'`\+(\d+) / −(\d+)` \| `\+\d+ / −\d+` \|\s*$', line)
+        cells = [c.strip() for c in line.split('|')]
+        if len(cells) < 7:
+            continue
+        m = DELTA_CELL_RE.match(cells[5])
         if m:
-            ins += int(m.group(1))
-            dele += int(m.group(2))
+            ins += parse_humanize(m.group(1))
+            dele += parse_humanize(m.group(2))
     return ins, dele
 
 
