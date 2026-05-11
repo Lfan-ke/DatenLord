@@ -205,6 +205,11 @@ def build_comment(branch, sha, msg, author, ts, repo_url, diffstat):
 
     body = []
     if finished:
+        badges_row = (
+            f'<img src="{badge("Status", "Completed", "22c55e")}" alt="Completed">'
+            f' <a href="{branch_url}"><img src="{badge("Branch", branch, "2563eb")}" alt="Branch"></a>'
+            f' <a href="{issue_url}"><img src="{badge("Student", "D202605002", "7c3aed")}" alt="Student"></a>'
+        )
         body += [
             '<div align="center">',
             '',
@@ -212,9 +217,7 @@ def build_comment(branch, sha, msg, author, ts, repo_url, diffstat):
             '',
             f'### {course}',
             '',
-            f'<img src="{badge("Status", "Completed", "22c55e")}" alt="Completed">',
-            f'<a href="{branch_url}"><img src="{badge("Branch", branch, "2563eb")}" alt="Branch"></a>',
-            f'<a href="{issue_url}"><img src="{badge("Student", "D202605002", "7c3aed")}" alt="Student"></a>',
+            badges_row,
             '',
             '**All labs done — milestone reached!** 🎓',
             '',
@@ -224,16 +227,19 @@ def build_comment(branch, sha, msg, author, ts, repo_url, diffstat):
             '',
         ]
     else:
+        badges_row = (
+            f'<a href="{branch_url}"><img src="{badge("Branch", branch, "2563eb")}" alt="Branch"></a>'
+            f' <a href="{commit_url}"><img src="{badge(fmt_ts(ts)[:10], fmt_ts(ts)[11:], "64748b")}" alt="Time"></a>'
+            f' <a href="{commit_url}"><img src="{badge("Hash", short, "7c3aed")}" alt="Hash"></a>'
+        )
         body += [
             '<div align="center">',
             '',
-            f'<a href="{branch_url}"><img src="{badge("Branch", branch, "2563eb")}" alt="Branch"></a>',
-            f'<a href="{commit_url}"><img src="{badge(fmt_ts(ts)[:10], fmt_ts(ts)[11:], "64748b")}" alt="Time"></a>',
-            f'<a href="{commit_url}"><img src="{badge("Hash", short, "7c3aed")}" alt="Hash"></a>',
+            badges_row,
             '',
             '</div>',
             '',
-            f'#### {title}',
+            f'## {title}',
             f'<sub>by <b>{author}</b> · `{fmt_ts(ts)}` UTC+8</sub>',
             '',
         ]
@@ -244,18 +250,17 @@ def build_comment(branch, sha, msg, author, ts, repo_url, diffstat):
         body += ['> ' + l for l in trailers.splitlines()]
         body.append('')
 
-    if diffstat:
-        body += [
-            '<details>',
-            '<summary><b>📝 Changes</b></summary>',
-            '',
-            '```',
-            diffstat.strip(),
-            '```',
-            '',
-            '</details>',
-            '',
-        ]
+    body += [
+        '<details>',
+        '<summary><b>📝 Changes</b></summary>',
+        '',
+        '```',
+        diffstat.strip() if diffstat and diffstat.strip() else '(no file changes)',
+        '```',
+        '',
+        '</details>',
+        '',
+    ]
 
     body.append('---')
     body.append('')
