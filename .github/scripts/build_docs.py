@@ -190,7 +190,7 @@ def humanize(n):
 
 
 def recent_table(entries, n=5):
-    rows = ['| Time | Batch | Hash | Summary | Δ | Files |',
+    rows = ['| Time | Batch | Hash | Summary | Codes | Files |',
             '| --- | --- | --- | --- | --- | --- |']
     for e in entries[:n]:
         rows.append(
