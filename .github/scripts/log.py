@@ -134,7 +134,15 @@ def humanize(n):
         val /= 1000
         mag += 1
         x = math.floor(val * 10 + 0.5) / 10
-    return (f'{x:.1f}'.rstrip('0').rstrip('.')) + suffixes[mag]
+    if x < 10:
+        return f'{x:.1f}{suffixes[mag]}'
+    xi = math.floor(val + 0.5)
+    if xi >= 1000 and mag < len(suffixes) - 1:
+        val /= 1000
+        mag += 1
+        x = math.floor(val * 10 + 0.5) / 10
+        return f'{x:.1f}{suffixes[mag]}'
+    return f'{int(xi)}{suffixes[mag]}'
 
 
 def refresh_code_badge(text, entry_lines):
