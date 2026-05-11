@@ -446,6 +446,8 @@ def render_stats(entries):
         '<div id="chart-candle" class="echart" style="height:380px"></div>\n\n'
         '### :material-graph-outline: Commit Flow · Calendar graph with branch arrows\n\n'
         '<div id="chart-calgraph" class="echart" style="height:240px"></div>\n\n'
+        '### :material-podium: Score Ring · per-branch share of ' + str(push_total) + ' commits\n\n'
+        '<div id="chart-score-ring" class="echart" style="height:380px"></div>\n\n'
         '### :material-gauge: Course Progress · ' + str(completed) + ' / ' + str(total) + '\n\n'
         '<div id="chart-gauge" class="echart" style="height:380px"></div>\n\n'
         '<script id="stats-data" type="application/json">' + json.dumps(data) + '</script>\n'

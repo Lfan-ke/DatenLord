@@ -89,32 +89,31 @@
     }));
 
     charts.push(mount('chart-score', {
-      tooltip: { trigger: 'item', confine: true,
+      tooltip: { trigger: 'item',
         formatter: function (info) {
           var pct = data.push_total ? Math.round(info.value / data.push_total * 100) : 0;
-          return '<b>' + info.name + '</b><br/>' + info.value + ' / ' + data.push_total + ' pushes · ' + pct + '%';
+          return '<b>' + info.name + '</b><br/>' + info.value + ' / ' + data.push_total + ' · ' + pct + '%';
         },
       },
       legend: { bottom: 8, textStyle: { color: t.fg } },
       color: palette,
+      graphic: [
+        { type: 'text', left: 'center', top: '38%', z: 100, silent: true,
+          style: { text: String(data.push_total || 0), fill: t.fg,
+            font: '700 32px ' + GLOBAL_FONT.fontFamily, textAlign: 'center' } },
+        { type: 'text', left: 'center', top: '49%', z: 100, silent: true,
+          style: { text: 'commits', fill: t.sub,
+            font: '12px ' + GLOBAL_FONT.fontFamily, textAlign: 'center' } },
+      ],
       series: [{
         type: 'pie',
         radius: ['52%', '78%'],
         center: ['50%', '45%'],
         avoidLabelOverlap: false,
         itemStyle: { borderColor: t.bg, borderWidth: 3, borderRadius: 8 },
-        label: { show: true, position: 'center',
-          formatter: [
-            '{tot|' + (data.push_total || 0) + '}',
-            '{lab|pushes}',
-          ].join('\n'),
-          rich: {
-            tot: { color: t.fg, fontSize: 32, fontWeight: 700, lineHeight: 36 },
-            lab: { color: t.sub, fontSize: 12, lineHeight: 18 },
-          },
-        },
+        label: { show: false },
         labelLine: { show: false },
-        emphasis: { label: { show: false } },
+        emphasis: { scale: true, scaleSize: 4 },
         data: data.push_per_branch.map(function (p) {
           return { value: p.value, name: p.branch };
         }),
@@ -405,6 +404,54 @@
         splitLine: { show: false },
       },
       series: { type: 'heatmap', coordinateSystem: 'calendar', data: data.cal_data },
+    }));
+
+    var ringOffsets = ['-30%', '0%', '30%'];
+    var ringData = data.push_per_branch.map(function (b, i) {
+      var pct = data.push_total ? Math.round(b.value / data.push_total * 100) : 0;
+      var off = ringOffsets[i] || '0%';
+      var detOff = (parseInt(off, 10) + 10) + '%';
+      return {
+        value: pct, name: b.branch,
+        itemStyle: { color: palette[i] },
+        title: { offsetCenter: ['0%', off] },
+        detail: { valueAnimation: true, offsetCenter: ['0%', detOff], color: palette[i] },
+      };
+    });
+    charts.push(mount('chart-score-ring', {
+      tooltip: { trigger: 'item',
+        formatter: function (p) {
+          var b = data.push_per_branch[p.dataIndex] || {};
+          return '<b>' + (b.branch || '') + '</b><br/>' + (b.value || 0) +
+                 ' / ' + (data.push_total || 0) + ' · ' + (p.value || 0) + '%';
+        },
+      },
+      series: [{
+        type: 'gauge',
+        startAngle: 90, endAngle: -270,
+        radius: '85%',
+        min: 0, max: 100,
+        pointer: { show: false },
+        progress: {
+          show: true, overlap: false, roundCap: true, clip: false,
+          itemStyle: { borderWidth: 1, borderColor: t.bg },
+        },
+        axisLine: { lineStyle: { width: 32,
+          color: [[1, t.dark ? 'rgba(148,163,184,0.12)' : 'rgba(148,163,184,0.22)']] } },
+        splitLine: { show: false },
+        axisTick: { show: false },
+        axisLabel: { show: false },
+        title: { fontSize: 13, color: t.fg, fontWeight: 600,
+          fontFamily: GLOBAL_FONT.fontFamily },
+        detail: {
+          width: 60, height: 16, fontSize: 13,
+          color: 'inherit', borderColor: 'inherit',
+          borderRadius: 20, borderWidth: 1,
+          formatter: '{value}%',
+          fontFamily: GLOBAL_FONT.fontFamily,
+        },
+        data: ringData,
+      }],
     }));
 
     charts.push(mount('chart-calgraph', {
