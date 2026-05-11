@@ -1,0 +1,36 @@
+name: docs
+
+on:
+  push:
+    branches: [main]
+    paths: ['README.md', 'public/**', '.github/workflows/docs.yml', '.github/scripts/build_docs.py']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: docs
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: git fetch origin '+refs/heads/*:refs/remotes/origin/*' --no-tags
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: public/requirements-docs.txt
+      - run: uv pip install --system -r public/requirements-docs.txt
+      - run: python .github/scripts/build_docs.py
+      - run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          mkdocs gh-deploy --force --no-history --config-file public/mkdocs.yml
