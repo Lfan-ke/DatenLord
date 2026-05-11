@@ -50,8 +50,10 @@
       backgroundColor: t.dark ? 'rgba(15, 23, 42, 0.96)' : 'rgba(255, 255, 255, 0.96)',
       borderColor: t.dark ? 'rgba(148, 163, 184, 0.35)' : 'rgba(100, 116, 139, 0.28)',
       borderWidth: 1,
-      padding: [5, 9],
-      extraCssText: 'border-radius: 8px; line-height: 1.4; box-shadow: 0 6px 18px rgba(15, 23, 42, ' + (t.dark ? '0.55' : '0.10') + ');',
+      padding: [6, 10],
+      enterable: false,
+      transitionDuration: 0.1,
+      extraCssText: 'border-radius: 8px !important; line-height: 1.45 !important; width: max-content !important; width: -moz-max-content !important; max-width: 260px !important; min-width: 0 !important; white-space: normal !important; word-break: break-word !important; box-sizing: border-box !important; box-shadow: 0 6px 18px rgba(15, 23, 42, ' + (t.dark ? '0.55' : '0.10') + ') !important;',
       textStyle: { color: t.fg, fontFamily: GLOBAL_FONT.fontFamily, fontSize: 11 },
     };
     option.tooltip = Object.assign({}, ttDefaults, option.tooltip || {});
@@ -231,49 +233,89 @@
       ],
     }));
 
+    var treeRoot = (data.treemap && data.treemap[0]) || { children: [] };
+    var leafFloor = 8;
+    function floorLeaves(node) {
+      if (node.children && node.children.length) {
+        node.children.forEach(floorLeaves);
+      } else {
+        node.value = Math.max(Number(node.value) || 0, leafFloor);
+      }
+    }
+    floorLeaves(treeRoot);
+
     charts.push(mount('chart-treemap', {
-      tooltip: { formatter: function (info) {
-        var d = info.data || {};
-        if (d.children) return '<b>' + d.name + '</b> · ' + (d.children || []).length + ' children';
-        return '<b>' + d.name + '</b><br/>+' + (d.ins || 0) + ' / −' + (d.dele || 0) +
-               '<br/><span style="opacity:.7">' + (d.label || '') + '</span>';
-      }},
-      color: palette,
+      tooltip: {
+        formatter: function (info) {
+          var d = info.data || {};
+          var path = (info.treePathInfo || []).slice(1).map(function (n) { return n.name; }).join(' / ');
+          if (d.children && d.children.length) {
+            return '<b>' + (path || d.name) + '</b><br/>' + d.children.length + ' children · ' + (info.value || 0) + ' lines';
+          }
+          return '<b>' + (path || d.name) + '</b><br/>+' + (d.ins || 0) + ' / −' + (d.dele || 0) +
+                 (d.label ? '<br/><span style="opacity:.7">' + d.label + '</span>' : '');
+        },
+      },
       series: [{
-        type: 'treemap', roam: false, nodeClick: false, breadcrumb: { show: false },
-        width: '100%', height: '100%', visibleMin: 0,
-        leafDepth: 3,
+        name: 'project', type: 'treemap',
+        roam: false, nodeClick: false, breadcrumb: { show: false },
+        width: '100%', height: '100%',
+        visibleMin: 0, childrenVisibleMin: 0,
+        squareRatio: 0.62,
+        label: { show: true, formatter: '{b}' },
+        upperLabel: { show: true, height: 28, color: '#fff' },
+        itemStyle: { borderColor: t.bg, borderWidth: 0, gapWidth: 6 },
         levels: [
           {
-            itemStyle: { gapWidth: 12, borderWidth: 0, borderRadius: 14,
-              color: t.dark ? 'rgba(148,163,184,0.10)' : 'rgba(241,245,249,0.85)' },
+            itemStyle: {
+              gapWidth: 14, borderWidth: 0, borderRadius: 14,
+              color: t.dark ? 'rgba(148,163,184,0.10)' : 'rgba(241,245,249,0.92)',
+            },
             upperLabel: {
-              show: true, height: 32, color: t.fg, fontWeight: 800, fontSize: 15,
-              formatter: '{b}', overflow: 'truncate', padding: [0, 12, 0, 12],
+              show: true, height: 34, color: t.fg, fontWeight: 800, fontSize: 15,
+              formatter: '{b}', overflow: 'truncate', padding: [0, 14, 0, 14],
+              align: 'left',
             },
           },
           {
-            itemStyle: { gapWidth: 8, borderWidth: 0, borderRadius: 10 },
+            itemStyle: {
+              gapWidth: 4, borderWidth: 4, borderColor: t.bg, borderRadius: 10,
+            },
             upperLabel: {
               show: true, height: 26, color: '#fff', fontWeight: 700, fontSize: 13,
-              formatter: '{b}', overflow: 'truncate', padding: [0, 8, 0, 8],
+              formatter: '{b}', overflow: 'truncate', padding: [0, 10, 0, 10],
+              align: 'left',
             },
+            emphasis: { itemStyle: { borderColor: t.dark ? '#fff' : '#0f172a' } },
           },
           {
-            itemStyle: { gapWidth: 3, borderColor: t.bg, borderWidth: 3, borderRadius: 6 },
-            colorSaturation: [0.45, 0.85],
-            label: { show: true, color: '#fff', fontSize: 11, fontWeight: 500,
+            colorSaturation: [0.42, 0.88],
+            itemStyle: {
+              gapWidth: 2, borderWidth: 2, borderColor: t.bg, borderRadius: 6,
+              borderColorSaturation: 0.7,
+            },
+            label: {
+              show: true, position: 'insideTopLeft',
+              color: '#fff', fontSize: 11, padding: [4, 6],
               overflow: 'truncate',
               formatter: function (p) {
                 var d = p.data || {};
                 var n = (d.name || '').slice(0, 7);
-                if (d.ins == null && d.dele == null) return n;
-                return n + '\n+' + (d.ins || 0) + ' / −' + (d.dele || 0);
+                if (d.ins == null && d.dele == null) return '{title|' + n + '}';
+                return '{title|' + n + '}\n{body|+' + (d.ins || 0) + ' / −' + (d.dele || 0) + '}';
               },
+              rich: {
+                title: { fontSize: 12, fontWeight: 700, color: '#fff', lineHeight: 16 },
+                body: { fontSize: 10, color: 'rgba(255,255,255,0.88)', lineHeight: 14 },
+              },
+            },
+            emphasis: {
+              itemStyle: { borderColor: '#fff', borderWidth: 3 },
+              label: { fontSize: 12 },
             },
           },
         ],
-        data: data.treemap,
+        data: [treeRoot],
       }],
     }));
 
