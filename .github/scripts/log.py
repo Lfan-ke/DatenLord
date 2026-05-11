@@ -250,17 +250,18 @@ def build_comment(branch, sha, msg, author, ts, repo_url, diffstat):
         body += ['> ' + l for l in trailers.splitlines()]
         body.append('')
 
-    body += [
-        '<details>',
-        '<summary><b>📝 Changes</b></summary>',
-        '',
-        '```',
-        diffstat.strip() if diffstat and diffstat.strip() else '(no file changes)',
-        '```',
-        '',
-        '</details>',
-        '',
-    ]
+    if diffstat:
+        body += [
+            '<details>',
+            '<summary><b>📝 Changes</b></summary>',
+            '',
+            '```',
+            diffstat.strip(),
+            '```',
+            '',
+            '</details>',
+            '',
+        ]
 
     body.append('---')
     body.append('')
