@@ -15,8 +15,28 @@ ISSUE_URL = 'https://github.com/datenlord/training/issues/74'
 COMPLETION = 'completed: all done.'
 
 ROW_RE = re.compile(
-    r'^\| `(?P<time>[^`]+)` \| `(?P<branch>[^`]+)` \| \[`(?P<sha>[^`]+)`\]\((?P<url>[^)]+)\) \| (?P<title>.+?) \| `?\+(?P<ins_t>\d+) / −(?P<dele_t>\d+)`? \| `?\+(?P<fadd_t>\d+) / −(?P<fdel_t>\d+)`? \|\s*$'
+    r'^\| `(?P<time>[^`]+)` \| `(?P<branch>[^`]+)` \| \[`(?P<sha>[^`]+)`\]\((?P<url>[^)]+)\) \| (?P<title>.+?) \| `[^`]+` \| `[^`]+` \|\s*$'
 )
+
+
+def filestat(sha):
+    try:
+        r = subprocess.run(
+            ['git', 'show', '--name-status', '--format=', sha],
+            capture_output=True, text=True, check=False,
+        )
+        a = d = 0
+        for line in r.stdout.splitlines():
+            if not line.strip():
+                continue
+            ch = line[0]
+            if ch == 'A':
+                a += 1
+            elif ch == 'D':
+                d += 1
+        return (a, d)
+    except Exception:
+        return (0, 0)
 
 COURSES = [
     {'old': '6.004', 'new': '6.1910', 'name': 'Computation Structures',
@@ -87,10 +107,9 @@ def parse_entries():
         seen.add(d['sha'])
         d['title'] = d['title'].replace('\\|', '|')
         d['is_completion'] = COMPLETION in d['title'].lower()
-        d['files_added'] = int(d.pop('fadd_t', 0) or 0)
-        d['files_deleted'] = int(d.pop('fdel_t', 0) or 0)
-        d['ins_readme'] = int(d.pop('ins_t', 0) or 0)
-        d['dele_readme'] = int(d.pop('dele_t', 0) or 0)
+        fa, fd = filestat(d['sha'])
+        d['files_added'] = fa
+        d['files_deleted'] = fd
         d.update(shortstat(d['sha']))
         out.append(d)
     return out

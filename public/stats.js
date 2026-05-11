@@ -431,11 +431,11 @@
         splitLine: { show: true, lineStyle: { color: t.grid, type: 'dashed' } },
       }],
       yAxis: [
-        { type: 'value', name: 'files',
+        { type: 'value', name: 'files', minInterval: 1,
           nameTextStyle: { color: t.sub },
           axisLabel: { color: t.sub, formatter: '{value}' },
           splitLine: { lineStyle: { color: t.grid } } },
-        { type: 'value', name: 'touched',
+        { type: 'value', name: 'touched', minInterval: 1,
           nameTextStyle: { color: t.sub },
           axisLabel: { color: t.sub, formatter: '{value}' },
           splitLine: { show: false } },

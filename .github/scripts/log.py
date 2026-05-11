@@ -75,7 +75,8 @@ def entry_line(branch, sha, msg, ts, repo_url):
     ins, dele = numstat(sha)
     fa, fd = filestat(sha)
     return (f"| `{fmt_ts(ts)}` | `{branch}` | [`{short}`]({repo_url}/commit/{sha})"
-            f" | {render_title(title)} | `+{ins} / −{dele}` | `+{fa} / −{fd}` |")
+            f" | {render_title(title)} | `+{humanize(ins)} / −{humanize(dele)}`"
+            f" | `+{humanize(fa)} / −{humanize(fd)}` |")
 
 
 def parse_log(text):
@@ -119,11 +120,21 @@ def total_delta(entry_lines):
 
 
 def humanize(n):
-    if n >= 1_000_000:
-        return f'{n / 1_000_000:.1f}'.rstrip('0').rstrip('.') + 'm'
-    if n >= 1_000:
-        return f'{n / 1_000:.1f}'.rstrip('0').rstrip('.') + 'k'
-    return str(n)
+    import math
+    if n < 1000:
+        return str(n)
+    suffixes = ['', 'k', 'm', 'g']
+    val = float(n)
+    mag = 0
+    while val >= 1000 and mag < len(suffixes) - 1:
+        val /= 1000
+        mag += 1
+    x = math.floor(val * 10 + 0.5) / 10
+    if x >= 1000 and mag < len(suffixes) - 1:
+        val /= 1000
+        mag += 1
+        x = math.floor(val * 10 + 0.5) / 10
+    return (f'{x:.1f}'.rstrip('0').rstrip('.')) + suffixes[mag]
 
 
 def refresh_code_badge(text, entry_lines):
