@@ -6,7 +6,7 @@
   <a href="https://github.com/datenlord/training"><img src="https://img.shields.io/badge/DatenLord-MIT_BSV-2563eb?style=for-the-badge&labelColor=0f172a" alt="DatenLord"></a>
   <a href="https://github.com/datenlord/training/issues/74"><img src="https://img.shields.io/badge/Student-D202605002-16a34a?style=for-the-badge&labelColor=0f172a" alt="Student"></a>
   <a href="https://github.com/B-Lang-org/bsc"><img src="https://img.shields.io/badge/Lang-Bluespec_SV-eab308?style=for-the-badge&labelColor=0f172a" alt="Bluespec"></a>
-  <img src="https://img.shields.io/badge/CODE-%2B140%20%7C%20%E2%88%923-22c55e?style=for-the-badge&labelColor=0f172a" alt="Code stats">
+  <img src="https://img.shields.io/badge/CODE-%2B143%20%7C%20%E2%88%924-22c55e?style=for-the-badge&labelColor=0f172a" alt="Code stats">
 </p>
 
 <sub>Bluespec SystemVerilog learning repository for <b>MIT 6.1910</b> · <b>6.1920</b> · <b>6.5900</b></sub>
@@ -48,8 +48,8 @@
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | --- | --- | --- | --- | --- | --- |
+| `2026-05-11 23:24:40` | `6.1920` | [`e32d8a7`](https://github.com/Lfan-ke/DatenLord/commit/e32d8a7f5729ad5faa59b557e86f47d10a95f2d6) | tests: change something to trigger ci. | `+3 / −1` | `+0 / −0` |
 | `2026-05-11 19:40:58` | `6.1910` | [`6a58165`](https://github.com/Lfan-ke/DatenLord/commit/6a581652d380b9ea4f1dfe8d218f8b863fb7e06b) | tests: change something to trigger ci. | `+50 / −3` | `+1 / −0` |
-| `2026-05-11 15:31:24` | `6.5900` | [`bce5409`](https://github.com/Lfan-ke/DatenLord/commit/bce5409c278c090845b45dee7477cbfe97014806) | init: learning branch for MIT 6.5900. | `+45 / −0` | `+1 / −0` |
 
 <!-- more -->
 
@@ -58,6 +58,7 @@
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | --- | --- | --- | --- | --- | --- |
+| `2026-05-11 15:31:24` | `6.5900` | [`bce5409`](https://github.com/Lfan-ke/DatenLord/commit/bce5409c278c090845b45dee7477cbfe97014806) | init: learning branch for MIT 6.5900. | `+45 / −0` | `+1 / −0` |
 | `2026-05-11 15:31:23` | `6.1920` | [`0ac5192`](https://github.com/Lfan-ke/DatenLord/commit/0ac51923423017b5cd094936e54d2fad05530c19) | init: learning branch for MIT 6.1920. | `+45 / −0` | `+1 / −0` |
 | `2026-05-11 15:31:22` | `6.1910` | [`be3111b`](https://github.com/Lfan-ke/DatenLord/commit/be3111bbf051acb800e1da89fd2a7d069ba3e247) | init: learning branch for MIT 6.1910. | `+0 / −0` | `+0 / −0` |
 
