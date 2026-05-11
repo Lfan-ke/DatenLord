@@ -19,7 +19,7 @@ COMPLETION = 'completed: all done.'
 
 def fmt_ts(iso):
     dt = datetime.fromisoformat(iso.replace('Z', '+00:00')).astimezone(CST)
-    return dt.strftime('%Y-%m-%d %H:%M')
+    return dt.strftime('%Y-%m-%d %H:%M:%S')
 
 
 def is_completion(title):
@@ -102,9 +102,9 @@ def build_comment(branch, sha, msg, author, ts, repo_url, diffstat):
         body += [
             '<div align="center">',
             '',
-            f'<img src="{badge("Course", course.replace("MIT ", ""), "2563eb")}" alt="Course">',
-            f'<img src="{badge("Branch", branch, "7c3aed")}" alt="Branch">',
-            f'<img src="{badge("Time", fmt_ts(ts)[:10], "64748b")}" alt="Time">',
+            f'<img src="{badge("Branch", branch, "2563eb")}" alt="Branch">',
+            f'<img src="{badge("Time", fmt_ts(ts), "64748b")}" alt="Time">',
+            f'<img src="{badge("Hash", short, "7c3aed")}" alt="Hash">',
             '',
             '</div>',
             '',
