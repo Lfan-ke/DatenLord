@@ -266,12 +266,12 @@
         width: '100%', height: '100%',
         visibleMin: 0, childrenVisibleMin: 0,
         squareRatio: 0.58,
-        itemStyle: { borderColor: t.bg, borderWidth: 0, gapWidth: 8 },
+        itemStyle: { borderColor: 'transparent', borderWidth: 0, gapWidth: 8 },
         levels: [
           {
             itemStyle: {
               gapWidth: 16, borderWidth: 0, borderRadius: 16,
-              color: t.dark ? 'rgba(148,163,184,0.08)' : 'rgba(241,245,249,0.85)',
+              color: 'transparent',
             },
             label: { show: false },
             upperLabel: {
@@ -282,9 +282,11 @@
           },
           {
             itemStyle: {
-              gapWidth: 5, borderWidth: 5, borderColor: t.bg, borderRadius: 12,
-              shadowBlur: t.dark ? 12 : 8,
-              shadowColor: t.dark ? 'rgba(0,0,0,0.35)' : 'rgba(15,23,42,0.10)',
+              gapWidth: 5, borderWidth: 5,
+              borderColor: t.dark ? 'rgba(15,23,42,0.0)' : 'rgba(255,255,255,0.0)',
+              borderRadius: 12,
+              color: 'transparent',
+              shadowBlur: 0,
             },
             label: { show: false },
             upperLabel: {
@@ -306,7 +308,9 @@
           },
           {
             itemStyle: {
-              gapWidth: 2, borderWidth: 2, borderColor: t.bg, borderRadius: 8,
+              gapWidth: 2, borderWidth: 2,
+              borderColor: t.dark ? 'rgba(15,23,42,0.45)' : 'rgba(255,255,255,0.85)',
+              borderRadius: 8,
             },
             upperLabel: { show: false },
             label: {
