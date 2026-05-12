@@ -298,7 +298,12 @@
               overflow: 'truncate', padding: [0, 12, 0, 12],
               align: 'left', letterSpacing: 0.5,
             },
-            emphasis: { itemStyle: { borderColor: t.dark ? '#fff' : '#0f172a', borderWidth: 6 } },
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 14,
+                shadowColor: t.dark ? 'rgba(0,0,0,0.6)' : 'rgba(15,23,42,0.30)',
+              },
+            },
           },
           {
             itemStyle: {
@@ -322,7 +327,10 @@
               },
             },
             emphasis: {
-              itemStyle: { borderColor: t.fg, borderWidth: 4 },
+              itemStyle: {
+                shadowBlur: 12,
+                shadowColor: t.dark ? 'rgba(0,0,0,0.55)' : 'rgba(15,23,42,0.30)',
+              },
               label: { fontSize: 13 },
             },
           },
@@ -342,13 +350,17 @@
         roseType: 'area', avoidLabelOverlap: true,
         itemStyle: { borderRadius: 6, borderColor: t.bg, borderWidth: 2 },
         label: {
-          color: t.fg, fontSize: 11,
+          color: t.fg, fontSize: 11, align: 'center',
           formatter: function (p) {
             var b = (p.name || '');
-            return (b.length > 5 ? b.slice(5) : b) + '\n' + p.value;
+            return '{d|' + (b.length > 5 ? b.slice(5) : b) + '}\n{c|' + p.value + '}';
+          },
+          rich: {
+            d: { color: t.fg, fontSize: 11, fontWeight: 600, align: 'center', lineHeight: 14 },
+            c: { color: t.sub, fontSize: 11, align: 'center', lineHeight: 14 },
           },
         },
-        labelLine: { length: 10, length2: 8 },
+        labelLine: { length: 10, length2: 6, smooth: true },
         data: data.rose,
       }],
     }));
