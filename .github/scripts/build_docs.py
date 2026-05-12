@@ -210,7 +210,7 @@ def yq(s):
 
 def timeline_block(entries):
     out = ['::timeline:: alternate']
-    for e in entries:
+    for e in sorted(entries, key=lambda x: x['time']):
         title = f'{"🏆 " if e["is_completion"] else ""}{e["time"]}'
         sub_title = f'`{e["branch"]}` · [`{e["sha"]}`]({e["url"]}) · +{e["insertions"]}/−{e["deletions"]} · {e["files_added"]}A/{e["files_modified"]}M/{e["files_deleted"]}D files'
         content = e["title"]
@@ -325,7 +325,7 @@ def render_stats(entries):
     else:
         d0 = d1 = date.today()
     d_start = d0 - timedelta(days=3)
-    d_end = d1 + timedelta(days=3)
+    d_end = min(d1 + timedelta(days=3), date.today())
     date_list = []
     cur = d_start
     while cur <= d_end:
@@ -498,7 +498,7 @@ def render_stats(entries):
         '---\nhide:\n  - toc\n---\n\n'
         '# :material-view-dashboard-variant: Dashboard\n\n'
         + stats_grid(entries) + '\n\n'
-        '### :material-trophy-variant: Push Score · per-branch contribution to ' + str(push_total) + ' pushes\n\n'
+        '### :material-trophy-variant: Commit Score · per-branch contribution to ' + str(push_total) + ' commits\n\n'
         '<div id="chart-score" class="echart" style="height:380px"></div>\n\n'
         '### :material-chart-line-stacked: Cumulative Code Volume · Step lines per branch\n\n'
         '<div id="chart-line" class="echart" style="height:380px"></div>\n\n'
