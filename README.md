@@ -70,10 +70,13 @@
 | `2026-05-12 12:28` | `6.1910` | [`8df861a`](https://github.com/Lfan-ke/DatenLord/commit/8df861a477d6dcd14ec1085c3ca78bc4377a9462) | tests: lab01 scratch notes — adders... | `+34/−0` | `+1/$0/−0` |
 | `2026-05-12 00:03` | `6.1910` | [`1e47ae2`](https://github.com/Lfan-ke/DatenLord/commit/1e47ae29da8124c7502db30e5421bb42239ce47a) | tests: the ci, LGTM!!! | `+0/−0` | `+0/$0/−0` |
 
-<!-- more -->
+<!-- more --><br/>
 
 <details>
+  
 <summary><b>Older records</b></summary>
+
+<br />
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | :---: | :---: | :---: | :---: | :---: | :---: |
