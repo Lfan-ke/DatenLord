@@ -54,6 +54,11 @@ def fmt_ts(iso):
     return dt.strftime('%Y-%m-%d %H:%M:%S')
 
 
+def fmt_ts_min(iso):
+    dt = datetime.fromisoformat(iso.replace('Z', '+00:00')).astimezone(CST)
+    return dt.strftime('%Y-%m-%d %H:%M')
+
+
 def is_completion(title):
     return title.strip().lower() == COMPLETION
 
@@ -104,11 +109,11 @@ def filestat(sha):
 def entry_line(branch, sha, msg, ts, repo_url):
     short = sha[:7]
     title = msg.split('\n', 1)[0].replace('|', '\\|')
-    if len(title) > 41:
-        title = title[:38] + '...'
+    if len(title) > 38:
+        title = title[:35] + '...'
     ins, dele = numstat(sha)
     fa, fm, fd = filestat(sha)
-    return (f"| `{fmt_ts(ts)}` | `{branch}` | [`{short}`]({repo_url}/commit/{sha})"
+    return (f"| `{fmt_ts_min(ts)}` | `{branch}` | [`{short}`]({repo_url}/commit/{sha})"
             f" | {render_title(title)} | `+{humanize(ins)}/−{humanize(dele)}`"
             f" | `+{humanize(fa)}/${humanize(fm)}/−{humanize(fd)}` |")
 
@@ -251,9 +256,11 @@ def build_comment(branch, sha, msg, author, ts, repo_url, diffstat):
             f' <a href="{commit_url}"><img src="{badge(fmt_ts(ts)[:10], fmt_ts(ts)[11:], "64748b")}" alt="Time"></a>'
             f' <a href="{commit_url}"><img src="{badge("Hash", short, "7c3aed")}" alt="Hash"></a>'
         )
+        out.append(f'## {title}')
+        out.append('')
+        if body_text:
+            out += ['<br/>', '']
         out += [
-            f'## {title}',
-            '',
             '<div align="center">',
             '',
             badges_row,
@@ -276,6 +283,8 @@ def build_comment(branch, sha, msg, author, ts, repo_url, diffstat):
 
     if diffstat:
         out += [
+            '---',
+            '',
             '<details>',
             '<summary><b>📝 Changes</b></summary>',
             '',
