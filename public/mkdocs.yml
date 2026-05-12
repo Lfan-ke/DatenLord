@@ -11,8 +11,6 @@ theme:
   name: material
   language: en
   features:
-    - navigation.instant
-    - navigation.instant.progress
     - navigation.tracking
     - navigation.tabs
     - navigation.top

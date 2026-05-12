@@ -692,49 +692,13 @@
     if (document.getElementById('stats-data')) render(force);
   }
 
-  function scheduleRender() {
-    requestAnimationFrame(function () { tryRender(); observeReveal(); });
-    setTimeout(function () { tryRender(); observeReveal(); }, 120);
-    setTimeout(function () { tryRender(); observeReveal(); }, 480);
-  }
-
-  function bindDocument$() {
-    if (window.document$ && typeof window.document$.subscribe === 'function') {
-      window.document$.subscribe(scheduleRender);
-      return true;
-    }
-    return false;
-  }
-
   function attach() {
-    scheduleRender();
+    tryRender(true);
     observeReveal();
-    if (window.document$ && typeof window.document$.subscribe === 'function') {
-      window.document$.subscribe(observeReveal);
-    } else {
-      setTimeout(function rec() {
-        observeReveal();
-        if (document.getElementById('stats-data') || document.querySelector('.dl-tl-entry')) return;
-        setTimeout(rec, 200);
-      }, 200);
-    }
-    if (!bindDocument$()) {
-      var tries = 0;
-      var iv = setInterval(function () {
-        if (bindDocument$() || ++tries > 40) clearInterval(iv);
-      }, 80);
-    }
-    window.addEventListener('popstate', scheduleRender);
-    document.addEventListener('click', function (e) {
-      var el = e.target;
-      while (el && el !== document.body) {
-        if (el.tagName === 'A' && el.href) { scheduleRender(); break; }
-        el = el.parentNode;
-      }
-    });
+    window.addEventListener('load', function () { tryRender(); observeReveal(); });
     document.addEventListener('change', function (e) {
       if (e.target && e.target.name === '__palette') {
-        setTimeout(scheduleRender, 80);
+        setTimeout(function () { render(true); }, 60);
       }
     });
   }
