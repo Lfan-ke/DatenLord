@@ -85,3 +85,5 @@
 | `2026-05-11 15:31` | `6.1910` | [`be3111b`](https://github.com/Lfan-ke/DatenLord/commit/be3111bbf051acb800e1da89fd2a7d069ba3e247) | init: learning branch for MIT 6.1910. | `+0/−0` | `+0/$0/−0` |
 
 </details>
+
+<sub>Auto-detectable course branch: any branch except main and gh-pages.</sub>
