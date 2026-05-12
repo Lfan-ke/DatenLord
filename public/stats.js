@@ -292,22 +292,21 @@
               formatter: function (p) {
                 return (p.data && p.data.name) || p.name || '';
               },
-              color: function (p) {
-                return (p.data && p.data.textColor) || '#fff';
-              },
+              color: t.fg,
               overflow: 'truncate', padding: [0, 12, 0, 12],
               align: 'left', letterSpacing: 0.5,
             },
             emphasis: {
+              focus: 'none',
               itemStyle: {
-                shadowBlur: 14,
-                shadowColor: t.dark ? 'rgba(0,0,0,0.6)' : 'rgba(15,23,42,0.30)',
+                borderColor: t.dark ? 'rgba(255,255,255,0.6)' : 'rgba(15,23,42,0.5)',
+                borderWidth: 5,
               },
             },
           },
           {
             itemStyle: {
-              gapWidth: 3, borderWidth: 3, borderColor: t.bg, borderRadius: 8,
+              gapWidth: 2, borderWidth: 2, borderColor: t.bg, borderRadius: 8,
             },
             upperLabel: { show: false },
             label: {
@@ -327,9 +326,11 @@
               },
             },
             emphasis: {
+              focus: 'none',
               itemStyle: {
-                shadowBlur: 12,
-                shadowColor: t.dark ? 'rgba(0,0,0,0.55)' : 'rgba(15,23,42,0.30)',
+                color: 'rgba(148, 163, 184, 0.45)',
+                borderColor: t.dark ? 'rgba(255,255,255,0.75)' : 'rgba(15,23,42,0.55)',
+                borderWidth: 2,
               },
               label: { fontSize: 13 },
             },
@@ -497,8 +498,8 @@
       ],
     }));
 
-    var ringDetailOffsets = ['-20%', '17%', '54%'];
-    var ringNameTops = ['34.5%', '50%', '65.5%'];
+    var ringDetailOffsets = ['-22.1%', '14.9%', '51.9%'];
+    var ringNameTops = ['31.85%', '47.35%', '62.85%'];
     var ringData = data.push_per_branch.map(function (b, i) {
       var pct = data.push_total ? Math.round(b.value / data.push_total * 100) : 0;
       return {
