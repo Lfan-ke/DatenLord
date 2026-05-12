@@ -610,7 +610,7 @@ def render_stats(entries, color_map=None):
     total_pushes = sum(by_branch[b]['count'] for b in branches)
     treemap = [{
         'name': 'All branches · ' + str(total_pushes) + ' pushes · ' + str(total_lines) + ' lines',
-        'itemStyle': {'color': 'transparent'},
+        'itemStyle': {'color': 'rgba(148,163,184,0.15)'},
         'children': branch_nodes,
     }]
 
