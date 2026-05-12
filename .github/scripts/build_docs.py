@@ -10,14 +10,28 @@ from pathlib import Path
 
 import markdown as _md_lib
 
-_MD = _md_lib.Markdown(extensions=['extra', 'sane_lists'])
+_MD = _md_lib.Markdown(extensions=['extra'])
+_LIST_RE = re.compile(r'^\s*([-*+]|\d+\.)\s')
+
+
+def normalize_md(text):
+    lines = text.split('\n')
+    out = []
+    in_list = False
+    for line in lines:
+        is_list = bool(_LIST_RE.match(line))
+        if is_list and not in_list and out and out[-1].strip():
+            out.append('')
+        out.append(line)
+        in_list = is_list
+    return '\n'.join(out)
 
 
 def md_to_html(text):
     if not text:
         return ''
     _MD.reset()
-    return _MD.convert(text)
+    return _MD.convert(normalize_md(text))
 
 README = Path('README.md')
 DOCS = Path('public')
@@ -261,6 +275,30 @@ PALETTE = ['#3b82f6', '#a855f7', '#10b981', '#f97316', '#ef4444', '#eab308', '#0
 
 def build_color_map(branches):
     return {b: PALETTE[i % len(PALETTE)] for i, b in enumerate(sorted(branches))}
+
+
+def _hex_rgb(h):
+    h = h.lstrip('#')
+    return int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+
+
+def _rgb_hex(rgb):
+    return '#{:02x}{:02x}{:02x}'.format(*(max(0, min(255, int(c))) for c in rgb))
+
+
+def mix(c1, c2, t):
+    r1, g1, b1 = _hex_rgb(c1)
+    r2, g2, b2 = _hex_rgb(c2)
+    return _rgb_hex((r1 + (r2 - r1) * t, g1 + (g2 - g1) * t, b1 + (b2 - b1) * t))
+
+
+def luminance(h):
+    r, g, b = _hex_rgb(h)
+    return (0.299 * r + 0.587 * g + 0.114 * b) / 255
+
+
+def readable_text(bg):
+    return '#0f172a' if luminance(bg) > 0.62 else '#ffffff'
 
 
 def timeline_html(entries, color_map=None):
@@ -525,19 +563,28 @@ def render_stats(entries, color_map=None):
 
     branch_nodes = []
     for b in branches:
+        base = color[b]
         commits = [e for e in sorted_entries if e['branch'] == b]
         children = []
-        for e in commits:
+        n = max(len(commits) - 1, 1)
+        for j, e in enumerate(commits):
+            ratio = (j / n) if len(commits) > 1 else 0.5
+            leaf = mix(mix(base, '#0f172a', 0.18), '#ffffff', ratio * 0.32)
+            tcol = readable_text(leaf)
             children.append({
                 'name': e['sha'][:7],
                 'value': max(1, e['insertions'] + e['deletions']),
                 'ins': e['insertions'],
                 'dele': e['deletions'],
                 'label': e['title'][:36],
+                'itemStyle': {'color': leaf, 'borderColor': mix(leaf, '#0f172a', 0.3)},
+                'textColor': tcol,
             })
+        branch_text = readable_text(base)
         branch_nodes.append({
             'name': b,
-            'itemStyle': {'color': color[b]},
+            'itemStyle': {'color': base},
+            'textColor': branch_text,
             'children': children,
         })
     total_lines = sum(by_branch[b]['ins'] + by_branch[b]['dele'] for b in branches)
@@ -611,7 +658,7 @@ def render_stats(entries, color_map=None):
         '<div id="chart-score-ring" class="echart" style="height:380px"></div>\n\n'
         '### :material-gauge: Course Progress · ' + str(completed) + ' / ' + str(total) + '\n\n'
         '<div id="chart-gauge" class="echart" style="height:380px"></div>\n\n'
-        '<script id="stats-data" type="application/json">' + json.dumps(data) + '</script>\n'
+        '<script id="stats-data" type="application/x-stats">' + json.dumps(data).replace('</', '<\\/') + '</script>\n'
     )
 
 
