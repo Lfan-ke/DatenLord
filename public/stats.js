@@ -498,8 +498,8 @@
       ],
     }));
 
-    var ringDetailOffsets = ['-24.19%', '12.81%', '49.81%'];
-    var ringNameTops = ['29.18%', '44.68%', '60.18%'];
+    var ringDetailOffsets = ['-26.38%', '10.62%', '47.62%'];
+    var ringNameTops = ['27.68%', '43.18%', '58.68%'];
     var ringData = data.push_per_branch.map(function (b, i) {
       var pct = data.push_total ? Math.round(b.value / data.push_total * 100) : 0;
       return {
