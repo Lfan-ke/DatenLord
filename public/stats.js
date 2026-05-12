@@ -271,7 +271,7 @@
           {
             itemStyle: {
               gapWidth: 16, borderWidth: 0, borderRadius: 16,
-              color: 'rgba(148,163,184,0.15)',
+              color: 'transparent',
             },
             label: { show: false },
             upperLabel: {
@@ -283,9 +283,9 @@
           {
             itemStyle: {
               gapWidth: 5, borderWidth: 5,
-              borderColor: 'rgba(148,163,184,0.15)',
+              borderColor: 'transparent',
               borderRadius: 12,
-              color: 'rgba(148,163,184,0.15)',
+              color: 'transparent',
               shadowBlur: 0,
             },
             label: { show: false },
