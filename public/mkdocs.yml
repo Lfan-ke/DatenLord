@@ -58,7 +58,6 @@ markdown_extensions:
   - md_in_html
   - footnotes
   - def_list
-  - neoteroi.timeline
   - toc:
       permalink: true
   - pymdownx.details
