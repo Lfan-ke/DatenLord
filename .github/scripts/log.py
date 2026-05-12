@@ -121,7 +121,7 @@ def entry_line(branch, sha, msg, ts, repo_url):
 def parse_log(text):
     idx = text.find(SECTION)
     if idx == -1:
-        return text.rstrip() + '\n', [], []
+        return text.rstrip() + '\n', [], [], ''
     head = text[:idx]
     body = text[idx + len(SECTION):].lstrip('\n')
     if MARKER in body:
@@ -130,10 +130,19 @@ def parse_log(text):
         top, bot = body, ''
     top_entries = [l for l in top.splitlines() if ROW_RE.match(l)]
     bot_entries = [l for l in bot.splitlines() if ROW_RE.match(l)]
-    return head, top_entries, bot_entries
+    m = re.search(r'</details>\s*', bot)
+    if m:
+        footer = bot[m.end():].strip()
+    else:
+        skip = ('|', '<details>', '<summary>', '</details>')
+        footer = '\n'.join(
+            l for l in bot.splitlines()
+            if l.strip() and not l.strip().startswith(skip)
+        ).strip()
+    return head, top_entries, bot_entries, footer
 
 
-def write_log(head, entries):
+def write_log(head, entries, footer=''):
     out = head.rstrip() + '\n\n' + SECTION + '\n\n' + HINT + '\n\n'
     if entries:
         out += TABLE_HEAD + '\n' + '\n'.join(entries[:2]) + '\n\n'
@@ -142,6 +151,8 @@ def write_log(head, entries):
     if rest:
         out += '<details>\n<summary><b>Older records</b></summary>\n\n'
         out += TABLE_HEAD + '\n' + '\n'.join(rest) + '\n\n</details>\n'
+    if footer:
+        out += '\n' + footer + '\n'
     return out
 
 
@@ -331,7 +342,7 @@ def main():
         return
 
     text = README.read_text(encoding='utf-8') if README.exists() else '# BSV Learning Repo\n\n'
-    head, top, bot = parse_log(text)
+    head, top, bot, footer = parse_log(text)
     existing = top + bot
     seen = {re.search(r'\[`([0-9a-f]+)`\]', l).group(1) for l in existing if re.search(r'\[`([0-9a-f]+)`\]', l)}
 
@@ -346,7 +357,7 @@ def main():
         return
 
     entries = list(reversed(new_lines)) + existing
-    new_text = refresh_code_badge(write_log(head, entries), entries)
+    new_text = refresh_code_badge(write_log(head, entries, footer), entries)
     README.write_text(new_text, encoding='utf-8')
 
     head_commit = commits[-1]
