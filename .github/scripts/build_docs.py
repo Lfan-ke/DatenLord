@@ -397,9 +397,9 @@ def resources_section():
         card('material-note-text', 'Learning notes',
              ['Reference notes from community', '',
               '[:octicons-arrow-right-24: WeChat article](https://mp.weixin.qq.com/s/I5bPw_AUWTh2VgzAm4SHhg)']),
-        card('material-account-group', 'QQ community',
-             ['Join the learning QQ group', '',
-              '[:octicons-arrow-right-24: Signup](https://mp.weixin.qq.com/s/gB7_y4CFFf7QIBUceNbsoA)']),
+        card('material-wechat', 'WeChat article',
+             ['QQ community signup', '',
+              '[:octicons-arrow-right-24: WeChat article](https://mp.weixin.qq.com/s/gB7_y4CFFf7QIBUceNbsoA)']),
     ]
     return grid(cards)
 
