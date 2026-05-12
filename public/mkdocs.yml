@@ -44,6 +44,9 @@ theme:
     repo: fontawesome/brands/github
     edit: material/file-edit-outline
 
+plugins:
+  - search
+
 extra_css:
   - extra.css
 
@@ -94,8 +97,9 @@ extra:
 nav:
   - Home: index.md
   - Dashboard: stats.md
-  - Timeline:
-      - All: timeline.md
-      - "6.1910": timeline-6.1910.md
-      - "6.1920": timeline-6.1920.md
-      - "6.5900": timeline-6.5900.md
+  - Timeline: timeline.md
+
+validation:
+  nav:
+    not_found: warn
+  omitted_files: ignore

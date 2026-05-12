@@ -260,45 +260,49 @@
         roam: false, nodeClick: false, breadcrumb: { show: false },
         width: '100%', height: '100%',
         visibleMin: 0, childrenVisibleMin: 0,
-        squareRatio: 0.62,
-        itemStyle: { borderColor: t.bg, borderWidth: 0, gapWidth: 6 },
+        squareRatio: 0.58,
+        itemStyle: { borderColor: t.bg, borderWidth: 0, gapWidth: 8 },
         levels: [
           {
             itemStyle: {
-              gapWidth: 14, borderWidth: 0, borderRadius: 14,
-              color: t.dark ? 'rgba(148,163,184,0.10)' : 'rgba(241,245,249,0.92)',
+              gapWidth: 16, borderWidth: 0, borderRadius: 16,
+              color: t.dark ? 'rgba(148,163,184,0.08)' : 'rgba(241,245,249,0.85)',
             },
             label: { show: false },
             upperLabel: {
-              show: true, height: 34, color: t.fg, fontWeight: 800, fontSize: 15,
-              formatter: '{b}', overflow: 'truncate', padding: [0, 14, 0, 14],
-              align: 'left',
+              show: true, height: 36, color: t.fg, fontWeight: 800, fontSize: 15,
+              formatter: '{b}', overflow: 'truncate', padding: [0, 16, 0, 16],
+              align: 'left', letterSpacing: 0.3,
             },
           },
           {
             itemStyle: {
-              gapWidth: 4, borderWidth: 4, borderColor: t.bg, borderRadius: 10,
+              gapWidth: 5, borderWidth: 5, borderColor: t.bg, borderRadius: 12,
+              shadowBlur: t.dark ? 12 : 8,
+              shadowColor: t.dark ? 'rgba(0,0,0,0.35)' : 'rgba(15,23,42,0.10)',
             },
             label: { show: false },
             upperLabel: {
-              show: true, height: 26, color: '#fff', fontWeight: 700, fontSize: 13,
-              formatter: '{b}', overflow: 'truncate', padding: [0, 10, 0, 10],
-              align: 'left',
+              show: true, height: 28, color: '#fff', fontWeight: 700, fontSize: 13,
+              formatter: '{b}', overflow: 'truncate', padding: [0, 12, 0, 12],
+              align: 'left', letterSpacing: 0.5,
+              textShadowBlur: 4, textShadowColor: 'rgba(0,0,0,0.35)',
             },
-            emphasis: { itemStyle: { borderColor: t.dark ? '#fff' : '#0f172a' } },
+            emphasis: { itemStyle: { borderColor: t.dark ? '#fff' : '#0f172a', borderWidth: 6 } },
           },
           {
-            colorSaturation: [0.42, 0.88],
+            colorSaturation: [0.55, 0.92],
             itemStyle: {
-              gapWidth: 2, borderWidth: 2, borderColor: t.bg, borderRadius: 6,
-              borderColorSaturation: 0.7,
+              gapWidth: 3, borderWidth: 3, borderColor: t.bg, borderRadius: 8,
+              borderColorSaturation: 0.75,
             },
             upperLabel: { show: false },
             label: {
               show: true, position: 'insideTopLeft',
               color: '#fff', fontSize: 12, fontWeight: 700,
-              padding: [5, 7], overflow: 'truncate',
-              lineHeight: 14,
+              padding: [6, 8], overflow: 'truncate',
+              lineHeight: 14, letterSpacing: 0.4,
+              textShadowBlur: 3, textShadowColor: 'rgba(0,0,0,0.4)',
               formatter: function (p) {
                 var d = p.data || {};
                 var n = (d.name || '').slice(0, 7);
@@ -308,7 +312,7 @@
               },
             },
             emphasis: {
-              itemStyle: { borderColor: '#fff', borderWidth: 3 },
+              itemStyle: { borderColor: '#fff', borderWidth: 4 },
               label: { fontSize: 13 },
             },
           },
@@ -560,38 +564,81 @@
     }));
   }
 
+  function disposeAll() {
+    document.querySelectorAll('.echart').forEach(function (n) {
+      var i = window.echarts && window.echarts.getInstanceByDom(n);
+      if (i) i.dispose();
+    });
+    charts = [];
+  }
+
   function render() {
     var el = document.getElementById('stats-data');
     if (!el) return;
     var data;
     try { data = JSON.parse(el.textContent); } catch (_) { return; }
     ensureEcharts(function () {
+      disposeAll();
       build(data);
-      window.addEventListener('resize', resize);
-      observeTheme(data);
+      requestAnimationFrame(resize);
+      setTimeout(resize, 120);
+      attachGlobal();
       observeResize();
     });
   }
-  function resize() { charts.forEach(function (c) { if (c) c.resize(); }); }
-  function observeResize() {
-    if (typeof ResizeObserver === 'undefined') return;
-    var ro = new ResizeObserver(function () { resize(); });
-    document.querySelectorAll('.echart').forEach(function (n) { ro.observe(n); });
-  }
-  function observeTheme(data) {
-    if (schemeNow === null) {
-      schemeNow = getScheme();
-      var mo = new MutationObserver(function () {
-        var s = getScheme();
-        if (s !== schemeNow) { schemeNow = s; build(data); }
-      });
-      if (document.body) {
-        mo.observe(document.body, { attributes: true, attributeFilter: ['data-md-color-scheme'] });
-      }
-      mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-md-color-scheme'] });
-    }
+  function resize() { charts.forEach(function (c) { if (c) try { c.resize(); } catch (_) {} }); }
+
+  var globalAttached = false;
+  function attachGlobal() {
+    if (globalAttached) return;
+    globalAttached = true;
+    window.addEventListener('resize', resize);
+    observeTheme();
   }
 
-  if (window.document$) window.document$.subscribe(function () { render(); });
-  else document.addEventListener('DOMContentLoaded', render);
+  function observeResize() {
+    if (typeof ResizeObserver === 'undefined') return;
+    document.querySelectorAll('.echart').forEach(function (n) {
+      if (n.__dlRO) return;
+      n.__dlRO = true;
+      new ResizeObserver(function () { resize(); }).observe(n);
+    });
+  }
+  function observeTheme() {
+    schemeNow = getScheme();
+    var fire = function () {
+      var s = getScheme();
+      if (s !== schemeNow) { schemeNow = s; render(); }
+    };
+    var mo = new MutationObserver(fire);
+    if (document.body) {
+      mo.observe(document.body, { attributes: true, attributeFilter: ['data-md-color-scheme'] });
+    }
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-md-color-scheme'] });
+  }
+
+  function attach() {
+    if (window.document$ && typeof window.document$.subscribe === 'function') {
+      window.document$.subscribe(function () { render(); });
+      return;
+    }
+    var tries = 0;
+    var iv = setInterval(function () {
+      tries++;
+      if (window.document$ && typeof window.document$.subscribe === 'function') {
+        clearInterval(iv);
+        window.document$.subscribe(function () { render(); });
+        render();
+      } else if (tries > 30) {
+        clearInterval(iv);
+        render();
+      }
+    }, 80);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attach);
+  } else {
+    attach();
+  }
 })();

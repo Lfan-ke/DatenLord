@@ -205,32 +205,48 @@ def recent_table(entries, n=5):
     return '\n'.join(rows)
 
 
-BRANCH_COLOR = {'6.1910': '#3b82f6', '6.1920': '#a855f7', '6.5900': '#10b981'}
+PALETTE = ['#3b82f6', '#a855f7', '#10b981', '#f97316', '#ef4444', '#eab308', '#06b6d4', '#ec4899']
 
 
-def timeline_html(entries):
+def build_color_map(branches):
+    return {b: PALETTE[i % len(PALETTE)] for i, b in enumerate(sorted(branches))}
+
+
+def timeline_html(entries, color_map=None):
     if not entries:
         return '<p class="dl-tl-empty">No commits yet.</p>'
+    cm = color_map or {}
+    sorted_entries = sorted(entries, key=lambda x: x['time'], reverse=True)
     out = ['<div class="dl-tl">']
-    for e in sorted(entries, key=lambda x: x['time']):
-        color = BRANCH_COLOR.get(e['branch'], '#64748b')
+    last_date = None
+    for e in sorted_entries:
+        color = cm.get(e['branch'], '#64748b')
         cls = ' is-completion' if e['is_completion'] else ''
         d, _, t = e['time'].partition(' ')
+        if d != last_date:
+            try:
+                dt = date.fromisoformat(d)
+                d_label = dt.strftime('%b %d, %Y')
+            except Exception:
+                d_label = d
+            out.append(f'<div class="dl-tl-group"><span>{html_escape(d_label)}</span></div>')
+            last_date = d
         out += [
             f'<article class="dl-tl-entry{cls}" style="--c:{color}">',
-            f'<header class="dl-tl-stamp"><time>{html_escape(d)}</time><span class="dl-tl-clock">{html_escape(t)}</span></header>',
+            f'<header class="dl-tl-stamp"><time>{html_escape(t)}</time></header>',
             '<span class="dl-tl-dot"></span>',
             '<div class="dl-tl-card">',
             '<div class="dl-tl-row">',
             f'<span class="dl-tl-branch">{html_escape(e["branch"])}</span>',
+            '<span class="dl-tl-sep"></span>',
             f'<a class="dl-tl-hash" href="{html_escape(e["url"])}" target="_blank" rel="noopener">{html_escape(e["sha"][:7])}</a>',
             '</div>',
             f'<div class="dl-tl-heading">{html_escape(e["title"])}</div>',
-            '<ul class="dl-tl-metrics">',
-            f'<li class="add">+{e["insertions"]}</li>',
-            f'<li class="del">−{e["deletions"]}</li>',
-            f'<li class="files">{e["files_added"]}A · {e["files_modified"]}M · {e["files_deleted"]}D</li>',
-            '</ul>',
+            '<div class="dl-tl-metrics">',
+            f'<span class="dl-tl-metric add">+{e["insertions"]}</span>',
+            f'<span class="dl-tl-metric del">−{e["deletions"]}</span>',
+            f'<span class="dl-tl-metric files">{e["files_added"]}A · {e["files_modified"]}M · {e["files_deleted"]}D</span>',
+            '</div>',
             '</div>',
             '</article>',
         ]
@@ -294,7 +310,7 @@ def render_index(entries):
     )
 
 
-def render_timeline(entries, label, course=None):
+def render_timeline(entries, label, course=None, color_map=None, branch=None):
     title = label if label != 'All' else 'Timeline'
     intro = ''
     if course:
@@ -302,7 +318,10 @@ def render_timeline(entries, label, course=None):
             f'> **{course["name"]}** · `{course["old"]}` &nbsp;→&nbsp; `{course["new"]}` · '
             f'[Resource]({course["res_url"]}) · [Branch]({REPO_URL}/tree/{course["new"]})\n\n'
         )
-    scope = f'on branch `{course["new"]}`' if course else 'across all branches'
+    elif branch and branch != 'All':
+        intro = f'> `{branch}` · [Branch]({REPO_URL}/tree/{branch})\n\n'
+    scope_branch = (course or {}).get('new') or branch
+    scope = f'on branch `{scope_branch}`' if scope_branch and scope_branch != 'All' else 'across all branches'
     return (
         '---\nhide:\n  - toc\n---\n\n'
         f'# :material-timeline-clock-outline: {title}\n\n'
@@ -310,14 +329,13 @@ def render_timeline(entries, label, course=None):
         '!!! note ""\n'
         f'    {len(entries)} commit(s) {scope}. A commit titled '
         '`completed: all done.` marks the course as finished.\n\n'
-        + timeline_html(entries) + '\n'
+        + timeline_html(entries, color_map=color_map) + '\n'
     )
 
 
-def render_stats(entries):
+def render_stats(entries, color_map=None):
     by_branch = defaultdict(lambda: {'count': 0, 'ins': 0, 'dele': 0, 'files': 0})
     by_date_count = defaultdict(int)
-    palette = ['#3b82f6', '#a855f7', '#10b981', '#f97316', '#ef4444', '#eab308']
     for e in entries:
         b = e['branch']
         by_branch[b]['count'] += 1
@@ -326,8 +344,9 @@ def render_stats(entries):
         by_branch[b]['files'] += e['files']
         by_date_count[e['time'][:10]] += 1
 
+    cm = color_map or build_color_map(by_branch.keys())
     branches = sorted(by_branch.keys())
-    color = {b: palette[i % len(palette)] for i, b in enumerate(branches)}
+    color = {b: cm.get(b, PALETTE[i % len(PALETTE)]) for i, b in enumerate(branches)}
     sorted_entries = sorted(entries, key=lambda x: x['time'])
 
     all_dates_raw = sorted(set(e['time'][:10] for e in entries))
@@ -540,17 +559,27 @@ def render_stats(entries):
 
 def main():
     entries = parse_entries()
+    branches = {e['branch'] for e in entries}
+    branches |= {c['new'] for c in COURSES}
+    branches |= set(remote_branches())
+    color_map = build_color_map(branches)
     DOCS.mkdir(exist_ok=True)
     (DOCS / 'index.md').write_text(render_index(entries), encoding='utf-8')
-    (DOCS / 'timeline.md').write_text(render_timeline(entries, 'All'), encoding='utf-8')
-    (DOCS / 'stats.md').write_text(render_stats(entries), encoding='utf-8')
-    for c in COURSES:
-        be = [e for e in entries if e['branch'] == c['new']]
-        (DOCS / f'timeline-{c["new"]}.md').write_text(
-            render_timeline(be, c['new'], course=c), encoding='utf-8'
+    (DOCS / 'timeline.md').write_text(
+        render_timeline(entries, 'All', color_map=color_map), encoding='utf-8'
+    )
+    (DOCS / 'stats.md').write_text(render_stats(entries, color_map=color_map), encoding='utf-8')
+    for b in sorted(branches):
+        course = next((c for c in COURSES if c['new'] == b), None)
+        be = [e for e in entries if e['branch'] == b]
+        (DOCS / f'timeline-{b}.md').write_text(
+            render_timeline(be, b, course=course, color_map=color_map, branch=b),
+            encoding='utf-8',
         )
     total = sum(e['insertions'] + e['deletions'] for e in entries)
-    print(f'rendered {len(entries)} entries · {len(completed_branches(entries))} completed · {total} lines touched', file=sys.stderr)
+    print(f'rendered {len(entries)} entries · {len(branches)} branches · '
+          f'{len(completed_branches(entries))} completed · {total} lines touched',
+          file=sys.stderr)
 
 
 if __name__ == '__main__':
