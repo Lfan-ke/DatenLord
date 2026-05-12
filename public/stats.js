@@ -426,10 +426,11 @@
     charts.push(mount('chart-calendar', {
       tooltip: { formatter: function (p) { return p.value[0] + ' · ' + p.value[1] + ' commit(s)'; } },
       visualMap: {
-        min: 0, max: Math.max(1, data.cal_max),
+        min: 1, max: Math.max(2, data.cal_max),
         calculable: false, orient: 'horizontal', left: 'center', top: 0,
         textStyle: { color: t.fg }, splitNumber: 4,
-        inRange: { color: [t.cellEmpty].concat(t.heat) },
+        inRange: { color: t.heat },
+        outOfRange: { color: t.cellEmpty },
       },
       calendar: {
         top: 56, left: 36, right: 36, bottom: 12,
