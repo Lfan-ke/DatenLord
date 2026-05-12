@@ -4,7 +4,8 @@ import re
 import subprocess
 import sys
 from collections import defaultdict
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
+from html import escape as html_escape
 from pathlib import Path
 
 README = Path('README.md')
@@ -204,24 +205,36 @@ def recent_table(entries, n=5):
     return '\n'.join(rows)
 
 
-def yq(s):
-    return "'" + s.replace("'", "''") + "'"
+BRANCH_COLOR = {'6.1910': '#3b82f6', '6.1920': '#a855f7', '6.5900': '#10b981'}
 
 
-def timeline_block(entries):
-    out = ['::timeline:: alternate']
-    for e in entries:
-        title = f'{"🏆 " if e["is_completion"] else ""}{e["time"]}'
-        sub_title = f'`{e["branch"]}` · [`{e["sha"]}`]({e["url"]}) · +{e["insertions"]}/−{e["deletions"]} · {e["files_added"]}A/{e["files_modified"]}M/{e["files_deleted"]}D files'
-        content = e["title"]
-        icon = ':material-trophy:' if e['is_completion'] else ':material-source-commit:'
+def timeline_html(entries):
+    if not entries:
+        return '<p class="dl-tl-empty">No commits yet.</p>'
+    out = ['<div class="dl-tl">']
+    for e in sorted(entries, key=lambda x: x['time']):
+        color = BRANCH_COLOR.get(e['branch'], '#64748b')
+        cls = ' is-completion' if e['is_completion'] else ''
+        d, _, t = e['time'].partition(' ')
         out += [
-            f'- title: {yq(title)}',
-            f'  sub_title: {yq(sub_title)}',
-            f'  content: {yq(content)}',
-            f'  icon: {yq(icon)}',
+            f'<article class="dl-tl-entry{cls}" style="--c:{color}">',
+            f'<header class="dl-tl-stamp"><time>{html_escape(d)}</time><span class="dl-tl-clock">{html_escape(t)}</span></header>',
+            '<span class="dl-tl-dot"></span>',
+            '<div class="dl-tl-card">',
+            '<div class="dl-tl-row">',
+            f'<span class="dl-tl-branch">{html_escape(e["branch"])}</span>',
+            f'<a class="dl-tl-hash" href="{html_escape(e["url"])}" target="_blank" rel="noopener">{html_escape(e["sha"][:7])}</a>',
+            '</div>',
+            f'<div class="dl-tl-heading">{html_escape(e["title"])}</div>',
+            '<ul class="dl-tl-metrics">',
+            f'<li class="add">+{e["insertions"]}</li>',
+            f'<li class="del">−{e["deletions"]}</li>',
+            f'<li class="files">{e["files_added"]}A · {e["files_modified"]}M · {e["files_deleted"]}D</li>',
+            '</ul>',
+            '</div>',
+            '</article>',
         ]
-    out.append('::/timeline::')
+    out.append('</div>')
     return '\n'.join(out)
 
 
@@ -290,7 +303,6 @@ def render_timeline(entries, label, course=None):
             f'[Resource]({course["res_url"]}) · [Branch]({REPO_URL}/tree/{course["new"]})\n\n'
         )
     scope = f'on branch `{course["new"]}`' if course else 'across all branches'
-    body = timeline_block(entries) if entries else '*No commits yet.*'
     return (
         '---\nhide:\n  - toc\n---\n\n'
         f'# :material-timeline-clock-outline: {title}\n\n'
@@ -298,7 +310,7 @@ def render_timeline(entries, label, course=None):
         '!!! note ""\n'
         f'    {len(entries)} commit(s) {scope}. A commit titled '
         '`completed: all done.` marks the course as finished.\n\n'
-        + body + '\n'
+        + timeline_html(entries) + '\n'
     )
 
 
@@ -325,7 +337,7 @@ def render_stats(entries):
     else:
         d0 = d1 = date.today()
     d_start = d0 - timedelta(days=3)
-    d_end = d1 + timedelta(days=3)
+    d_end = min(d1 + timedelta(days=3), date.today())
     date_list = []
     cur = d_start
     while cur <= d_end:
@@ -498,7 +510,7 @@ def render_stats(entries):
         '---\nhide:\n  - toc\n---\n\n'
         '# :material-view-dashboard-variant: Dashboard\n\n'
         + stats_grid(entries) + '\n\n'
-        '### :material-trophy-variant: Push Score · per-branch contribution to ' + str(push_total) + ' pushes\n\n'
+        '### :material-trophy-variant: Commit Score · per-branch contribution to ' + str(push_total) + ' commits\n\n'
         '<div id="chart-score" class="echart" style="height:380px"></div>\n\n'
         '### :material-chart-line-stacked: Cumulative Code Volume · Step lines per branch\n\n'
         '<div id="chart-line" class="echart" style="height:380px"></div>\n\n'
