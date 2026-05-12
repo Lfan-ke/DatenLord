@@ -8,6 +8,17 @@ from datetime import date, timedelta
 from html import escape as html_escape
 from pathlib import Path
 
+import markdown as _md_lib
+
+_MD = _md_lib.Markdown(extensions=['extra', 'sane_lists'])
+
+
+def md_to_html(text):
+    if not text:
+        return ''
+    _MD.reset()
+    return _MD.convert(text)
+
 README = Path('README.md')
 DOCS = Path('public')
 REPO = 'Lfan-ke/DatenLord'
@@ -18,6 +29,43 @@ COMPLETION = 'completed: all done.'
 ROW_RE = re.compile(
     r'^\| `(?P<time>[^`]+)` \| `(?P<branch>[^`]+)` \| \[`(?P<sha>[^`]+)`\]\((?P<url>[^)]+)\) \| (?P<title>.+?) \| `[^`]+` \| `[^`]+` \|\s*$'
 )
+TRAILER_RE = re.compile(r'^[A-Za-z][A-Za-z0-9-]*:\s+\S')
+
+
+def split_msg(msg):
+    lines = msg.rstrip('\n').splitlines()
+    if not lines:
+        return '', '', ''
+    title = lines[0]
+    rest = lines[1:]
+    while rest and not rest[0].strip():
+        rest.pop(0)
+    if not rest:
+        return title, '', ''
+    last_blank = -1
+    for i in range(len(rest) - 1, -1, -1):
+        if not rest[i].strip():
+            last_blank = i
+            break
+    tail = rest[last_blank + 1:] if last_blank >= 0 else rest
+    trailers = ''
+    if tail and all(TRAILER_RE.match(l) for l in tail if l.strip()):
+        trailers = '\n'.join(l for l in tail if l.strip())
+        rest = rest[:last_blank] if last_blank >= 0 else []
+    while rest and not rest[-1].strip():
+        rest.pop()
+    return title, '\n'.join(rest), trailers
+
+
+def commit_message(sha):
+    try:
+        r = subprocess.run(
+            ['git', 'log', '-1', '--format=%B', sha],
+            capture_output=True, text=True, check=False,
+        )
+        return r.stdout.rstrip()
+    except Exception:
+        return ''
 
 
 def filestat(sha):
@@ -115,6 +163,9 @@ def parse_entries():
         d['files_modified'] = fm
         d['files_deleted'] = fd
         d.update(shortstat(d['sha']))
+        _, body, trailers = split_msg(commit_message(d['sha']))
+        d['body'] = body
+        d['trailers'] = trailers
         out.append(d)
     return out
 
@@ -242,6 +293,13 @@ def timeline_html(entries, color_map=None):
             f'<a class="dl-tl-hash" href="{html_escape(e["url"])}" target="_blank" rel="noopener">{html_escape(e["sha"][:7])}</a>',
             '</div>',
             f'<div class="dl-tl-heading">{html_escape(e["title"])}</div>',
+        ]
+        if e.get('body'):
+            out += ['<div class="dl-tl-body">', md_to_html(e['body']), '</div>']
+        if e.get('trailers'):
+            trailer_lines = '<br>'.join(html_escape(l) for l in e['trailers'].split('\n'))
+            out += [f'<blockquote class="dl-tl-trailers"><p>{trailer_lines}</p></blockquote>']
+        out += [
             '<div class="dl-tl-metrics">',
             f'<span class="dl-tl-metric add">+{e["insertions"]}</span>',
             f'<span class="dl-tl-metric del">−{e["deletions"]}</span>',
