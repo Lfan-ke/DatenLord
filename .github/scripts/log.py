@@ -146,10 +146,10 @@ def write_log(head, entries, footer=''):
     out = head.rstrip() + '\n\n' + SECTION + '\n\n' + HINT + '\n\n'
     if entries:
         out += TABLE_HEAD + '\n' + '\n'.join(entries[:2]) + '\n\n'
-    out += MARKER + '\n\n'
+    out += MARKER + '<br/>\n\n'
     rest = entries[2:]
     if rest:
-        out += '<details>\n<summary><b>Older records</b></summary>\n\n'
+        out += '<details>\n\n<summary><b>Older records</b></summary>\n\n<br />\n\n'
         out += TABLE_HEAD + '\n' + '\n'.join(rest) + '\n\n</details>\n'
     if footer:
         out += '\n' + footer + '\n'
