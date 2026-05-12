@@ -110,7 +110,7 @@ COURSES = [
      'res_label': 'Bilibili video',
      'res_url': 'https://b23.tv/o7YjSkA'},
     {'old': '6.175', 'new': '6.1920', 'name': 'Constructive Computer Architecture',
-     'tag': 'Bluespec microarchitecture · pipelining · caches · multicore',
+     'tag': 'Microarchitecture · pipelining · caches · multicore',
      'icon': 'material-cog-transfer',
      'res_label': 'csg.csail.mit.edu/6.175',
      'res_url': 'http://csg.csail.mit.edu/6.175/index.html'},
