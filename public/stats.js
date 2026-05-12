@@ -72,7 +72,7 @@
 
     charts.push(mount('chart-gauge', {
       series: [{
-        type: 'gauge', radius: '92%',
+        type: 'gauge', radius: '82%', center: ['50%', '62%'],
         startAngle: 200, endAngle: -20,
         min: 0, max: 100, splitNumber: 10,
         axisLine: { lineStyle: { width: 18, color: [
