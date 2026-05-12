@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import html
 import json
 import os
 import re
@@ -10,7 +11,18 @@ CST = timezone(timedelta(hours=8))
 README = Path('README.md')
 MARKER = '<!-- more -->'
 SECTION = '## Learning Log'
-TABLE_HEAD = '| Time | Batch | Hash | Summary | Δ | Files |\n| :---: | :---: | :---: | :---: | :---: | :---: |'
+TABLE_OPEN = '<table width="100%">'
+TABLE_CLOSE = '</table>'
+TABLE_HEAD = (
+    '<thead><tr>'
+    '<th align="center">Time</th>'
+    '<th align="center">Batch</th>'
+    '<th align="center">Hash</th>'
+    '<th align="center">Summary</th>'
+    '<th align="center">Δ</th>'
+    '<th align="center">Files</th>'
+    '</tr></thead>'
+)
 HINT = '> Records of every commit on a course branch. A commit titled `completed: all done.` marks the course as finished.'
 COURSE_NAME = {'6.1910': 'MIT 6.1910', '6.1920': 'MIT 6.1920', '6.5900': 'MIT 6.5900'}
 COURSE_OLD = {'6.1910': '6.004', '6.1920': '6.175', '6.5900': '6.375'}
@@ -19,7 +31,7 @@ COURSE_DESC = {
     '6.1920': 'Constructive Computer Architecture',
     '6.5900': 'Computer System Architecture',
 }
-ROW_RE = re.compile(r'^\| `\d{4}-')
+ROW_RE = re.compile(r'^<tr><td align="center"><code>\d{4}-')
 COMPLETION = 'completed: all done.'
 TRAILER_RE = re.compile(r'^[A-Za-z][A-Za-z0-9-]*:\s+\S')
 
@@ -64,9 +76,10 @@ def is_completion(title):
 
 
 def render_title(title):
+    escaped = html.escape(title)
     if is_completion(title):
-        return f'**✅ {title}**'
-    return title
+        return f'<b>✅ {escaped}</b>'
+    return escaped
 
 
 def numstat(sha):
@@ -108,14 +121,19 @@ def filestat(sha):
 
 def entry_line(branch, sha, msg, ts, repo_url):
     short = sha[:7]
-    title = msg.split('\n', 1)[0].replace('|', '\\|')
-    if len(title) > 38:
-        title = title[:35] + '...'
+    raw_title = msg.split('\n', 1)[0]
     ins, dele = numstat(sha)
     fa, fm, fd = filestat(sha)
-    return (f"| `{fmt_ts_min(ts)}` | `{branch}` | [`{short}`]({repo_url}/commit/{sha})"
-            f" | {render_title(title)} | `+{humanize(ins)}/−{humanize(dele)}`"
-            f" | `+{humanize(fa)}/${humanize(fm)}/−{humanize(fd)}` |")
+    return (
+        '<tr>'
+        f'<td align="center"><code>{fmt_ts_min(ts)}</code></td>'
+        f'<td align="center"><code>{branch}</code></td>'
+        f'<td align="center"><a href="{repo_url}/commit/{sha}"><code>{short}</code></a></td>'
+        f'<td align="center">{render_title(raw_title)}</td>'
+        f'<td align="center"><code>+{humanize(ins)}/−{humanize(dele)}</code></td>'
+        f'<td align="center"><code>+{humanize(fa)}/${humanize(fm)}/−{humanize(fd)}</code></td>'
+        '</tr>'
+    )
 
 
 def parse_log(text):
@@ -136,17 +154,21 @@ def parse_log(text):
 def write_log(head, entries):
     out = head.rstrip() + '\n\n' + SECTION + '\n\n' + HINT + '\n\n'
     if entries:
-        out += TABLE_HEAD + '\n' + '\n'.join(entries[:2]) + '\n\n'
+        out += TABLE_OPEN + '\n' + TABLE_HEAD + '\n<tbody>\n'
+        out += '\n'.join(entries[:2]) + '\n'
+        out += '</tbody>\n' + TABLE_CLOSE + '\n\n'
     out += MARKER + '\n\n'
     rest = entries[2:]
     if rest:
         out += '<details>\n<summary><b>Older records</b></summary>\n\n'
-        out += TABLE_HEAD + '\n' + '\n'.join(rest) + '\n\n</details>\n'
+        out += TABLE_OPEN + '\n' + TABLE_HEAD + '\n<tbody>\n'
+        out += '\n'.join(rest) + '\n'
+        out += '</tbody>\n' + TABLE_CLOSE + '\n\n</details>\n'
     return out
 
 
 CODE_BADGE_RE = re.compile(r'(https://img\.shields\.io/badge/CODE-)[^?]+(\?[^"]+)')
-DELTA_CELL_RE = re.compile(r'`\+([\d.]+[kmg]?)\s*/\s*−([\d.]+[kmg]?)`', re.IGNORECASE)
+DELTA_CELL_RE = re.compile(r'<code>\+([\d.]+[kmg]?)/−([\d.]+[kmg]?)</code>', re.IGNORECASE)
 SUFFIX = {'': 1, 'k': 1000, 'm': 1_000_000, 'g': 1_000_000_000}
 
 
@@ -158,10 +180,7 @@ def parse_humanize(s):
 def total_delta(entry_lines):
     ins = dele = 0
     for line in entry_lines:
-        cells = [c.strip() for c in line.split('|')]
-        if len(cells) < 7:
-            continue
-        m = DELTA_CELL_RE.match(cells[5])
+        m = DELTA_CELL_RE.search(line)
         if m:
             ins += parse_humanize(m.group(1))
             dele += parse_humanize(m.group(2))
