@@ -28,19 +28,15 @@
 
 ## Onboarding
 
-<div align="center">
-
-<table>
+<table width="100%">
 <tr>
-<td align="center">📺 <a href="https://www.bilibili.com/video/BV1u8411i7Qw/">New driver guide</a></td>
-<td align="center">🎓 <a href="https://www.bilibili.com/video/BV1cs4y1r7T3/">Experience sharing</a></td>
-<td align="center">❓ <a href="https://mp.weixin.qq.com/s/-MnRFCXHy5v-tt4MujfqtQ">Q&amp;A</a></td>
-<td align="center">📝 <a href="https://mp.weixin.qq.com/s/I5bPw_AUWTh2VgzAm4SHhg">Learning notes</a></td>
-<td align="center">💬 <a href="https://mp.weixin.qq.com/s/gB7_y4CFFf7QIBUceNbsoA">WeChat article</a></td>
+<td width="20%" align="center">📺 <a href="https://www.bilibili.com/video/BV1u8411i7Qw/">New driver guide</a></td>
+<td width="20%" align="center">🎓 <a href="https://www.bilibili.com/video/BV1cs4y1r7T3/">Experience sharing</a></td>
+<td width="20%" align="center">❓ <a href="https://mp.weixin.qq.com/s/-MnRFCXHy5v-tt4MujfqtQ">Q&amp;A</a></td>
+<td width="20%" align="center">📝 <a href="https://mp.weixin.qq.com/s/I5bPw_AUWTh2VgzAm4SHhg">Learning notes</a></td>
+<td width="20%" align="center">💬 <a href="https://mp.weixin.qq.com/s/gB7_y4CFFf7QIBUceNbsoA">WeChat article</a></td>
 </tr>
 </table>
-
-</div>
 
 ## Learning Log
 
