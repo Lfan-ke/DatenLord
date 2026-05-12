@@ -124,7 +124,7 @@
       tooltip: { trigger: 'axis' },
       legend: { bottom: 0, data: data.branches, textStyle: { color: t.fg } },
       color: palette,
-      grid: { left: 50, right: 24, top: 24, bottom: 56 },
+      grid: { left: 60, right: 30, top: 48, bottom: 60 },
       xAxis: {
         type: 'category', data: data.date_list,
         axisLabel: { color: t.sub },
@@ -133,7 +133,8 @@
       },
       yAxis: {
         type: 'value', minInterval: 1, name: 'cum lines',
-        nameTextStyle: { color: t.sub },
+        nameLocation: 'end', nameGap: 14,
+        nameTextStyle: { color: t.sub, padding: [0, 0, 6, 0] },
         axisLabel: { color: t.sub }, splitLine: { lineStyle: { color: t.grid } },
       },
       series: data.line_series.map(function (s, i) {
@@ -162,7 +163,7 @@
         },
       },
       legend: { show: false },
-      grid: { left: 60, right: 24, top: 24, bottom: 56 },
+      grid: { left: 70, right: 30, top: 48, bottom: 60 },
       xAxis: {
         type: 'category', data: candleCats, scale: true, boundaryGap: true,
         axisLabel: { color: t.sub },
@@ -171,7 +172,8 @@
       },
       yAxis: {
         scale: true, name: 'cumulative',
-        nameTextStyle: { color: t.sub },
+        nameLocation: 'end', nameGap: 14,
+        nameTextStyle: { color: t.sub, padding: [0, 0, 6, 0] },
         axisLabel: { color: t.sub }, splitLine: { lineStyle: { color: t.grid } },
       },
       series: [{
@@ -205,7 +207,7 @@
         },
       },
       legend: { data: ['Increase', 'Decrease'], bottom: 0, textStyle: { color: t.fg } },
-      grid: { left: 56, right: 24, top: 24, bottom: 56 },
+      grid: { left: 60, right: 30, top: 32, bottom: 60 },
       xAxis: {
         type: 'category', data: wfCats,
         axisLabel: { color: t.sub, rotate: 0 },
@@ -276,6 +278,7 @@
             },
           },
           {
+            colorSaturation: [0.82, 0.98],
             itemStyle: {
               gapWidth: 5, borderWidth: 5, borderColor: t.bg, borderRadius: 12,
               shadowBlur: t.dark ? 12 : 8,
@@ -286,15 +289,16 @@
               show: true, height: 28, color: '#fff', fontWeight: 700, fontSize: 13,
               formatter: '{b}', overflow: 'truncate', padding: [0, 12, 0, 12],
               align: 'left', letterSpacing: 0.5,
-              textShadowBlur: 4, textShadowColor: 'rgba(0,0,0,0.35)',
+              textBorderColor: 'rgba(0,0,0,0.55)', textBorderWidth: 2,
+              textShadowBlur: 4, textShadowColor: 'rgba(0,0,0,0.5)',
             },
             emphasis: { itemStyle: { borderColor: t.dark ? '#fff' : '#0f172a', borderWidth: 6 } },
           },
           {
-            colorSaturation: [0.55, 0.92],
+            colorSaturation: [0.82, 0.98],
             itemStyle: {
               gapWidth: 3, borderWidth: 3, borderColor: t.bg, borderRadius: 8,
-              borderColorSaturation: 0.75,
+              borderColorSaturation: 0.85,
             },
             upperLabel: { show: false },
             label: {
@@ -302,7 +306,8 @@
               color: '#fff', fontSize: 12, fontWeight: 700,
               padding: [6, 8], overflow: 'truncate',
               lineHeight: 14, letterSpacing: 0.4,
-              textShadowBlur: 3, textShadowColor: 'rgba(0,0,0,0.4)',
+              textBorderColor: 'rgba(0,0,0,0.55)', textBorderWidth: 2,
+              textShadowBlur: 4, textShadowColor: 'rgba(0,0,0,0.5)',
               formatter: function (p) {
                 var d = p.data || {};
                 var n = (d.name || '').slice(0, 7);
@@ -325,13 +330,20 @@
       title: { text: 'Commits by date', left: 'center', top: 8,
         textStyle: { color: t.fg, fontSize: 14, fontWeight: 600 } },
       tooltip: { trigger: 'item', formatter: '{b}: {c} commit(s)' },
-      legend: { bottom: 0, textStyle: { color: t.fg } },
+      legend: { show: false },
       color: palette,
       series: [{
-        type: 'pie', radius: [30, 130], center: ['50%', '52%'],
+        type: 'pie', radius: [28, 108], center: ['50%', '50%'],
         roseType: 'area', avoidLabelOverlap: true,
         itemStyle: { borderRadius: 6, borderColor: t.bg, borderWidth: 2 },
-        label: { color: t.fg, formatter: '{b}\n{c}' },
+        label: {
+          color: t.fg, fontSize: 11,
+          formatter: function (p) {
+            var b = (p.name || '');
+            return (b.length > 5 ? b.slice(5) : b) + '\n' + p.value;
+          },
+        },
+        labelLine: { length: 10, length2: 8 },
         data: data.rose,
       }],
     }));
@@ -341,7 +353,7 @@
     data.scatter.forEach(function (p) {
       if (scatterByBranch[p.branch]) {
         scatterByBranch[p.branch].push({
-          value: [p.time + ':00', p.size],
+          value: [p.time.replace(' ', 'T'), Math.max(p.size, 0.5)],
           label: p.label, ins: p.ins, dele: p.dele,
         });
       }
@@ -359,16 +371,22 @@
       }},
       legend: { data: data.branches, bottom: 0, textStyle: { color: t.fg } },
       grid: [
-        { left: 50, right: 24, top: 48, height: '40%' },
-        { left: 50, right: 24, top: '64%', height: '24%' },
+        { left: 64, right: 30, top: 64, height: '38%' },
+        { left: 64, right: 30, top: '66%', height: '22%' },
       ],
       xAxis: [
-        { type: 'time', gridIndex: 0, axisLabel: { color: t.sub }, axisLine: { lineStyle: { color: t.grid } }, splitLine: { lineStyle: { color: t.grid, type: 'dashed' } } },
+        { type: 'time', gridIndex: 0, axisLabel: { color: t.sub, hideOverlap: true }, axisLine: { lineStyle: { color: t.grid } }, splitLine: { lineStyle: { color: t.grid, type: 'dashed' } } },
         { type: 'category', gridIndex: 1, data: data.bar_branch.map(function (b) { return b.branch; }), axisLabel: { color: t.sub }, axisLine: { lineStyle: { color: t.grid } } },
       ],
       yAxis: [
-        { type: 'value', gridIndex: 0, name: 'lines/commit', nameTextStyle: { color: t.sub }, axisLabel: { color: t.sub }, splitLine: { lineStyle: { color: t.grid } } },
-        { type: 'value', gridIndex: 1, name: 'total', nameTextStyle: { color: t.sub }, axisLabel: { color: t.sub }, splitLine: { lineStyle: { color: t.grid } } },
+        { type: 'value', gridIndex: 0, name: 'lines/commit',
+          nameLocation: 'end', nameGap: 14,
+          nameTextStyle: { color: t.sub, padding: [0, 0, 6, 0] },
+          axisLabel: { color: t.sub }, splitLine: { lineStyle: { color: t.grid } } },
+        { type: 'value', gridIndex: 1, name: 'total',
+          nameLocation: 'end', nameGap: 14,
+          nameTextStyle: { color: t.sub, padding: [0, 0, 6, 0] },
+          axisLabel: { color: t.sub }, splitLine: { lineStyle: { color: t.grid } } },
       ],
       color: palette,
       series: data.branches.map(function (b, i) {
@@ -428,7 +446,7 @@
       },
       legend: { data: ['Files added', 'Files deleted', 'Files touched'],
         bottom: 0, textStyle: { color: t.fg } },
-      grid: { left: 56, right: 60, top: 28, bottom: 56 },
+      grid: { left: 64, right: 70, top: 48, bottom: 60 },
       xAxis: [{ type: 'category', data: fsCats,
         axisLabel: { color: t.sub },
         axisLine: { lineStyle: { color: t.grid } },
@@ -436,11 +454,13 @@
       }],
       yAxis: [
         { type: 'value', name: 'files', minInterval: 1,
-          nameTextStyle: { color: t.sub },
+          nameLocation: 'end', nameGap: 14,
+          nameTextStyle: { color: t.sub, padding: [0, 0, 6, 0] },
           axisLabel: { color: t.sub, formatter: '{value}' },
           splitLine: { lineStyle: { color: t.grid } } },
         { type: 'value', name: 'touched', minInterval: 1,
-          nameTextStyle: { color: t.sub },
+          nameLocation: 'end', nameGap: 14,
+          nameTextStyle: { color: t.sub, padding: [0, 0, 6, 0] },
           axisLabel: { color: t.sub, formatter: '{value}' },
           splitLine: { show: false } },
       ],
