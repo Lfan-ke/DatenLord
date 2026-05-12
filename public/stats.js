@@ -41,9 +41,6 @@
   function mount(id, option) {
     var node = document.getElementById(id);
     if (!node) return null;
-    var existing = echarts.getInstanceByDom(node);
-    if (existing) existing.dispose();
-    var c = echarts.init(node, null, { renderer: 'svg' });
     var t = theme();
     option.textStyle = Object.assign({ color: t.fg }, GLOBAL_FONT, option.textStyle || {});
     var ttDefaults = {
@@ -57,6 +54,12 @@
       textStyle: { color: t.fg, fontFamily: GLOBAL_FONT.fontFamily, fontSize: 11 },
     };
     option.tooltip = Object.assign({}, ttDefaults, option.tooltip || {});
+    var existing = echarts.getInstanceByDom(node);
+    if (existing && !existing.isDisposed()) {
+      existing.setOption(option, true);
+      return existing;
+    }
+    var c = echarts.init(node, null, { renderer: 'svg' });
     c.setOption(option);
     return c;
   }
@@ -586,31 +589,33 @@
     }));
   }
 
-  function disposeAll() {
-    document.querySelectorAll('.echart').forEach(function (n) {
-      var i = window.echarts && window.echarts.getInstanceByDom(n);
-      if (i) i.dispose();
+  function disposeStale() {
+    charts = charts.filter(function (c) {
+      if (!c || c.isDisposed()) return false;
+      var dom = c.getDom && c.getDom();
+      if (!dom || !document.body.contains(dom)) { c.dispose(); return false; }
+      return true;
     });
-    charts = [];
   }
 
-  var lastFingerprint = null;
-  function currentFingerprint() {
-    var el = document.getElementById('stats-data');
-    if (!el) return null;
-    return getScheme() + '|' + el.textContent.length + '|' + (document.querySelectorAll('.echart').length);
+  function needsBuild() {
+    var nodes = document.querySelectorAll('.echart');
+    if (!nodes.length) return false;
+    for (var i = 0; i < nodes.length; i++) {
+      var inst = window.echarts && window.echarts.getInstanceByDom(nodes[i]);
+      if (!inst || inst.isDisposed()) return true;
+    }
+    return false;
   }
 
   function render(force) {
     var el = document.getElementById('stats-data');
-    if (!el) { lastFingerprint = null; return; }
-    var fp = currentFingerprint();
-    if (!force && fp === lastFingerprint) return;
+    if (!el) { disposeStale(); return; }
+    if (!force && !needsBuild()) return;
     var data;
     try { data = JSON.parse(el.textContent); } catch (_) { return; }
-    lastFingerprint = fp;
     ensureEcharts(function () {
-      disposeAll();
+      disposeStale();
       build(data);
       requestAnimationFrame(resize);
       setTimeout(resize, 120);
@@ -636,6 +641,40 @@
       new ResizeObserver(function () { resize(); }).observe(n);
     });
   }
+
+  var _ioCharts = null, _ioEntries = null;
+  function observeReveal() {
+    if (typeof IntersectionObserver === 'undefined') {
+      document.querySelectorAll('.echart, .dl-tl-entry').forEach(function (n) {
+        n.classList.add('dl-visible');
+      });
+      return;
+    }
+    if (!_ioCharts) {
+      _ioCharts = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('dl-visible'); _ioCharts.unobserve(e.target); }
+        });
+      }, { rootMargin: '0px 0px -10% 0px', threshold: 0.12 });
+    }
+    if (!_ioEntries) {
+      _ioEntries = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('dl-visible'); _ioEntries.unobserve(e.target); }
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.18 });
+    }
+    document.querySelectorAll('.echart').forEach(function (n) {
+      if (n.__dlIO) return;
+      n.__dlIO = true;
+      _ioCharts.observe(n);
+    });
+    document.querySelectorAll('.dl-tl-entry').forEach(function (n) {
+      if (n.__dlIO) return;
+      n.__dlIO = true;
+      _ioEntries.observe(n);
+    });
+  }
   function observeTheme() {
     schemeNow = getScheme();
     var fire = function () {
@@ -654,10 +693,9 @@
   }
 
   function scheduleRender() {
-    lastFingerprint = null;
-    requestAnimationFrame(function () { tryRender(); });
-    setTimeout(function () { tryRender(); }, 80);
-    setTimeout(function () { tryRender(); }, 400);
+    requestAnimationFrame(function () { tryRender(); observeReveal(); });
+    setTimeout(function () { tryRender(); observeReveal(); }, 120);
+    setTimeout(function () { tryRender(); observeReveal(); }, 480);
   }
 
   function bindDocument$() {
@@ -670,6 +708,16 @@
 
   function attach() {
     scheduleRender();
+    observeReveal();
+    if (window.document$ && typeof window.document$.subscribe === 'function') {
+      window.document$.subscribe(observeReveal);
+    } else {
+      setTimeout(function rec() {
+        observeReveal();
+        if (document.getElementById('stats-data') || document.querySelector('.dl-tl-entry')) return;
+        setTimeout(rec, 200);
+      }, 200);
+    }
     if (!bindDocument$()) {
       var tries = 0;
       var iv = setInterval(function () {

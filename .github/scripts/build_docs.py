@@ -272,6 +272,11 @@ def recent_table(entries, n=5):
 
 PALETTE = ['#3b82f6', '#a855f7', '#10b981', '#f97316', '#ef4444', '#eab308', '#06b6d4', '#ec4899']
 
+TREEMAP_PALETTE = [
+    '#F72585', '#B5179E', '#7209B7', '#560BAD', '#480CA8',
+    '#3A0CA3', '#3F37C9', '#4361EE', '#4895EF', '#4CC9F0',
+]
+
 
 def build_color_map(branches):
     return {b: PALETTE[i % len(PALETTE)] for i, b in enumerate(sorted(branches))}
@@ -299,6 +304,17 @@ def luminance(h):
 
 def readable_text(bg):
     return '#0f172a' if luminance(bg) > 0.62 else '#ffffff'
+
+
+def gradient_color(ratio):
+    n = len(TREEMAP_PALETTE)
+    if n <= 1 or ratio <= 0:
+        return TREEMAP_PALETTE[0]
+    if ratio >= 1:
+        return TREEMAP_PALETTE[-1]
+    pos = ratio * (n - 1)
+    i = int(pos)
+    return mix(TREEMAP_PALETTE[i], TREEMAP_PALETTE[i + 1], pos - i)
 
 
 def timeline_html(entries, color_map=None):
@@ -562,14 +578,16 @@ def render_stats(entries, color_map=None):
         })
 
     branch_nodes = []
+    total_leaves = sum(by_branch[b]['count'] for b in branches)
+    leaf_idx = 0
     for b in branches:
-        base = color[b]
         commits = [e for e in sorted_entries if e['branch'] == b]
         children = []
-        n = max(len(commits) - 1, 1)
-        for j, e in enumerate(commits):
-            ratio = (j / n) if len(commits) > 1 else 0.5
-            leaf = mix(mix(base, '#0f172a', 0.18), '#ffffff', ratio * 0.32)
+        branch_colors = []
+        for e in commits:
+            ratio = leaf_idx / max(total_leaves - 1, 1) if total_leaves > 1 else 0.5
+            leaf = gradient_color(ratio)
+            branch_colors.append(leaf)
             tcol = readable_text(leaf)
             children.append({
                 'name': e['sha'][:7],
@@ -577,14 +595,15 @@ def render_stats(entries, color_map=None):
                 'ins': e['insertions'],
                 'dele': e['deletions'],
                 'label': e['title'][:36],
-                'itemStyle': {'color': leaf, 'borderColor': mix(leaf, '#0f172a', 0.3)},
+                'itemStyle': {'color': leaf, 'borderColor': mix(leaf, '#0f172a', 0.28)},
                 'textColor': tcol,
             })
-        branch_text = readable_text(base)
+            leaf_idx += 1
+        bcol = branch_colors[len(branch_colors) // 2] if branch_colors else color[b]
         branch_nodes.append({
             'name': b,
-            'itemStyle': {'color': base},
-            'textColor': branch_text,
+            'itemStyle': {'color': bcol},
+            'textColor': readable_text(bcol),
             'children': children,
         })
     total_lines = sum(by_branch[b]['ins'] + by_branch[b]['dele'] for b in branches)
