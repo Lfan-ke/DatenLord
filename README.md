@@ -28,19 +28,19 @@
 
 ## Onboarding
 
+<div align="center">
+
 <table>
 <tr>
-<td>📺 <a href="https://www.bilibili.com/video/BV1u8411i7Qw/">New driver guide</a></td>
-<td>🎓 <a href="https://www.bilibili.com/video/BV1cs4y1r7T3/">Experience sharing</a></td>
-</tr>
-<tr>
-<td>❓ <a href="https://mp.weixin.qq.com/s/-MnRFCXHy5v-tt4MujfqtQ">Q&amp;A</a></td>
-<td>📝 <a href="https://mp.weixin.qq.com/s/I5bPw_AUWTh2VgzAm4SHhg">Learning notes</a></td>
-</tr>
-<tr>
-<td colspan="2">💬 <a href="https://mp.weixin.qq.com/s/gB7_y4CFFf7QIBUceNbsoA">QQ community signup</a></td>
+<td align="center">📺 <a href="https://www.bilibili.com/video/BV1u8411i7Qw/">New driver guide</a></td>
+<td align="center">🎓 <a href="https://www.bilibili.com/video/BV1cs4y1r7T3/">Experience sharing</a></td>
+<td align="center">❓ <a href="https://mp.weixin.qq.com/s/-MnRFCXHy5v-tt4MujfqtQ">Q&amp;A</a></td>
+<td align="center">📝 <a href="https://mp.weixin.qq.com/s/I5bPw_AUWTh2VgzAm4SHhg">Learning notes</a></td>
+<td align="center">💬 <a href="https://mp.weixin.qq.com/s/gB7_y4CFFf7QIBUceNbsoA">WeChat article</a></td>
 </tr>
 </table>
+
+</div>
 
 ## Learning Log
 
