@@ -278,7 +278,6 @@
             },
           },
           {
-            colorSaturation: [0.82, 0.98],
             itemStyle: {
               gapWidth: 5, borderWidth: 5, borderColor: t.bg, borderRadius: 12,
               shadowBlur: t.dark ? 12 : 8,
@@ -286,28 +285,31 @@
             },
             label: { show: false },
             upperLabel: {
-              show: true, height: 28, color: '#fff', fontWeight: 700, fontSize: 13,
-              formatter: '{b}', overflow: 'truncate', padding: [0, 12, 0, 12],
+              show: true, height: 28, fontWeight: 700, fontSize: 13,
+              formatter: function (p) {
+                return (p.data && p.data.name) || p.name || '';
+              },
+              color: function (p) {
+                return (p.data && p.data.textColor) || '#fff';
+              },
+              overflow: 'truncate', padding: [0, 12, 0, 12],
               align: 'left', letterSpacing: 0.5,
-              textBorderColor: 'rgba(0,0,0,0.55)', textBorderWidth: 2,
-              textShadowBlur: 4, textShadowColor: 'rgba(0,0,0,0.5)',
             },
             emphasis: { itemStyle: { borderColor: t.dark ? '#fff' : '#0f172a', borderWidth: 6 } },
           },
           {
-            colorSaturation: [0.82, 0.98],
             itemStyle: {
               gapWidth: 3, borderWidth: 3, borderColor: t.bg, borderRadius: 8,
-              borderColorSaturation: 0.85,
             },
             upperLabel: { show: false },
             label: {
               show: true, position: 'insideTopLeft',
-              color: '#fff', fontSize: 12, fontWeight: 700,
+              fontSize: 12, fontWeight: 700,
               padding: [6, 8], overflow: 'truncate',
               lineHeight: 14, letterSpacing: 0.4,
-              textBorderColor: 'rgba(0,0,0,0.55)', textBorderWidth: 2,
-              textShadowBlur: 4, textShadowColor: 'rgba(0,0,0,0.5)',
+              color: function (p) {
+                return (p.data && p.data.textColor) || '#fff';
+              },
               formatter: function (p) {
                 var d = p.data || {};
                 var n = (d.name || '').slice(0, 7);
@@ -317,7 +319,7 @@
               },
             },
             emphasis: {
-              itemStyle: { borderColor: '#fff', borderWidth: 4 },
+              itemStyle: { borderColor: t.fg, borderWidth: 4 },
               label: { fontSize: 13 },
             },
           },
@@ -592,11 +594,21 @@
     charts = [];
   }
 
-  function render() {
+  var lastFingerprint = null;
+  function currentFingerprint() {
     var el = document.getElementById('stats-data');
-    if (!el) return;
+    if (!el) return null;
+    return getScheme() + '|' + el.textContent.length + '|' + (document.querySelectorAll('.echart').length);
+  }
+
+  function render(force) {
+    var el = document.getElementById('stats-data');
+    if (!el) { lastFingerprint = null; return; }
+    var fp = currentFingerprint();
+    if (!force && fp === lastFingerprint) return;
     var data;
     try { data = JSON.parse(el.textContent); } catch (_) { return; }
+    lastFingerprint = fp;
     ensureEcharts(function () {
       disposeAll();
       build(data);
@@ -628,7 +640,7 @@
     schemeNow = getScheme();
     var fire = function () {
       var s = getScheme();
-      if (s !== schemeNow) { schemeNow = s; render(); }
+      if (s !== schemeNow) { schemeNow = s; render(true); }
     };
     var mo = new MutationObserver(fire);
     if (document.body) {
@@ -637,15 +649,15 @@
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-md-color-scheme'] });
   }
 
-  function tryRender() {
-    if (document.getElementById('stats-data')) render();
+  function tryRender(force) {
+    if (document.getElementById('stats-data')) render(force);
   }
 
   function scheduleRender() {
-    requestAnimationFrame(tryRender);
-    setTimeout(tryRender, 60);
-    setTimeout(tryRender, 240);
-    setTimeout(tryRender, 600);
+    lastFingerprint = null;
+    requestAnimationFrame(function () { tryRender(); });
+    setTimeout(function () { tryRender(); }, 80);
+    setTimeout(function () { tryRender(); }, 400);
   }
 
   function bindDocument$() {
@@ -664,24 +676,17 @@
         if (bindDocument$() || ++tries > 40) clearInterval(iv);
       }, 80);
     }
-    ['pushState', 'replaceState'].forEach(function (m) {
-      var orig = history[m];
-      if (orig && !orig.__dlHooked) {
-        var hooked = function () {
-          var r = orig.apply(this, arguments);
-          scheduleRender();
-          return r;
-        };
-        hooked.__dlHooked = true;
-        try { history[m] = hooked; } catch (_) {}
-      }
-    });
     window.addEventListener('popstate', scheduleRender);
     document.addEventListener('click', function (e) {
       var el = e.target;
       while (el && el !== document.body) {
         if (el.tagName === 'A' && el.href) { scheduleRender(); break; }
         el = el.parentNode;
+      }
+    });
+    document.addEventListener('change', function (e) {
+      if (e.target && e.target.name === '__palette') {
+        setTimeout(scheduleRender, 80);
       }
     });
   }
