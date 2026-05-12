@@ -637,23 +637,53 @@
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-md-color-scheme'] });
   }
 
-  function attach() {
+  function tryRender() {
+    if (document.getElementById('stats-data')) render();
+  }
+
+  function scheduleRender() {
+    requestAnimationFrame(tryRender);
+    setTimeout(tryRender, 60);
+    setTimeout(tryRender, 240);
+    setTimeout(tryRender, 600);
+  }
+
+  function bindDocument$() {
     if (window.document$ && typeof window.document$.subscribe === 'function') {
-      window.document$.subscribe(function () { render(); });
-      return;
+      window.document$.subscribe(scheduleRender);
+      return true;
     }
-    var tries = 0;
-    var iv = setInterval(function () {
-      tries++;
-      if (window.document$ && typeof window.document$.subscribe === 'function') {
-        clearInterval(iv);
-        window.document$.subscribe(function () { render(); });
-        render();
-      } else if (tries > 30) {
-        clearInterval(iv);
-        render();
+    return false;
+  }
+
+  function attach() {
+    scheduleRender();
+    if (!bindDocument$()) {
+      var tries = 0;
+      var iv = setInterval(function () {
+        if (bindDocument$() || ++tries > 40) clearInterval(iv);
+      }, 80);
+    }
+    ['pushState', 'replaceState'].forEach(function (m) {
+      var orig = history[m];
+      if (orig && !orig.__dlHooked) {
+        var hooked = function () {
+          var r = orig.apply(this, arguments);
+          scheduleRender();
+          return r;
+        };
+        hooked.__dlHooked = true;
+        try { history[m] = hooked; } catch (_) {}
       }
-    }, 80);
+    });
+    window.addEventListener('popstate', scheduleRender);
+    document.addEventListener('click', function (e) {
+      var el = e.target;
+      while (el && el !== document.body) {
+        if (el.tagName === 'A' && el.href) { scheduleRender(); break; }
+        el = el.parentNode;
+      }
+    });
   }
 
   if (document.readyState === 'loading') {
