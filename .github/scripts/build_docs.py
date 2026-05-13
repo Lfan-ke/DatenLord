@@ -39,6 +39,12 @@ REPO = 'Lfan-ke/DatenLord'
 REPO_URL = f'https://github.com/{REPO}'
 ISSUE_URL = 'https://github.com/datenlord/training/issues/74'
 COMPLETION = 'completed: all done.'
+CHART_AFTER = '2026-05-13 23:59'
+
+
+def chart_entries(entries):
+    return [e for e in entries if e['time'] > CHART_AFTER]
+
 
 ROW_RE = re.compile(
     r'^\| `(?P<time>[^`]+)` \| `(?P<branch>[^`]+)` \| \[`(?P<sha>[^`]+)`\]\((?P<url>[^)]+)\) \| (?P<title>.+?) \| `[^`]+` \| `[^`]+` \|\s*$'
@@ -220,11 +226,12 @@ def courses_grid(entries):
 
 def stats_grid(entries):
     done = completed_branches(entries)
-    total_ins = sum(e['insertions'] for e in entries)
-    total_dele = sum(e['deletions'] for e in entries)
+    chart = chart_entries(entries)
+    total_ins = sum(e['insertions'] for e in chart)
+    total_dele = sum(e['deletions'] for e in chart)
     cards = [
-        card('material-source-commit', str(len(entries)), ['Total commits', '', 'across all courses']),
-        card('material-calendar-check', str(len({e['time'][:10] for e in entries})), ['Active days']),
+        card('material-source-commit', str(len(chart)), ['Total commits', '', 'across all courses']),
+        card('material-calendar-check', str(len({e['time'][:10] for e in chart})), ['Active days']),
         card('material-trophy', f'{len(done)} / {len(COURSES)}', ['Courses completed']),
         card('material-plus-circle', f'+{total_ins}', ['Lines added']),
         card('material-minus-circle', f'−{total_dele}', ['Lines removed']),
@@ -417,7 +424,9 @@ def render_index(entries):
         '    After learning BSV, the recommended sequence is: '
         '6.175 Labs 0-4, 6.375 Labs 1-4, 6.175 Labs 5-8 and Proj 1-2, then the remaining 6.375 Lab 5.\n\n'
         '    If course as finished, the README entry is highlighted and the issue comment becomes a celebration block.\n\n'
-        '## :material-chart-timeline-variant: At a Glance\n\n' + stats_grid(entries) + '\n\n'
+        '## :material-chart-timeline-variant: At a Glance\n\n'
+        f'<sub>Since `{CHART_AFTER}` UTC+8 · earlier bulk-init commits excluded as baseline</sub>\n\n'
+        + stats_grid(entries) + '\n\n'
         '## :material-pulse: Recent Commits\n\n' + recent_table(entries, 5) + '\n\n'
         '## :material-library-shelves: Onboarding & Resources\n\n' + resources_section() + '\n\n'
         f'[:material-chart-bar: Stats](stats.md){{ .md-button .md-button--primary }} &nbsp; '
@@ -450,6 +459,7 @@ def render_timeline(entries, label, course=None, color_map=None, branch=None):
 
 
 def render_stats(entries, color_map=None):
+    entries = chart_entries(entries)
     by_branch = defaultdict(lambda: {'count': 0, 'ins': 0, 'dele': 0, 'files': 0})
     by_date_count = defaultdict(int)
     for e in entries:
@@ -657,6 +667,8 @@ def render_stats(entries, color_map=None):
         '---\nhide:\n  - toc\n---\n\n'
         '# :material-view-dashboard-variant: Dashboard\n\n'
         + stats_grid(entries) + '\n\n'
+        f'!!! note "Baseline"\n'
+        f'    Charts and aggregates below cover commits after `{CHART_AFTER}` (UTC+8). Earlier commits — the bulk lab-init imports — are treated as a baseline and excluded so the visualizations stay readable.\n\n'
         '### :material-trophy-variant: Commit Score · per-branch contribution to ' + str(push_total) + ' commits\n\n'
         '<div id="chart-score" class="echart" style="height:380px"></div>\n\n'
         '### :material-chart-line-stacked: Cumulative Code Volume · Step lines per branch\n\n'
