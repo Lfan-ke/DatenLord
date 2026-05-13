@@ -68,8 +68,8 @@
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | :---: | :---: | :---: | :---: | :---: | :---: |
+| `2026-05-13 20:40` | `6.1910` | [`f564caf`](https://github.com/Lfan-ke/DatenLord/commit/f564caf0d5feefaf71c6db4e7d833ffd87132215) | add: bsc submodule for offline refe... | `+4/−0` | `+2/$0/−0` |
 | `2026-05-13 19:14` | `6.5900` | [`d9e3378`](https://github.com/Lfan-ke/DatenLord/commit/d9e3378c4e7ec3c4318daf316afc382cad054ec7) | fixed: readme info. | `+1/−1` | `+0/$1/−0` |
-| `2026-05-13 19:14` | `6.1910` | [`0cec5f3`](https://github.com/Lfan-ke/DatenLord/commit/0cec5f3a599d910baecadf4c46ae9ea022a3c0a5) | fixed: readme info. | `+1/−1` | `+0/$1/−0` |
 
 <!-- more --><br/>
 
@@ -81,6 +81,7 @@
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | :---: | :---: | :---: | :---: | :---: | :---: |
+| `2026-05-13 19:14` | `6.1910` | [`0cec5f3`](https://github.com/Lfan-ke/DatenLord/commit/0cec5f3a599d910baecadf4c46ae9ea022a3c0a5) | fixed: readme info. | `+1/−1` | `+0/$1/−0` |
 | `2026-05-13 19:12` | `6.1920` | [`f005a41`](https://github.com/Lfan-ke/DatenLord/commit/f005a417ab4d655979a44aa8c3e1bc96dc002f9f) | fixed: readme info... | `+2/−2` | `+0/$1/−0` |
 | `2026-05-13 18:46` | `6.1910` | [`ea92bea`](https://github.com/Lfan-ke/DatenLord/commit/ea92beadef9b70f8e270c0405d0c5d139c0bce52) | fmt: readme. | `+0/−10` | `+0/$1/−0` |
 | `2026-05-13 18:43` | `6.5900` | [`f437f88`](https://github.com/Lfan-ke/DatenLord/commit/f437f882dffbca73a8b87d918b52916d123a8aa8) | init: learning environment | `+17k/−3` | `+170/$1/−0` |
