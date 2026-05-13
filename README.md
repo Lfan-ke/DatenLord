@@ -6,7 +6,7 @@
   <a href="https://github.com/datenlord/training"><img src="https://img.shields.io/badge/DatenLord-MIT_BSV-2563eb?style=for-the-badge&labelColor=0f172a" alt="DatenLord"></a>
   <a href="https://github.com/datenlord/training/issues/74"><img src="https://img.shields.io/badge/Student-D202605002-16a34a?style=for-the-badge&labelColor=0f172a" alt="Student"></a>
   <a href="https://github.com/B-Lang-org/bsc"><img src="https://img.shields.io/badge/Lang-Bluespec_SV-eab308?style=for-the-badge&labelColor=0f172a" alt="Bluespec"></a>
-  <img src="https://img.shields.io/badge/CODE-%2B177%20%7C%20%E2%88%924-22c55e?style=for-the-badge&labelColor=0f172a" alt="Code stats">
+  <img src="https://img.shields.io/badge/CODE-%2B177%20%7C%20%E2%88%9238-22c55e?style=for-the-badge&labelColor=0f172a" alt="Code stats">
 </p>
 
 <sub>Bluespec SystemVerilog learning repository for <b>MIT 6.1910</b> · <b>6.1920</b> · <b>6.5900</b></sub>
@@ -67,19 +67,20 @@
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | :---: | :---: | :---: | :---: | :---: | :---: |
+| `2026-05-13 16:51` | `6.1910` | [`22a708d`](https://github.com/Lfan-ke/DatenLord/commit/22a708d522cf0fb4a6abf5a834b04a62a4f5f8dd) | delete: example file | `+0/−34` | `+0/$0/−1` |
 | `2026-05-12 12:28` | `6.1910` | [`8df861a`](https://github.com/Lfan-ke/DatenLord/commit/8df861a477d6dcd14ec1085c3ca78bc4377a9462) | tests: lab01 scratch notes — adders... | `+34/−0` | `+1/$0/−0` |
-| `2026-05-12 00:03` | `6.1910` | [`1e47ae2`](https://github.com/Lfan-ke/DatenLord/commit/1e47ae29da8124c7502db30e5421bb42239ce47a) | tests: the ci, LGTM!!! | `+0/−0` | `+0/$0/−0` |
 
 <!-- more --><br/>
 
 <details>
-  
+
 <summary><b>Older records</b></summary>
 
 <br />
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | :---: | :---: | :---: | :---: | :---: | :---: |
+| `2026-05-12 00:03` | `6.1910` | [`1e47ae2`](https://github.com/Lfan-ke/DatenLord/commit/1e47ae29da8124c7502db30e5421bb42239ce47a) | tests: the ci, LGTM!!! | `+0/−0` | `+0/$0/−0` |
 | `2026-05-11 23:51` | `6.1910` | [`b99b5bb`](https://github.com/Lfan-ke/DatenLord/commit/b99b5bba11a81e1fc743433b31d5e44566c1461e) | tests: ci tested LGTM! | `+0/−0` | `+0/$0/−0` |
 | `2026-05-11 23:24` | `6.1920` | [`e32d8a7`](https://github.com/Lfan-ke/DatenLord/commit/e32d8a7f5729ad5faa59b557e86f47d10a95f2d6) | tests: change something to trigger ci. | `+3/−1` | `+0/$1/−0` |
 | `2026-05-11 19:40` | `6.1910` | [`6a58165`](https://github.com/Lfan-ke/DatenLord/commit/6a581652d380b9ea4f1dfe8d218f8b863fb7e06b) | tests: change something to trigger ci. | `+50/−3` | `+1/$1/−0` |
