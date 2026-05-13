@@ -1,4 +1,4 @@
-# MIT 6.175 / 6.1920 — Constructive Computer Architecture (BSV)
+# MIT 6.175 / 6.1920 — Constructive Computer Architecture
 
 [![branch](https://img.shields.io/badge/branch-6.1920-green)](https://github.com/Lfan-ke/DatenLord/tree/6.1920)
 [![course](https://img.shields.io/badge/MIT-6.175-red)](https://csg.csail.mit.edu/6.175/)
@@ -18,7 +18,7 @@ Pipelined RISC-V processor in BSV. **2016 Fall** edition. Official course: <http
 | `labs/lab-5` | Single-cycle RISC-V + RISC-V test programs |
 | `labs/lab-6` | Pipelined RISC-V |
 | `labs/lab-7` | RISC-V + caches |
-| `labs/Proj`  | Project 1 + Project 2 (combined, `CORENUM` param) — pipelined RISC-V with caches & branch prediction (P1), multicore + cache coherence (P2) |
+| `labs/Proj`  | Proj1-2 Combined — pipeline, caches & branch prediction, multicore + cache coherence |
 | `notes/`     | Personal study notes |
 
 ## Build
