@@ -83,9 +83,6 @@
 | :---: | :---: | :---: | :---: | :---: | :---: |
 | `2026-05-13 18:41` | `6.1920` | [`95b4066`](https://github.com/Lfan-ke/DatenLord/commit/95b4066884e53e1fb1a5dc46ac375caf1cae5e35) | init: learning environment | `+47k/−5` | `+499/$1/−0` |
 | `2026-05-13 18:42` | `6.1910` | [`fd90640`](https://github.com/Lfan-ke/DatenLord/commit/fd90640d59573ecb957a5bf8ae86ec686bc376fa) | fixed: readme tutorial. | `+1/−1` | `+0/$1/−0` |
-| `2026-05-13 18:09` | `6.1920` | [`57102d7`](https://github.com/Lfan-ke/DatenLord/commit/57102d759cff694073c87f8697884247309ac8e7) | init: learning environment | `+47k/−5` | `+499/$1/−0` |
-| `2026-05-13 18:19` | `6.5900` | [`f24aaf8`](https://github.com/Lfan-ke/DatenLord/commit/f24aaf827cabb1ead3abcbad5dc1e8c28f8e1d96) | init: learning environment | `+17k/−3` | `+170/$1/−0` |
-| `2026-05-13 17:43` | `6.1910` | [`5e0f5dd`](https://github.com/Lfan-ke/DatenLord/commit/5e0f5ddb6fb9cf7c63e181b970408dcddc9e6b8c) | init: learning environment | `+13k/−3` | `+104/$1/−0` |
 | `2026-05-13 16:51` | `6.1910` | [`22a708d`](https://github.com/Lfan-ke/DatenLord/commit/22a708d522cf0fb4a6abf5a834b04a62a4f5f8dd) | delete: example file | `+0/−34` | `+0/$0/−1` |
 | `2026-05-12 12:28` | `6.1910` | [`8df861a`](https://github.com/Lfan-ke/DatenLord/commit/8df861a477d6dcd14ec1085c3ca78bc4377a9462) | tests: lab01 scratch notes — adders... | `+34/−0` | `+1/$0/−0` |
 | `2026-05-12 00:03` | `6.1910` | [`1e47ae2`](https://github.com/Lfan-ke/DatenLord/commit/1e47ae29da8124c7502db30e5421bb42239ce47a) | tests: the ci, LGTM!!! | `+0/−0` | `+0/$0/−0` |
