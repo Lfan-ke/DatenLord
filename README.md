@@ -100,4 +100,4 @@
 
 </details>
 
-<sub>Auto-detectable course branch: any branch except main and gh-pages.</sub>
+<p align="right"><sub>Auto-detectable course branch: any branch except main and gh-pages.</sub></p>
