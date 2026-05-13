@@ -1,0 +1,3 @@
+[submodule "bsc"]
+	path = bsc
+	url = https://github.com/B-Lang-org/bsc.git
