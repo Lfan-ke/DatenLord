@@ -12,7 +12,7 @@ Self-paced Bluespec SystemVerilog onboarding for the DatenLord MIT architecture 
 
 | Path | Source |
 |---|---|
-| `tutorial/` | Snapshot of [`rsnikhil/Bluespec_BSV_Tutorial`](https://github.com/rsnikhil/Bluespec_BSV_Tutorial), `.git` stripped. Edited in place. |
+| `tutorial/` | Snapshot of [`rsnikhil/Bluespec_BSV_Tutorial`](https://github.com/rsnikhil/Bluespec_BSV_Tutorial). |
 | `tutorial/Reference/Lec01..Lec13_*.pdf` | 13-lecture theory backbone by R. S. Nikhil (BSV co-designer). |
 | `tutorial/Example_Programs/Eg02..Eg09` | Per-topic labs with PDF spec + reference variants. |
 | `notes/` | Personal study notes. |
