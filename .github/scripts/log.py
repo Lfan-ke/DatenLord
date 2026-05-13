@@ -292,6 +292,8 @@ def build_comment(branch, sha, msg, author, ts, repo_url, diffstat):
             '<details>',
             '<summary><b>📝 Changes</b></summary>',
             '',
+            '<br />',
+            '',
             '```',
             diffstat.strip(),
             '```',
