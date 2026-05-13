@@ -6,7 +6,7 @@
   <a href="https://github.com/datenlord/training"><img src="https://img.shields.io/badge/DatenLord-MIT_BSV-2563eb?style=for-the-badge&labelColor=0f172a" alt="DatenLord"></a>
   <a href="https://github.com/datenlord/training/issues/74"><img src="https://img.shields.io/badge/Student-D202605002-16a34a?style=for-the-badge&labelColor=0f172a" alt="Student"></a>
   <a href="https://github.com/B-Lang-org/bsc"><img src="https://img.shields.io/badge/Lang-Bluespec_SV-eab308?style=for-the-badge&labelColor=0f172a" alt="Bluespec"></a>
-  <img src="https://img.shields.io/badge/CODE-%2B141k%20%7C%20%E2%88%9258-22c55e?style=for-the-badge&labelColor=0f172a" alt="Code stats">
+  <img src="https://img.shields.io/badge/CODE-%2B141k%20%7C%20%E2%88%9268-22c55e?style=for-the-badge&labelColor=0f172a" alt="Code stats">
 </p>
 
 <sub>Bluespec SystemVerilog learning repository for <b>MIT 6.1910</b> · <b>6.1920</b> · <b>6.5900</b></sub>
@@ -68,8 +68,8 @@
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | :---: | :---: | :---: | :---: | :---: | :---: |
+| `2026-05-13 18:46` | `6.1910` | [`ea92bea`](https://github.com/Lfan-ke/DatenLord/commit/ea92beadef9b70f8e270c0405d0c5d139c0bce52) | fmt: readme. | `+0/−10` | `+0/$1/−0` |
 | `2026-05-13 18:43` | `6.5900` | [`f437f88`](https://github.com/Lfan-ke/DatenLord/commit/f437f882dffbca73a8b87d918b52916d123a8aa8) | init: learning environment | `+17k/−3` | `+170/$1/−0` |
-| `2026-05-13 18:41` | `6.1920` | [`95b4066`](https://github.com/Lfan-ke/DatenLord/commit/95b4066884e53e1fb1a5dc46ac375caf1cae5e35) | init: learning environment | `+47k/−5` | `+499/$1/−0` |
 
 <!-- more --><br/>
 
@@ -81,6 +81,7 @@
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | :---: | :---: | :---: | :---: | :---: | :---: |
+| `2026-05-13 18:41` | `6.1920` | [`95b4066`](https://github.com/Lfan-ke/DatenLord/commit/95b4066884e53e1fb1a5dc46ac375caf1cae5e35) | init: learning environment | `+47k/−5` | `+499/$1/−0` |
 | `2026-05-13 18:42` | `6.1910` | [`fd90640`](https://github.com/Lfan-ke/DatenLord/commit/fd90640d59573ecb957a5bf8ae86ec686bc376fa) | fixed: readme tutorial. | `+1/−1` | `+0/$1/−0` |
 | `2026-05-13 18:09` | `6.1920` | [`57102d7`](https://github.com/Lfan-ke/DatenLord/commit/57102d759cff694073c87f8697884247309ac8e7) | init: learning environment | `+47k/−5` | `+499/$1/−0` |
 | `2026-05-13 18:19` | `6.5900` | [`f24aaf8`](https://github.com/Lfan-ke/DatenLord/commit/f24aaf827cabb1ead3abcbad5dc1e8c28f8e1d96) | init: learning environment | `+17k/−3` | `+170/$1/−0` |
