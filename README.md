@@ -49,6 +49,9 @@
 > [!TIP]
 > A commit titled `completed: all done.` marks the course as finished — the README entry is highlighted and the issue comment becomes a celebration block.
 
+> [!TIP]
+> After learning BSV, the recommended sequence is: 6.175 Labs 0~4, 6.375 Labs 1~4, 6.175 Labs 5~8 and Proj 1~2, then the remaining 6.375 Lab 5.
+
 ## Onboarding
 
 <table width="100%">
