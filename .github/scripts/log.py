@@ -277,7 +277,7 @@ def build_comment(branch, sha, msg, author, ts, repo_url, diffstat):
             '',
             '<br/>',
             '',
-            f'<sub>by <b>{author}</b> · `{fmt_ts(ts)}` UTC+8</sub>',
+            f'<p align="right"><sub>by <b>{author}</b> · `{fmt_ts(ts)}` UTC+8</sub></p>',
         ]
     sections.append(header)
 
