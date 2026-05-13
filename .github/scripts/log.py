@@ -302,7 +302,7 @@ def build_comment(branch, sha, msg, author, ts, repo_url, diffstat):
         ])
 
     sections.append([
-        f'<sub>Auto-synced from <a href="{commit_url}"><code>{branch}@{short}</code></a> · Student ID: <b>D202605002</b></sub>'
+        f'<p align="right"><sub>Auto-synced from <a href="{commit_url}"><code>{branch}@{short}</code></a> · Student ID: <b>D202605002</b></sub></p>'
     ])
 
     return '\n\n---\n\n'.join('\n'.join(s) for s in sections)
