@@ -415,7 +415,7 @@ def render_index(entries):
         '## :material-school-outline: Courses\n\n' + courses_grid(entries) + '\n\n'
         '!!! tip "Recommended sequence"\n'
         '    After learning BSV, the recommended sequence is: '
-        '6.175 Labs 0~4, 6.375 Labs 1~4, 6.175 Labs 5~8 and Proj 1~2, then the remaining 6.375 Lab 5.\n\n'
+        '6.175 Labs 0-4, 6.375 Labs 1-4, 6.175 Labs 5-8 and Proj 1-2, then the remaining 6.375 Lab 5.\n\n'
         '    If course as finished, the README entry is highlighted and the issue comment becomes a celebration block.\n\n'
         '## :material-chart-timeline-variant: At a Glance\n\n' + stats_grid(entries) + '\n\n'
         '## :material-pulse: Recent Commits\n\n' + recent_table(entries, 5) + '\n\n'
