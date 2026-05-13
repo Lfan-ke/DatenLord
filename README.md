@@ -1,4 +1,4 @@
-# MIT 6.375 / 6.5900 — Computer System Architecture (BSV)
+# MIT 6.375 / 6.5900 — Computer System Architecture
 
 [![branch](https://img.shields.io/badge/branch-6.5900-purple)](https://github.com/Lfan-ke/DatenLord/tree/6.5900)
 [![course](https://img.shields.io/badge/MIT-6.375-red)](https://csg.csail.mit.edu/6.375/6_375_2019_www/handouts/labs/)
