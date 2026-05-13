@@ -26,8 +26,6 @@ git clone --recursive https://github.com/B-Lang-org/bsc
 cd bsc && make install-src
 ```
 
-Or grab a prebuilt release: <https://github.com/B-Lang-org/bsc/releases>
-
 ## Build & run a lab
 
 ```bash
@@ -42,11 +40,3 @@ Start with `tutorial/START_HERE.pdf`, then walk `Reference/Lec01..Lec13` and `Ex
 - <https://github.com/rsnikhil/Bluespec_BSV_Tutorial>
 - <https://bluespec.com/>
 - <https://www.cl.cam.ac.uk/teaching/2526/ECAD+Arch/bluespec.html>
-
-## Progress
-
-Tracked by `.github/workflows/log.yml` — every commit appends a row to the root [README log](https://github.com/Lfan-ke/DatenLord/blob/main/README.md) and posts a comment to [`datenlord/training#74`](https://github.com/datenlord/training/issues/74).
-
-## Attribution
-
-`tutorial/` is redistributed from [rsnikhil/Bluespec_BSV_Tutorial](https://github.com/rsnikhil/Bluespec_BSV_Tutorial) for personal study; upstream license applies (see `tutorial/README.md`).
