@@ -1,4 +1,4 @@
-# MIT 6.004 / 6.1910 — Computation Structures (BSV)
+# MIT 6.004 / 6.1910 — Computation Structures and BSV
 
 [![branch](https://img.shields.io/badge/branch-6.1910-blue)](https://github.com/Lfan-ke/DatenLord/tree/6.1910)
 [![course](https://img.shields.io/badge/MIT-6.004%2F6.1910-red)](https://student.mit.edu/catalog/m6c.html)
