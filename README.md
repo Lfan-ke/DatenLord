@@ -29,7 +29,7 @@
 <td align="center"><b>MIT 6.004 / 6.1910</b></td>
 <td align="center"><a href="https://github.com/Lfan-ke/DatenLord/tree/6.1910"><code>6.1910</code></a></td>
 <td align="center">Computation Structures</td>
-<td align="center"><a href="https://b23.tv/o7YjSkA">Bilibili</a></td>
+<td align="center"><a href="https://www.bilibili.com/video/BV197411s736/?share_source=copy_web&vd_source=624515ccd648178974a2607007511e63">Bilibili</a></td>
 </tr>
 <tr>
 <td align="center"><b>MIT 6.175 / 6.1920</b></td>
