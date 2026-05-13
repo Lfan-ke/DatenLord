@@ -227,7 +227,8 @@ def build_comment(branch, sha, msg, author, ts, repo_url, diffstat):
         v = value.replace(' ', '_').replace('-', '--')
         return f'https://img.shields.io/badge/{l}-{v}-{color}?style=for-the-badge&labelColor=0f172a'
 
-    out = []
+    sections = []
+
     if finished:
         trophy = badge('🏆 Course Completed', course, '22c55e')
         meta_row = (
@@ -236,7 +237,7 @@ def build_comment(branch, sha, msg, author, ts, repo_url, diffstat):
             f' <a href="{commit_url}"><img src="{badge("Hash", short, "7c3aed")}" alt="Hash"></a>'
             f' <a href="{issue_url}"><img src="{badge("Student", "D202605002", "e11d48")}" alt="Student"></a>'
         )
-        out += [
+        header = [
             f'## 🏆 {course} · Course Completed',
             '',
             '<div align="center">',
@@ -257,9 +258,6 @@ def build_comment(branch, sha, msg, author, ts, repo_url, diffstat):
             f'<sub>by <b>{author}</b> · `{fmt_ts(ts)}` UTC+8</sub>',
             '',
             '</div>',
-            '',
-            '---',
-            '',
         ]
     else:
         badges_row = (
@@ -267,11 +265,10 @@ def build_comment(branch, sha, msg, author, ts, repo_url, diffstat):
             f' <a href="{commit_url}"><img src="{badge(fmt_ts(ts)[:10], fmt_ts(ts)[11:], "64748b")}" alt="Time"></a>'
             f' <a href="{commit_url}"><img src="{badge("Hash", short, "7c3aed")}" alt="Hash"></a>'
         )
-        out.append(f'## {title}')
-        out.append('')
+        header = [f'## {title}', '']
         if body_text:
-            out += ['<br/>', '']
-        out += [
+            header += ['<br/>', '']
+        header += [
             '<div align="center">',
             '',
             badges_row,
@@ -281,21 +278,21 @@ def build_comment(branch, sha, msg, author, ts, repo_url, diffstat):
             '<br/>',
             '',
             f'<sub>by <b>{author}</b> · `{fmt_ts(ts)}` UTC+8</sub>',
-            '',
-            '---',
-            '',
         ]
+    sections.append(header)
 
+    body_block = []
     if body_text:
-        out += [body_text, '']
+        body_block.append(body_text)
     if trailers:
-        out += ['> ' + l for l in trailers.splitlines()]
-        out.append('')
+        if body_block:
+            body_block.append('')
+        body_block.extend('> ' + l for l in trailers.splitlines())
+    if body_block:
+        sections.append(body_block)
 
     if diffstat:
-        out += [
-            '---',
-            '',
+        sections.append([
             '<details>',
             '<summary><b>📝 Changes</b></summary>',
             '',
@@ -304,13 +301,13 @@ def build_comment(branch, sha, msg, author, ts, repo_url, diffstat):
             '```',
             '',
             '</details>',
-            '',
-        ]
+        ])
 
-    out.append('---')
-    out.append('')
-    out.append(f'<sub>Auto-synced from <a href="{commit_url}"><code>{branch}@{short}</code></a> · Student ID: <b>D202605002</b></sub>')
-    return '\n'.join(out)
+    sections.append([
+        f'<sub>Auto-synced from <a href="{commit_url}"><code>{branch}@{short}</code></a> · Student ID: <b>D202605002</b></sub>'
+    ])
+
+    return '\n\n---\n\n'.join('\n'.join(s) for s in sections)
 
 
 def diffstat(sha):
