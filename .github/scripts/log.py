@@ -281,15 +281,11 @@ def build_comment(branch, sha, msg, author, ts, repo_url, diffstat):
         ]
     sections.append(header)
 
-    body_block = []
     if body_text:
-        body_block.append(body_text)
+        sections.append([body_text])
+
     if trailers:
-        if body_block:
-            body_block.append('')
-        body_block.extend('> ' + l for l in trailers.splitlines())
-    if body_block:
-        sections.append(body_block)
+        sections.append(['> ' + l for l in trailers.splitlines()])
 
     if diffstat:
         sections.append([
