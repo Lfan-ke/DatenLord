@@ -68,8 +68,8 @@
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | :---: | :---: | :---: | :---: | :---: | :---: |
+| `2026-05-14 09:58` | `6.1910` | [`21287fa`](https://github.com/Lfan-ke/DatenLord/commit/21287fa7ad8e40128007dbe5a7df50aad0ac9837) | learn: note that I have read the of... | `+0/−0` | `+0/$0/−0` |
 | `2026-05-13 23:39` | `6.5900` | [`8d717c8`](https://github.com/Lfan-ke/DatenLord/commit/8d717c8cb020045be805205405a12d0bf9dc4f42) | baseline: v0.0.1 — env ready, learn... | `+0/−0` | `+0/$0/−0` |
-| `2026-05-13 23:37` | `6.1920` | [`2550d13`](https://github.com/Lfan-ke/DatenLord/commit/2550d13b65ff535ada9b57dd266316f6c825af94) | baseline: v0.0.1 — env ready, learn... | `+0/−0` | `+0/$0/−0` |
 
 <!-- more --><br/>
 
@@ -81,6 +81,7 @@
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | :---: | :---: | :---: | :---: | :---: | :---: |
+| `2026-05-13 23:37` | `6.1920` | [`2550d13`](https://github.com/Lfan-ke/DatenLord/commit/2550d13b65ff535ada9b57dd266316f6c825af94) | baseline: v0.0.1 — env ready, learn... | `+0/−0` | `+0/$0/−0` |
 | `2026-05-13 23:35` | `6.1910` | [`941c212`](https://github.com/Lfan-ke/DatenLord/commit/941c2123cce2c54b3f9262ca1d1a520387d37f6b) | baseline: v0.0.1 — env ready, learn... | `+0/−0` | `+0/$0/−0` |
 | `2026-05-13 20:43` | `6.1910` | [`8b65388`](https://github.com/Lfan-ke/DatenLord/commit/8b65388c772ca2e9f9ed09039844248cb0520a7d) | rename: bsc submodule → specs | `+2/−2` | `+0/$2/−0` |
 | `2026-05-13 20:40` | `6.1910` | [`f564caf`](https://github.com/Lfan-ke/DatenLord/commit/f564caf0d5feefaf71c6db4e7d833ffd87132215) | add: bsc submodule for offline refe... | `+4/−0` | `+2/$0/−0` |
