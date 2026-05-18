@@ -20,17 +20,39 @@ Self-paced Bluespec SystemVerilog onboarding for the DatenLord MIT architecture 
 ## Toolchain
 
 ```bash
-sudo apt install -y build-essential ghc libghc-regex-compat-dev libghc-syb-dev \
-                    libghc-old-time-dev tcl-dev tk-dev autoconf gperf flex bison
-git clone --recursive https://github.com/B-Lang-org/bsc
-cd bsc && make install-src
+sudo apt install -y build-essential ghc autoconf gperf flex bison \
+                    tcl-dev tk-dev libx11-dev libxft-dev libfontconfig1-dev \
+                    cabal-install
+cabal update
+cabal install split strict-concurrency regex-compat syb old-time --lib
+git clone --recursive --depth 1 https://github.com/B-Lang-org/bsc
+cd bsc && make install-src    # ls inst/bin/  &&  inst/bin/bsc -v
+# Bluespec Compiler, version 2026.01-54-ge8b70f8c (build e8b70f8c)
 ```
 
 ## Build & run a lab
 
 ```bash
-cd tutorial/Example_Programs/Eg02a_HelloWorld
-make
+# method 1: add the ba path
+cd tutorial/Build
+bsc -sim -g mkTestbench ../Example_Programs/Eg02a_HelloWorld/src_BSV/Testbench.bsv
+bsc -sim -e mkTestbench -o ./hello_sim -bdir ../Example_Programs/Eg02a_HelloWorld/src_BSV
+./hello_sim
+
+# method 2: using build dir only
+cd Build
+bsc -sim -bdir . -g mkTestbench ../Example_Programs/Eg02a_HelloWorld/src_BSV/Testbench.bsv
+bsc -sim -bdir . -e mkTestbench -o ./hello_sim
+./hello_sim
+
+# method 3: make only
+cd Build
+# make EG=Eg02a_HelloWorld full_clean
+# make EG=Eg02a_HelloWorld compile
+# make EG=Eg02a_HelloWorld link
+# make EG=Eg02a_HelloWorld simulate
+# same as:
+make EG=Eg02a_HelloWorld all_bsim
 ```
 
 Start with `tutorial/START_HERE.pdf`, then walk `Reference/Lec01..Lec13` and `Example_Programs/Eg02..Eg09` in order.
