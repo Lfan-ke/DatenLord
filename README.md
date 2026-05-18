@@ -6,7 +6,7 @@
   <a href="https://github.com/datenlord/training"><img src="https://img.shields.io/badge/DatenLord-MIT_BSV-2563eb?style=for-the-badge&labelColor=0f172a" alt="DatenLord"></a>
   <a href="https://github.com/datenlord/training/issues/74"><img src="https://img.shields.io/badge/Student-D202605002-16a34a?style=for-the-badge&labelColor=0f172a" alt="Student"></a>
   <a href="https://github.com/B-Lang-org/bsc"><img src="https://img.shields.io/badge/Lang-Bluespec_SV-eab308?style=for-the-badge&labelColor=0f172a" alt="Bluespec"></a>
-  <img src="https://img.shields.io/badge/CODE-%2B65k%20%7C%20%E2%88%9263-22c55e?style=for-the-badge&labelColor=0f172a" alt="Code stats">
+  <img src="https://img.shields.io/badge/CODE-%2B65k%20%7C%20%E2%88%9269-22c55e?style=for-the-badge&labelColor=0f172a" alt="Code stats">
 </p>
 
 <sub>Bluespec SystemVerilog learning repository for <b>MIT 6.1910</b> · <b>6.1920</b> · <b>6.5900</b></sub>
@@ -68,8 +68,8 @@
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | :---: | :---: | :---: | :---: | :---: | :---: |
+| `2026-05-18 23:34` | `6.1910` | [`eca70cb`](https://github.com/Lfan-ke/DatenLord/commit/eca70cbe7900b2667702c24e64bce7b664b13d16) | update: how to install the bsc | `+54/−6` | `+0/$2/−1` |
 | `2026-05-18 23:31` | `6.1910` | [`41505f4`](https://github.com/Lfan-ke/DatenLord/commit/41505f412f433aa9ad5c6b2f01e18a8ca9a2dbc5) | docs: update the notes about bsv ba... | `+870/−0` | `+3/$0/−0` |
-| `2026-05-14 09:58` | `6.1910` | [`21287fa`](https://github.com/Lfan-ke/DatenLord/commit/21287fa7ad8e40128007dbe5a7df50aad0ac9837) | learn: note that I have read the of... | `+0/−0` | `+0/$0/−0` |
 
 <!-- more --><br/>
 
@@ -81,6 +81,7 @@
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | :---: | :---: | :---: | :---: | :---: | :---: |
+| `2026-05-14 09:58` | `6.1910` | [`21287fa`](https://github.com/Lfan-ke/DatenLord/commit/21287fa7ad8e40128007dbe5a7df50aad0ac9837) | learn: note that I have read the of... | `+0/−0` | `+0/$0/−0` |
 | `2026-05-13 23:39` | `6.5900` | [`8d717c8`](https://github.com/Lfan-ke/DatenLord/commit/8d717c8cb020045be805205405a12d0bf9dc4f42) | baseline: v0.0.1 — env ready, learn... | `+0/−0` | `+0/$0/−0` |
 | `2026-05-13 23:37` | `6.1920` | [`2550d13`](https://github.com/Lfan-ke/DatenLord/commit/2550d13b65ff535ada9b57dd266316f6c825af94) | baseline: v0.0.1 — env ready, learn... | `+0/−0` | `+0/$0/−0` |
 | `2026-05-13 23:35` | `6.1910` | [`941c212`](https://github.com/Lfan-ke/DatenLord/commit/941c2123cce2c54b3f9262ca1d1a520387d37f6b) | baseline: v0.0.1 — env ready, learn... | `+0/−0` | `+0/$0/−0` |
