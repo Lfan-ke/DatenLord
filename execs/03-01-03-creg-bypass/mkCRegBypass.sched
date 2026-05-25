@@ -1,0 +1,24 @@
+=== Generated schedule for mkCRegBypass ===
+
+Method schedule
+---------------
+Method: write
+Ready signal: True
+Sequenced before (restricted): write
+Sequenced after: readNew
+Sequenced after (restricted): readOld
+ 
+Method: readOld
+Ready signal: True
+Conflict-free: readOld
+Sequenced before (restricted): write, readNew
+ 
+Method: readNew
+Ready signal: True
+Conflict-free: readNew
+Sequenced before: write
+Sequenced after (restricted): readOld
+ 
+Logical execution order: readOld, readNew, write
+
+============================================

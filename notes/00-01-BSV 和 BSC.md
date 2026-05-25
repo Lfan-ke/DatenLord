@@ -31,7 +31,7 @@ bsc -sim -g mkEmmTopModule emm.bsv
 bsc -sim -e mkEmmTopModule -o ./sim_executable
 # -e <module> 指定顶层模块作为入口
 # -o <file> 输出可执行文件名
-# 生成：sim_exe sim_exe.so
+# 生成：sim_exe sim_exe.so 以 Bluesim 为默认的仿真器
 
 ./sim_executable    # 运行仿真，需要生成波形可以附加`-V`参数或者`+bscvcd`参数
 ```
@@ -54,9 +54,9 @@ bsc -sim -bdir ./build -g mkEmmTopModule emm.bsv
 **Verilog仿真流程**：
 
 ```bash
-# 生成 verilog
+# 生成 verilog，可加上 -show-schedule 调试标志，查看部分 reg 的规则调度顺序
 bsc -verilog -g mkTestBench TestBench.bsv     # 习惯上 模块名有前缀小写 `mk`
-# 链接 仿真器，比如：iverilog
+# 链接 仿真器，比如：Icarus Verilog，也支持 verilator cvc 等
 bsc -verilog -e mkTestBench -o ./vsim_exe -vsim iverilog mkTestbench.v
 # 运行以及输出波形
 ./vsim_exe +bscvcd

@@ -1,0 +1,32 @@
+=== Generated schedule for mkPipelineFIFO ===
+
+Method schedule
+---------------
+Method: enq
+Ready signal: fifo.notFull && fifo.i_notFull
+Sequenced after: first, notEmpty, notFull
+Conflicts: enq, deq
+ 
+Method: deq
+Ready signal: fifo.notEmpty && fifo.i_notEmpty
+Sequenced after: first, notEmpty, notFull
+Conflicts: enq, deq
+ 
+Method: first
+Ready signal: fifo.notEmpty && fifo.i_notEmpty
+Conflict-free: first, notEmpty, notFull
+Sequenced before: enq, deq
+ 
+Method: notEmpty
+Ready signal: True
+Conflict-free: first, notEmpty, notFull
+Sequenced before: enq, deq
+ 
+Method: notFull
+Ready signal: True
+Conflict-free: first, notEmpty, notFull
+Sequenced before: enq, deq
+ 
+Logical execution order: first, notEmpty, notFull, enq, deq
+
+==============================================
