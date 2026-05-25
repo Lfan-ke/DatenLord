@@ -6,7 +6,7 @@
   <a href="https://github.com/datenlord/training"><img src="https://img.shields.io/badge/DatenLord-MIT_BSV-2563eb?style=for-the-badge&labelColor=0f172a" alt="DatenLord"></a>
   <a href="https://github.com/datenlord/training/issues/74"><img src="https://img.shields.io/badge/Student-D202605002-16a34a?style=for-the-badge&labelColor=0f172a" alt="Student"></a>
   <a href="https://github.com/B-Lang-org/bsc"><img src="https://img.shields.io/badge/Lang-Bluespec_SV-eab308?style=for-the-badge&labelColor=0f172a" alt="Bluespec"></a>
-  <img src="https://img.shields.io/badge/CODE-%2B65k%20%7C%20%E2%88%9270-22c55e?style=for-the-badge&labelColor=0f172a" alt="Code stats">
+  <img src="https://img.shields.io/badge/CODE-%2B67k%20%7C%20%E2%88%9283-22c55e?style=for-the-badge&labelColor=0f172a" alt="Code stats">
 </p>
 
 <sub>Bluespec SystemVerilog learning repository for <b>MIT 6.1910</b> · <b>6.1920</b> · <b>6.5900</b></sub>
@@ -68,8 +68,8 @@
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | :---: | :---: | :---: | :---: | :---: | :---: |
-| `2026-05-19 22:28` | `6.1910` | [`35f366b`](https://github.com/Lfan-ke/DatenLord/commit/35f366baeeb7a28f13482eb1bae3773980479c8b) | add: notes of ... lec02 03 | `+250/−1` | `+0/$3/−0` |
-| `2026-05-18 23:56` | `6.1910` | [`0db9c76`](https://github.com/Lfan-ke/DatenLord/commit/0db9c76961ea33157ee68c3156abbed1cab93d87) | init: note about lec02 lec03. | `+12/−0` | `+2/$1/−0` |
+| `2026-05-25 22:49` | `6.1910` | [`ad43cfb`](https://github.com/Lfan-ke/DatenLord/commit/ad43cfb1973bf3426307a37678c6d6c58c77916f) | notes: completed lec04 and the next... | `+845/−4` | `+11/$4/−0` |
+| `2026-05-21 00:17` | `6.1910` | [`059202c`](https://github.com/Lfan-ke/DatenLord/commit/059202c497a49184c02d00bee70307819b699b02) | learn: completed note of lec3, and ... | `+338/−9` | `+1/$2/−0` |
 
 <!-- more --><br/>
 
@@ -81,6 +81,8 @@
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | :---: | :---: | :---: | :---: | :---: | :---: |
+| `2026-05-19 22:28` | `6.1910` | [`35f366b`](https://github.com/Lfan-ke/DatenLord/commit/35f366baeeb7a28f13482eb1bae3773980479c8b) | add: notes of ... lec02 03 | `+250/−1` | `+0/$3/−0` |
+| `2026-05-18 23:56` | `6.1910` | [`0db9c76`](https://github.com/Lfan-ke/DatenLord/commit/0db9c76961ea33157ee68c3156abbed1cab93d87) | init: note about lec02 lec03. | `+12/−0` | `+2/$1/−0` |
 | `2026-05-18 23:34` | `6.1910` | [`eca70cb`](https://github.com/Lfan-ke/DatenLord/commit/eca70cbe7900b2667702c24e64bce7b664b13d16) | update: how to install the bsc | `+54/−6` | `+0/$2/−1` |
 | `2026-05-18 23:31` | `6.1910` | [`41505f4`](https://github.com/Lfan-ke/DatenLord/commit/41505f412f433aa9ad5c6b2f01e18a8ca9a2dbc5) | docs: update the notes about bsv ba... | `+870/−0` | `+3/$0/−0` |
 | `2026-05-14 09:58` | `6.1910` | [`21287fa`](https://github.com/Lfan-ke/DatenLord/commit/21287fa7ad8e40128007dbe5a7df50aad0ac9837) | learn: note that I have read the of... | `+0/−0` | `+0/$0/−0` |
