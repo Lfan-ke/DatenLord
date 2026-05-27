@@ -1,0 +1,17 @@
+# Build output
+output/
+
+# Waveform files
+*.vcd
+*.vcd.gz
+*.fsdb
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
