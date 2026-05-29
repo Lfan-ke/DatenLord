@@ -68,8 +68,8 @@
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | :---: | :---: | :---: | :---: | :---: | :---: |
+| `2026-05-30 01:26` | `6.1910` | [`7732208`](https://github.com/Lfan-ke/DatenLord/commit/77322086c64b59f9a781adb680b955e10f3a66af) | notes: lec 11 interop c / interfaci... | `+316/−0` | `+3/$2/−0` |
 | `2026-05-28 03:13` | `6.1910` | [`09f139d`](https://github.com/Lfan-ke/DatenLord/commit/09f139d35c77eb452a24341ed164040459858685) | learn: system-c and noted it. | `+1.6k/−5` | `+7/$2/−1` |
-| `2026-05-27 02:13` | `6.1910` | [`d712bd4`](https://github.com/Lfan-ke/DatenLord/commit/d712bd4501c11ef3cfdfaa7fc8283b24c04eafc6) | add: notes. | `+807/−0` | `+9/$0/−0` |
 
 <!-- more --><br/>
 
@@ -81,6 +81,7 @@
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | :---: | :---: | :---: | :---: | :---: | :---: |
+| `2026-05-27 02:13` | `6.1910` | [`d712bd4`](https://github.com/Lfan-ke/DatenLord/commit/d712bd4501c11ef3cfdfaa7fc8283b24c04eafc6) | add: notes. | `+807/−0` | `+9/$0/−0` |
 | `2026-05-27 02:11` | `6.1910` | [`b1c9af7`](https://github.com/Lfan-ke/DatenLord/commit/b1c9af7a5129d09a4d5eec8265d2482aa2d0cd21) | noted: 04<->09 and the next is oper... | `+119/−1` | `+0/$2/−0` |
 | `2026-05-26 01:20` | `6.1910` | [`50b7c2b`](https://github.com/Lfan-ke/DatenLord/commit/50b7c2b08f9e994400c138acb70a11bf1ed8eb43) | note: noted the s-fsm from lec06. | `+70/−0` | `+3/$0/−0` |
 | `2026-05-26 01:11` | `6.1910` | [`7094214`](https://github.com/Lfan-ke/DatenLord/commit/7094214242e35ce2103b7265ec5c4cfe741d9d43) | notes: the whole of the tlm intro a... | `+762/−3` | `+0/$1/−0` |
