@@ -26,3 +26,10 @@ dump.vcd
 *.tiff
 *.sav
 objdump
+
+output
+out
+release
+target
+build
+debug
