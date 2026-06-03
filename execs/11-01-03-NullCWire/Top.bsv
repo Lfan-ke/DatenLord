@@ -16,7 +16,7 @@ module mkTop(Empty);
     endrule
 
     // mkNullCrossingWire: 参数 (目标时钟, 源信号)
-    ReadOnly#(Bit#(8)) crossed <- mkNullCrossingWire(clockOf(dst_clk), source);
+    ReadOnly#(Bit#(8)) crossed <- mkNullCrossingWire(dst_clk, source);
 
     rule peek;
         $display("[VIEW] crossed=%0d (unsafe direct wire)", crossed);

@@ -1,9 +1,13 @@
 # HLS + SystemC
 
+> 重要前提：本篇是【通用 HLS 背景】，与本课的 `bsc -systemc` **无关**。
+> `bsc -systemc` 生成的是 **Bluesim 驱动的时钟级 SystemC 仿真包装**（含 `SC_METHOD`/`bk_*` 内核桥），
+> **不做** HLS/C→RTL 调度，下面的 `#pragma HLS ...` 对它不适用。详见 `execs/10-03-01-Adder2SC`。
+
 “SystemC” 实际有两种完全不同用途：
 
 - `TLM SystemC` - 系统级仿真
-- `HLS SystemC` - 硬件综合
+- `HLS SystemC` - 硬件综合（第三方 HLS 工具，非 bsc）
 
 HLS, High-Level Synthesis, C/C++/SystemC/... -[`HLS 工具`]-> Verilog/VHDL/...
 

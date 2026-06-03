@@ -1,3 +1,9 @@
 [submodule "specs"]
 	path = specs
 	url = https://github.com/B-Lang-org/bsc.git
+[submodule "other/bdw"]
+	path = other/bdw
+	url = https://github.com/B-Lang-org/bdw.git
+[submodule "other/bsc-contrib"]
+	path = other/bsc-contrib
+	url = https://github.com/B-Lang-org/bsc-contrib.git

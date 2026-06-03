@@ -55,7 +55,7 @@ module mkTop(Empty);
 
     // ===== 对比：不安全直接跨域 =====
     ReadOnly#(Bit#(8)) unsafe_wire <- mkNullCrossingWire(
-        clockOf(dst_clk),
+        dst_clk,
         src_counter
     );
 

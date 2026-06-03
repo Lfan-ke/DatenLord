@@ -102,20 +102,23 @@ int sc_main(int argc, char* argv[]) {
 }
 ```
 
-编译运行：
+编译运行（已实测，本机 SystemC 为系统安装 `/usr/include`，bsc 库在 `/usr/local/bsc/lib`）：
 
-```zsh
-# 编译
-g++ -o adder_sim \
-    -I$SYSTEMC_HOME/include \
-    -Ioutput \
-    -L$SYSTEMC_HOME/lib-linux64 \
-    -lsystemc \
-    main.cpp output/mkAdder_systemc.o output/mkAdder.o output/model_mkAdder.o
+```sh
+# BLUESPECDIR 一般是 <bsc安装>/lib，这里 = /usr/local/bsc/lib
+# 关键：除 SystemC 外，还必须链接 bsc 的 Bluesim 运行时（头 + libbskernel/libbsprim），
+#       否则会报 bluesim_kernel_api.h 找不到 / bk_* 未定义引用
+g++ -std=c++17 -o adder_sim main.cpp \
+    output/mkAdder_systemc.o output/mkAdder.o output/model_mkAdder.o \
+    -Ioutput -I$BLUESPECDIR/Bluesim \
+    -L$BLUESPECDIR/Bluesim -lbskernel -lbsprim \
+    -lsystemc
 
-# 运行
+# 运行 -> sum = 0x46（0x12 + 0x34）
 ./adder_sim
 
-# 查看波形
+# 若开了 sc_trace，可看波形
 gtkwave wave.vcd
 ```
+
+> 注：若 SystemC 非系统安装，再补 `-I$SYSTEMC_HOME/include -L$SYSTEMC_HOME/lib -Wl,-rpath,$SYSTEMC_HOME/lib`。

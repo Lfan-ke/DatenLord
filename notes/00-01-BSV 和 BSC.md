@@ -68,7 +68,7 @@ bsc -verilog -e mkTestBench -o ./vsim_exe -vsim iverilog mkTestbench.v
 
 ```bash
 # `.`-为当前目录    `:`-为路径分隔符
-# `%/`-为$BSC_LIB_DIR环境变量（安装的时候需要自己设置，在inst目录下）
+# `%/`-为$BLUESPECDIR环境变量（bsc 安装库所在目录，可用 -i 覆盖）
 bsc -p "path1:path2:%/Libraries" source.bsv
 ```
 
@@ -87,9 +87,9 @@ bsc -sim -keep-fires -g mkTopModule source.bsv              # -keep-fires：保�
 bsc -sim -remove-fires -g mkTopModule source.bsv            # -remove-fires：移除WILL_FIRE信号（优化）
 
 # 波形生成
-./sim_exe -V                                                # -V：生成波形（默认verilog.vcd）
+./sim_exe -V                                                # -V：Bluesim 生成波形（默认dump.vcd）
 ./sim_exe -V waves.vcd                                      # -V <file>：指定波形文件名
-./sim_exe +bscvcd                                           # +bscvcd：Bluesim波形生成
+./sim_exe +bscvcd                                           # +bscvcd：Verilog 仿真（用 bsc 的 main.v）波形生成
 gtkwave dump.vcd                                            # gtkwave：查看波形
 
 # ========== 单文件示例 ==========
@@ -175,6 +175,37 @@ bsc [flags] -sim -e topmodule            # 链接对象到Bluesim二进制
 bsc [flags] -systemc -e topmodule        # 链接对象到SystemC模型
 ```
 
+## 速查表（最常用，按用途分组）
+
+| 用途 | flag | 说明 |
+|:--|:--|:--|
+| **后端** | `-sim` / `-verilog` / `-systemc` | 生成 Bluesim / Verilog / SystemC |
+| **编译** | `-g mod` | 为模块 mod 生成代码（配合后端） |
+| | `-u` | 递归检查并重编过期的依赖包（推荐常加） |
+| **链接** | `-e top` | 指定顶层模块做链接（生成可执行/模型） |
+| | `-o name` | 输出可执行名 |
+| | `-vsim iverilog` | 链接 Verilog 仿真时指定仿真器 |
+| **输出目录** | `-vdir` / `-bdir` / `-info-dir` / `-simdir` | `.v` / `.bo,.ba` / 信息(.sched等) / bluesim 中间文件 |
+| **路径/宏** | `-p path` | 源/中间文件搜索路径（`:`分隔，`%`=BLUESPECDIR，`+`=当前路径） |
+| | `-vsearch path` | Verilog 文件搜索路径（`:`分隔） |
+| | `-i dir` | 覆盖 `$BLUESPECDIR` |
+| | `-D macro` | 定义预处理宏 |
+| **调度/调试** | `-show-schedule` | 打印生成的调度顺序 |
+| | `-keep-fires` | 保留 CAN_FIRE/WILL_FIRE 信号 |
+| | `-sched-dot` | 生成调度图 `.dot` |
+| | `-show-module-use` | 列出实例化的 Verilog 模块 |
+| | `-show-rule-rel r1 r2` | 看两 rule 的调度关系 |
+| **优化** | `-aggressive-conditions` | 激进构造隐式条件 |
+| | `-remove-false-rules` / `-remove-empty-rules` | 删恒假/空规则 |
+| **警告/错误** | `-suppress-warnings list` | 忽略指定警告（`:`分隔，或 `ALL`/`NONE`） |
+| | `-promote-warnings list` | 警告升级为错误 |
+| | `-demote-errors list` | 错误降级为警告 |
+| | `-no-<warn>` | 多数 flag 前加 `no-` 取反 |
+| **外部 C** | `-I` / `-L` / `-l` / `-Xc/-Xc++/-Xl` | C 头路径 / 库路径 / 库 / 透传给 C 编译/链接器 |
+
+> 运行时（生成的可执行/仿真）flag 另算，**不在 `bsc --help` 里**，如 Bluesim 的 `./sim -V`（波形，默认 `dump.vcd`）。
+> 下方是**全量** flag 表（字母序）。
+
 ## Compiler Flags
 
 | 选项 | 说明 |
@@ -189,7 +220,7 @@ bsc [flags] -systemc -e topmodule        # 链接对象到SystemC模型
 | `-Xl arg` | 向C/C++链接器传递参数 |
 | `-Xv arg` | 向Verilog链接过程传递参数 |
 | `-aggressive-conditions` | 激进地构建隐式条件（可能提高性能但增加面积） |
-| `-bdir dir` | 输出.bo（Bluesim对象）和.ba（细化文件）的目录 |
+| `-bdir dir` | 输出.bo（包中间文件，各后端通用）和.ba（细化文件）的目录 |
 | `-check-assert` | 使用Assert库测试断言 |
 | `-continue-after-errors` | 检测到错误后继续激进编译（尽量多报错） |
 | `-cpp` | 使用C预处理器预处理源码 |

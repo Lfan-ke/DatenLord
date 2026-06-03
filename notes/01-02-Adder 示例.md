@@ -131,7 +131,8 @@ endpackage
 // 文件名: Adder8_Compose.bsv
 package Adder8_Compose;
 
-import Adder4::*;      // 导入4位加法器
+import Adder4::*;            // 导入4位加法器
+import Adder4_Simple::*;     // mkAdder4_Simple 在此包
 import Adder8::*;
 
 (* synthesize *)
@@ -141,59 +142,52 @@ module mkAdder8_Compose(Adder8IFC);
   Adder4IFC adder_low <- mkAdder4_Simple;
   Adder4IFC adder_high <- mkAdder4_Simple;
 
-  // 内部寄存器
+  // 内部寄存器（声明都放在 rule/method 之前）
   Reg#(Bit#(8)) a_reg <- mkRegU();
   Reg#(Bit#(8)) b_reg <- mkRegU();
   Reg#(Bit#(1)) cin_reg <- mkRegU();
-  Reg#(Bit#(1)) stage <- mkReg(0);
+  Reg#(Bit#(2)) stage <- mkReg(0);   // 0..3，需 2 位（原 Bit#(1) 装不下）
 
   // 中间结果
   Reg#(Bit#(4)) sum_low <- mkRegU();
   Reg#(Bit#(1)) carry_mid <- mkRegU();
-
-  method Action put(Bit#(8) a, Bit#(8) b, Bit#(1) cin) if (stage == 0);
-    a_reg <= a;
-    b_reg <= b;
-    cin_reg <= cin;
-    stage <= 1;
-  endmethod
-
-  // 阶段1：计算低4位
-  rule rl_stage1 (stage == 1);
-    // 会发现，计算就是调用实例的方法
-    adder_low.put(a_reg[3:0], b_reg[3:0], cin_reg);
-
-    match {.sum, .carry} <- adder_low.get();
-
-    sum_low <= sum;
-    carry_mid <= carry;
-
-    stage <= 2;
-  endrule
-
-  // 阶段2：计算高4位（带进位）
-  rule rl_stage2 (stage == 2);
-    adder_high.put(a_reg[7:4], b_reg[7:4], carry_mid);
-
-    match {.sum, .carry} <- adder_high.get();
-
-    Bit#(8) result = {sum, sum_low};
-
-    stage <= 3;
-    // 存储结果，等待 get
-  endrule
 
   // 结果寄存器
   Reg#(Bit#(8)) result_reg <- mkRegU();
   Reg#(Bit#(1)) cout_reg <- mkRegU();
   Reg#(Bool) result_valid <- mkReg(False);
 
-  rule rl_store (stage == 3);
-    result_reg <= result;
+  // 阶段1：喂低4位（Adder4 是 1 拍时序，put 与 get 必须跨周期，不能同 rule）
+  rule rl_stage1 (stage == 1);
+    adder_low.put(a_reg[3:0], b_reg[3:0], cin_reg);
+    stage <= 2;
+  endrule
+
+  // 阶段2：取低4位结果，喂高4位（带进位）
+  rule rl_stage2 (stage == 2);
+    match {.sum, .carry} <- adder_low.get();
+    sum_low <= sum;
+    carry_mid <= carry;
+    adder_high.put(a_reg[7:4], b_reg[7:4], carry);
+    stage <= 3;
+  endrule
+
+  // 阶段3：取高4位结果，拼接并存储
+  rule rl_stage3 (stage == 3);
+    match {.sum, .carry} <- adder_high.get();
+    result_reg <= {sum, sum_low};
     cout_reg <= carry;
     result_valid <= True;
     stage <= 0;
   endrule
+
+  // 方法放在 module 末尾
+  method Action put(Bit#(8) a, Bit#(8) b, Bit#(1) cin) if (stage == 0);
+    a_reg <= a;
+    b_reg <= b;
+    cin_reg <= cin;
+    stage <= 1;
+  endmethod
 
   method ActionValue#(Tuple2#(Bit#(8), Bit#(1))) get() if (result_valid);
     result_valid <= False;
@@ -217,7 +211,7 @@ interface AdderIFC#(numeric type n);  // 常量泛型
 endinterface
 
 // 参数化加法器（任意位宽）
-module mkAdder#(numeric type n)(AdderIFC#(n))
+module mkAdder(AdderIFC#(n))   // n 经接口 AdderIFC#(n) 传入，不写进 #()
   provisos (Add#(1, n, m));  // n+1 = m，用于进位扩展
 
   Reg#(Bit#(n)) a_reg <- mkRegU();
@@ -237,7 +231,7 @@ module mkAdder#(numeric type n)(AdderIFC#(n))
     Bit#(TAdd#(n,1)) sum = zeroExtend(a_reg) + zeroExtend(b_reg) + zeroExtend(cin_reg);
 
     Bit#(n) result = truncate(sum);
-    Bit#(1) cout = sum[n];  // 最高位是进位
+    Bit#(1) cout = sum[valueOf(n)];  // 最高位是进位（n 是类型，取值需 valueOf）
 
     valid <= False;
     return tuple2(result, cout);
@@ -248,7 +242,7 @@ endmodule
 // 8位加法器的特化实例
 typedef AdderIFC#(8) Adder8IFC;
 module mkAdder8(Adder8IFC);
-  let m <- mkAdder#(8);
+  Adder8IFC m <- mkAdder;   // n=8 由接口 Adder8IFC=AdderIFC#(8) 推断
   return m;
 endmodule
 
@@ -263,6 +257,7 @@ package Testbench;
 
 import Adder4::*;
 import Adder4_Simple::*;
+import Adder8::*;            // Adder8IFC 在此包（import::* 不会再导出）
 import Adder8_Compose::*;
 import StmtFSM::*;
 
@@ -283,7 +278,8 @@ module mkTestbench(Empty);
       // 验证
       Bit#(5) expected = zeroExtend(a) + zeroExtend(b) + zeroExtend(cin);
       $display("  Result: sum=%d (%b), cout=%d (%b)", sum, sum, cout, cout);
-      $display("  Expected: sum=%d, cout=%d", truncate(expected), expected[4]);
+      Bit#(4) exp_sum = truncate(expected);   // 显式类型，否则 $display 里 truncate 尺寸不可推断
+      $display("  Expected: sum=%d, cout=%d", exp_sum, expected[4]);
 
       if (sum == truncate(expected) && cout == expected[4])
         $display("  [PASS]");
@@ -300,7 +296,8 @@ module mkTestbench(Empty);
 
       Bit#(9) expected = zeroExtend(a) + zeroExtend(b) + zeroExtend(cin);
       $display("  Result: sum=%d, cout=%d", sum, cout);
-      $display("  Expected: sum=%d, cout=%d", truncate(expected), expected[8]);
+      Bit#(8) exp_sum = truncate(expected);   // 显式类型，否则 $display 里 truncate 尺寸不可推断
+      $display("  Expected: sum=%d, cout=%d", exp_sum, expected[8]);
 
       if (sum == truncate(expected) && cout == expected[8])
         $display("  [PASS]");

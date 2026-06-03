@@ -25,7 +25,7 @@ module mkTop(Empty);
     // ============================================================
     // 3. mkCReg - concurrent register (p0 < p1 < p2...)
     //    higher index sees writes from lower index in same cycle
-    //    COMMENTED: causes BSC internal compiler error in version 2026.01
+    //    (ports used in SEPARATE rules below — two ports in one rule would be G0004)
     // ============================================================
     Reg#(Bit#(8)) creg[2] <- mkCReg(2, 0);
 
@@ -89,7 +89,7 @@ module mkTop(Empty);
 
     // ============================================================
     // 7. mkBypassWire - bypass wire (write < read, visible same cycle, no default)
-    //    COMMENTED: not supported in this BSC version
+    //    write side is always_enabled — must be written every cycle (r_bwire_write below)
     // ============================================================
     Wire#(Bit#(8)) bwire <- mkBypassWire();
 

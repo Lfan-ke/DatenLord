@@ -50,7 +50,7 @@ always @(posedge CLK)
 | `(* always_ready *)` | 方法永远就绪，不生成 `RDY` 信号 |
 | `(* always_enabled *)` | 方法每周期调用，不生成 `EN` 信号 |
 | `(* prefix = "" *)` | 控制端口名前缀 |
-| `(* clocked_by = "clk" *)` | 指定时钟信号名 |
+| `(* clock_prefix = "clk" *)` | 重命名生成的时钟端口（`reset_prefix` 同理；`clocked_by` 不是模块属性） |
 
 ## 模块层次结构
 
