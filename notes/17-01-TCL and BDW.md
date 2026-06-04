@@ -82,11 +82,9 @@ bdw script.tcl         # 参数以 .tcl 结尾 → 当作脚本 source 执行
 
 > 命令行参数解析见 `workstation.tcl: process_arguments`：`.bspec` → 打开工程；`.tcl` → 跑脚本；其它 → 当输出名。
 
-**`.bspec` 是什么**：BDW 的**工程文件**（`projectname.bspec`），保存一套设置——顶层文件/模块、源码与库搜索路径、bsc 编译/链接选项、仿真后端等。它是 BDW 专属的，**纯命令行用 bsc 并不需要**；同一份设计也可以建多个 `.bspec` 各存一套配置。
+**GUI 界面**：打开后工程项目`.bspec`即可一键 Type Check / Compile / Link / Simulate，并在 Module Browser / Schedule 窗口里分析。
 
-**GUI 里开/建工程**：菜单 **Project → Open Project…** 打开已有 `.bspec`；**Project → New…** 在弹窗里填工程名/顶层/路径，保存即生成 `projectname.bspec`。打开后即可一键 Type Check / Compile / Link / Simulate，并在 Module Browser / Schedule 窗口里分析。
-
-### 本地安装（本机已装到 `/usr/local/bsc`）
+### 本地安装
 
 ```bash
 cd other/bdw
