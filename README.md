@@ -6,7 +6,7 @@
   <a href="https://github.com/datenlord/training"><img src="https://img.shields.io/badge/DatenLord-MIT_BSV-2563eb?style=for-the-badge&labelColor=0f172a" alt="DatenLord"></a>
   <a href="https://github.com/datenlord/training/issues/74"><img src="https://img.shields.io/badge/Student-D202605002-16a34a?style=for-the-badge&labelColor=0f172a" alt="Student"></a>
   <a href="https://github.com/B-Lang-org/bsc"><img src="https://img.shields.io/badge/Lang-Bluespec_SV-eab308?style=for-the-badge&labelColor=0f172a" alt="Bluespec"></a>
-  <img src="https://img.shields.io/badge/CODE-%2B72k%20%7C%20%E2%88%92846-22c55e?style=for-the-badge&labelColor=0f172a" alt="Code stats">
+  <img src="https://img.shields.io/badge/CODE-%2B75k%20%7C%20%E2%88%921.0k-22c55e?style=for-the-badge&labelColor=0f172a" alt="Code stats">
 </p>
 
 <sub>Bluespec SystemVerilog learning repository for <b>MIT 6.1910</b> · <b>6.1920</b> · <b>6.5900</b></sub>
@@ -68,8 +68,8 @@
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | :---: | :---: | :---: | :---: | :---: | :---: |
+| `2026-06-05 00:07` | `6.1910` | [`6372e5e`](https://github.com/Lfan-ke/DatenLord/commit/6372e5ed441370e3403faeccee24826f79435498) | update: fixed errors at each notes,... | `+3.0k/−178` | `+94/$24/−0` |
 | `2026-06-03 19:54` | `6.1910` | [`fdbcd26`](https://github.com/Lfan-ke/DatenLord/commit/fdbcd264977cab53feb49137773ce08f29fe56f0) | update: fixed error on notes and fo... | `+998/−749` | `+21/$34/−7` |
-| `2026-06-03 10:13` | `6.1910` | [`9aed25c`](https://github.com/Lfan-ke/DatenLord/commit/9aed25cf5f0a597789ffc0a9edf614f9c56b5cc7) | notes: add some notes of mcd etc... | `+1.2k/−4` | `+16/$7/−0` |
 
 <!-- more --><br/>
 
@@ -81,6 +81,7 @@
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | :---: | :---: | :---: | :---: | :---: | :---: |
+| `2026-06-03 10:13` | `6.1910` | [`9aed25c`](https://github.com/Lfan-ke/DatenLord/commit/9aed25cf5f0a597789ffc0a9edf614f9c56b5cc7) | notes: add some notes of mcd etc... | `+1.2k/−4` | `+16/$7/−0` |
 | `2026-05-30 01:26` | `6.1910` | [`7732208`](https://github.com/Lfan-ke/DatenLord/commit/77322086c64b59f9a781adb680b955e10f3a66af) | notes: lec 11 interop c / interfaci... | `+316/−0` | `+3/$2/−0` |
 | `2026-05-28 03:13` | `6.1910` | [`09f139d`](https://github.com/Lfan-ke/DatenLord/commit/09f139d35c77eb452a24341ed164040459858685) | learn: system-c and noted it. | `+1.6k/−5` | `+7/$2/−1` |
 | `2026-05-27 02:13` | `6.1910` | [`d712bd4`](https://github.com/Lfan-ke/DatenLord/commit/d712bd4501c11ef3cfdfaa7fc8283b24c04eafc6) | add: notes. | `+807/−0` | `+9/$0/−0` |
