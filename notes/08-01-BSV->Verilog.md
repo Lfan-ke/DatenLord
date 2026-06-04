@@ -52,6 +52,9 @@ always @(posedge CLK)
 | `(* prefix = "" *)` | 控制端口名前缀 |
 | `(* clock_prefix = "clk" *)` | 重命名生成的时钟端口（`reset_prefix` 同理；`clocked_by` 不是模块属性） |
 
+> 后端选择变量（编译期布尔，可据后端选不同子模块）：`genVerilog`（-verilog 时为真）、`genC`（-sim 时为真）。
+> 例：`Reg#(t) r <- mkReg(genC ? 1 : 2);`、`if (genVerilog) … else …`。
+
 ## 模块层次结构
 
 ```mermaid
@@ -106,6 +109,6 @@ bsc -verilog -vdir <dir> -g <module>     # 指定输出目录
 
 # 调试选项
 bsc -verilog -keep-fires                 # 保留 WILL_FIRE
-bsc -verilog -keep-method-conditions     # 保留方法条件
+bsc -verilog -keep-method-conds          # 保留方法条件
 bsc -verilog -no-opt                     # 禁用优化
 ```

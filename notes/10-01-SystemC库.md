@@ -296,7 +296,7 @@ wire/reg
 有三种描述/映射方案：
 
 | 进程类型 | 硬件类比 | 行为类比 | 说明 | 综合后典型结构 | 主要用途 |
-| :---: | :---: | :---: | :---: | :--- | :--- |
+| :---: | :---: | :---: | :---: | :---: | :---: |
 | `SC_METHOD` | `always_comb` | 纯函数 | 组合逻辑 | 组合逻辑网表 | 译码器、加法器、MUX |
 | `SC_CTHREAD` | `always_ff` | 时钟驱动寄存器 | 同步时钟，仅在时钟边沿停 | 寄存器 + 组合 | 计数器、状态机、流水线 |
 | `SC_THREAD` | 复杂 FSM | **coroutine** | 行为级/FSM | FSM + 数据路径 | CPU模型、总线BFM、测试激励 |
@@ -415,8 +415,7 @@ SC_MODULE(HandshakeAdd) {
         SC_THREAD(add_with_handshake);
         // 更 RTL 的写法，等待上升沿触发
         sensitive << clk.pos();   // 线程由时钟驱动
-        // 支持同步rst：reset_signal_is
-        async_reset_signal_is(rst, true);
+        async_reset_signal_is(rst, true);  // 异步复位；若要同步复位改用 reset_signal_is(rst, true)
     }
 };
 ```
@@ -481,7 +480,7 @@ endmodule
 #### 仨对比总结
 
 | 进程类型 | 代码中的 `wait()` | 综合后结构 | 典型应用 |
-| :---: | :---: | :--- | :--- |
+| :---: | :---: | :---: | :---: |
 | `SC_METHOD` | 0 个 | 纯组合逻辑 | 加法器、MUX、译码器 |
 | `SC_CTHREAD` | 1 个（循环开头） | 组合 + 1级寄存器 | 累加器、计数器 |
 | `SC_THREAD` | **N 个**（任意位置） | **FSM + 数据路径** | 握手协议、总线控制器、CPU |
@@ -570,13 +569,13 @@ sc_clock clk(
     10, SC_NS,       // 周期
     0.5,             // 占空比 (默认 0.5)
     0, SC_NS,        // 起始时刻的延迟 (默认 0)
-    false            // 起始电平 (默认 false = 0)
+    true             // posedge_first：首个边沿是否为上升沿 (默认 true，不是“起始电平”)
 );
 
 // 常见示例
 sc_clock clk_100m("clk_100m", 10, SC_NS);  // 100MHz 时钟 (周期 10ns)
 sc_clock clk_50m("clk_50m", 20, SC_NS, 0.3);  // 50MHz 时钟，占空比 30%
-sc_clock pll_out("pll_out", 5, SC_NS, 0.5, 2, SC_NS, false);  // 带初始延迟的时钟 (模拟 PLL 锁定)
+sc_clock pll_out("pll_out", 5, SC_NS, 0.5, 2, SC_NS, true);  // 带初始延迟的时钟 (模拟 PLL 锁定)
 sc_clock slow("slow", 1000, SC_NS);  // 1us 周期，低频时钟 (1MHz)
 
 // 使用示例
@@ -989,7 +988,7 @@ g++ -std=c++17 -DENABLE_DEBUG \
 **关键编译配置**：
 
 | 配置项 | 说明 |
-|:---:|:---|
+|:---:|:---:|
 | `-std=c++17` | SystemC 2.3.4 库用 C++17 编译，必须匹配 ABI |
 | `-I/usr/include` | SystemC 头文件路径 |
 | `-L/lib/x86_64-linux-gnu` | SystemC 库文件路径 |
@@ -1088,7 +1087,44 @@ TLM-2.0 的强大之处在于其标准化和互操作性，这由五大支柱共
 | **主要用途** | *   **软件开发**：驱动、固件、操作系统移植<br>*   **虚拟原型**：软硬件协同验证<br>*   **性能分析** (粗略) | *   **微架构探索**：评估总线仲裁、流水线、内存控制器策略<br>*   **硬件性能验证** (时序相关) |
 | **类比 (软件世界)** | 远端过程调用 (RPC) | 异步非阻塞 I/O + 回调 |
 
-### Agent补充的阿吧阿巴...
+### TLM-2.0 进阶：可跑示例 + LT/AT/DMI
+
+一个**最小可跑的 LT 事务模型**（CPU initiator 经 `b_transport` 读写 Memory target，一行 `bind` 互连；完整工程见 `execs/10-02-02-TlmLt`，`make run` 实测）：
+
+```cpp
+#include <systemc>
+#include <tlm>
+#include <tlm_utils/simple_initiator_socket.h>
+#include <tlm_utils/simple_target_socket.h>
+
+struct Memory : sc_module {                       // target（被访问）
+  tlm_utils::simple_target_socket<Memory> sock;
+  unsigned int mem[16];
+  SC_CTOR(Memory) : sock("sock") { sock.register_b_transport(this,&Memory::b_transport); }
+  void b_transport(tlm::tlm_generic_payload& tr, sc_time& delay) {
+    auto a = tr.get_address();
+    auto* d = reinterpret_cast<unsigned int*>(tr.get_data_ptr());
+    if (tr.get_command()==tlm::TLM_WRITE_COMMAND) mem[a/4]=*d; else *d=mem[a/4];
+    tr.set_response_status(tlm::TLM_OK_RESPONSE);
+    delay += sc_time(10, SC_NS);                  // LT：只在事务首尾计时
+  }
+};
+struct Cpu : sc_module {                          // initiator（发起者）
+  tlm_utils::simple_initiator_socket<Cpu> sock;
+  SC_CTOR(Cpu) : sock("sock") { SC_THREAD(run); }
+  void run() {
+    tlm::tlm_generic_payload tr; sc_time d=SC_ZERO_TIME; unsigned int v=0xAA;
+    tr.set_command(tlm::TLM_WRITE_COMMAND); tr.set_address(0x4);
+    tr.set_data_ptr((unsigned char*)&v); tr.set_data_length(4);
+    tr.set_streaming_width(4); tr.set_byte_enable_ptr(nullptr);
+    sock->b_transport(tr, d);                     // 一次写事务（= 函数调用，非 pin toggle）
+    // ... 读回同理：set_command(TLM_READ_COMMAND) → b_transport
+  }
+};
+// sc_main: cpu.sock.bind(mem.sock);  // socket 绑定 = TLM 互连
+```
+
+> 实测输出（execs/10-02-02-TlmLt）：`read @4 = 0xaa`、`read @8 = 0xbb` —— 事务级，不模拟 VALID/READY。
 
 #### LT 风格的工业级实现细节
 
@@ -1134,11 +1170,17 @@ LT 是工业虚拟原型中使用最广泛、价值最直接的风格。其高�
 #### 澄清常见误区：TLM vs. HLS vs. RTL
 
 | 建模层次 | 目标 | 抽象程度 | 典型用途 | 可综合性 |
-| :--- | :--- | :--- | :--- | :--- |
+| :---: | :---: | :---: | :---: | :---: |
 | **RTL** (Verilog/VHDL) | 精确描述硬件逻辑 | **最低** (时钟/信号级) | 芯片逻辑设计与综合 | **是** (标准流程) |
 | **HLS** (C/C++/SystemC子集) | 描述算法与数据流 | **中** (算法/状态机级) | 快速生成高质量 RTL，加速硬件设计 | **是** (通过 HLS 工具) |
 | **TLM** (SystemC TLM-2.0) | **快速系统级仿真** | **最高** (事务/函数调用级) | 软件开发、架构探索、虚拟原型 | **否** (特征：含动态内存、虚函数、操作系统抽象) |
 
 **结论**：TLM 模型 (尤其是 LT 风格) 通常**不可综合**，其价值在于**仿真速度**而非硬件实现。HLS 和 TLM 使用类似的 C++ 语法，但解决的问题域和代码风格截然不同。**不要混淆两者**。
 
-> todo-list: TLM 风格的以后再说吧，，，
+### 小结：本笔记与 10-02 / 10-03 的分工
+
+- **本篇 10-01**：SystemC 本体（类型 / module / port / signal / process / 时钟 / 波形）+ TLM-2.0 概念与 LT/AT/DMI。
+- **10-02**：HLS + SystemC 速成（可综合子集、综合视角），及 `execs/10-02-01-ScBasics`、`execs/10-02-02-TlmLt` 两个可跑工程。
+- **10-03**：BSV 导出 SystemC（`bsc -systemc`）与 C 互操作，配 `execs/10-03-01-Adder2SC`。
+
+> 可跑验证：`execs/10-02-02-TlmLt` 的 LT 模型 `make run` → `read @4 = 0xaa`、`read @8 = 0xbb`（事务级，不模拟 VALID/READY）。

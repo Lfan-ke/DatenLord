@@ -7,3 +7,18 @@
 [submodule "other/bsc-contrib"]
 	path = other/bsc-contrib
 	url = https://github.com/B-Lang-org/bsc-contrib.git
+[submodule "other/Piccolo"]
+	path = other/piccolo
+	url = https://github.com/bluespec/Piccolo.git
+	branch = master
+	shallow = true
+[submodule "other/Flute"]
+	path = other/flute
+	url = https://github.com/bluespec/Flute.git
+	branch = master
+	shallow = true
+[submodule "other/Shakti-c-class"]
+	path = other/shakti
+	url = https://gitlab.com/shaktiproject/cores/c-class.git
+	branch = master
+	shallow = true

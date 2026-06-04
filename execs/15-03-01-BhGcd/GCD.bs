@@ -1,0 +1,18 @@
+package GCD (ArithIO(..), mkGCD) where
+
+interface ArithIO a =
+    start  :: a -> a -> Action
+    result :: a
+
+mkGCD :: Module (ArithIO (Bit 32))
+mkGCD = module
+    x    :: Reg (Bit 32) <- mkRegU
+    y    :: Reg (Bit 32) <- mkRegU
+    busy :: Reg Bool     <- mkReg False
+    rules
+      "swap": when busy, (x > y), (y /= 0)  ==> action { x := y; y := x }
+      "sub":  when busy, (x <= y), (y /= 0) ==> y := y - x
+      "fin":  when busy, (y == 0)           ==> busy := False
+    interface
+      start a b = action { x := a; y := b; busy := True } when (not busy)
+      result    = x when (not busy)

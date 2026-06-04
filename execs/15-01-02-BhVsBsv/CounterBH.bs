@@ -1,0 +1,14 @@
+package CounterBH (Counter(..), mkUpCounter) where
+interface Counter n =
+    value :: Bit n
+    inc   :: Action
+    clear :: Action
+mkUpCounter :: Module (Counter 8)
+mkUpCounter = module
+    cnt :: Reg (Bit 8) <- mkReg 0
+    rules
+      "wrap": when (cnt == maxBound) ==> cnt := 0
+    interface
+      value = cnt
+      inc   = cnt := cnt + 1
+      clear = cnt := 0

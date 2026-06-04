@@ -1,0 +1,7 @@
+-- BH 调用 C：import 上面那个 BSV 包即可（BSV/BH 同编译器，可互相 import）
+package UseC (mkUseC) where
+import CImp
+mkUseC :: Module Empty
+mkUseC = module
+    rules
+      "r": when True ==> action { $display "sum=%0d" (c_add 3 4); $finish 0 }

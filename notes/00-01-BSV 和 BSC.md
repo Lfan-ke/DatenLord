@@ -149,7 +149,6 @@ rm -rf build_bsim sim_exe sim_exe.so waves.vcd
 
 bluespec-lsp + vscode with plugins:
 
-
 - Blues - BSV language support
   - 依赖：cargo install blues-lsp
 - Bluespec System Verilog
@@ -178,7 +177,7 @@ bsc [flags] -systemc -e topmodule        # 链接对象到SystemC模型
 ## 速查表（最常用，按用途分组）
 
 | 用途 | flag | 说明 |
-|:--|:--|:--|
+|:--:|:--:|:--:|
 | **后端** | `-sim` / `-verilog` / `-systemc` | 生成 Bluesim / Verilog / SystemC |
 | **编译** | `-g mod` | 为模块 mod 生成代码（配合后端） |
 | | `-u` | 递归检查并重编过期的依赖包（推荐常加） |

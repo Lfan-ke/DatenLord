@@ -1,0 +1,18 @@
+-- BH(Bluespec Classic)最小模块：8 位自增计数器
+package Counter (Counter(..), mkUpCounter) where
+
+interface Counter n =
+    value :: Bit n
+    inc   :: Action
+    clear :: Action
+
+mkUpCounter :: (IsModule m c) => m (Counter 8)
+mkUpCounter = module
+    cnt :: Reg (Bit 8)
+    cnt <- mkReg 0
+    rules
+      "wrap": when (cnt == maxBound) ==> cnt := 0   -- 到顶回 0
+    interface
+      value = cnt
+      inc   = cnt := cnt + 1     -- BH 寄存器写是 :=
+      clear = cnt := 0

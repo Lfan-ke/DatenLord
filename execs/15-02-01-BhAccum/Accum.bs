@@ -1,0 +1,12 @@
+package Accum (Accum(..), mkAccum) where
+
+interface Accum =
+    add   :: Bit 8 -> Action
+    total :: Bit 16
+
+mkAccum :: Module Accum
+mkAccum = module
+    acc :: Reg (Bit 16) <- mkReg 0
+    interface
+      add x = acc := acc + zeroExtend x
+      total = acc

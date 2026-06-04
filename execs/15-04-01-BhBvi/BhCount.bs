@@ -1,0 +1,27 @@
+-- BH 的 import "BVI" 等价物：module verilog，导入真实 Verilog 模块 count4.v
+-- 要点：Action 方法用 PrimAction；无参数时 module verilog NAME CLK [RST]
+package BhCount (Counter(..), vCount, mkTop) where
+
+interface Counter =
+    up     :: PrimAction
+    preset :: Bit 4 -> PrimAction
+    value  :: Bit 4
+
+vCount :: Module Counter
+vCount = module verilog "count4" "CLK" "RST_N" {
+    up     = "enable";
+    preset = "inp" "set";
+    value  = "outp";
+} [ value <> value, value < up, value < preset,
+    up << up, preset << preset, up << preset ]
+
+mkTop :: Module Empty
+mkTop = module
+    c   :: Counter     <- vCount
+    cyc :: Reg (Bit 8) <- mkReg 0
+    rules
+      "tick": when True       ==> cyc := cyc + 1
+      "set":  when (cyc == 1) ==> fromPrimAction (c.preset 10)   -- 置 10
+      "up1":  when (cyc == 3) ==> fromPrimAction c.up            -- +1 → 11
+      "up2":  when (cyc == 4) ==> fromPrimAction c.up            -- +1 → 12
+      "rd":   when (cyc == 6) ==> action { $display "count=%0d (expect 12)" c.value; $finish 0 }

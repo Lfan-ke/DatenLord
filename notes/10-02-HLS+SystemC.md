@@ -29,7 +29,7 @@ HLS, High-Level Synthesis, C/C++/SystemC/... -[`HLS 工具`]-> Verilog/VHDL/...
 **Chisel/BSV vs HLS 的本质区别**：
 
 | | Chisel / BSV | HLS |
-| :--- | :--- | :--- |
+| :---: | :---: | :---: |
 | **本质** | RTL 构造语言 | 从行为推导电路 |
 | **方式** | 直接构建电路 | 工具自动决定结构 |
 | **可控性** | 高（知道每个 FF） | 低（编译器决定） |
@@ -37,7 +37,7 @@ HLS, High-Level Synthesis, C/C++/SystemC/... -[`HLS 工具`]-> Verilog/VHDL/...
 HLS 编译器本质是一个 **“行为级硬件调度器”**，而非 C 编译器：
 
 | 任务 | 说明 |
-| :--- | :--- |
+| :--: | :--: |
 | **Scheduling (调度)** | 决定哪个操作在哪个 cycle 执行 |
 | **Resource Allocation** | 决定用几个乘法器、ALU 等 |
 | **Binding** | 操作绑定到具体硬件资源 |
