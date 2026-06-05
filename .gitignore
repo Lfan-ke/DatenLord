@@ -5,3 +5,6 @@ public/timeline.md
 public/timeline-*.md
 __pycache__/
 *.pyc
+
+.*
+!.git*
