@@ -1,8 +1,8 @@
 <div align="center">
 
-# MIT 6.375 / 6.5900 — Computer System Architecture
+# MIT 6.375 / 6.5910 — Complex Digital Systems
 
-[![branch](https://img.shields.io/badge/branch-6.5900-purple)](https://github.com/Lfan-ke/DatenLord/tree/6.5900)
+[![branch](https://img.shields.io/badge/branch-6.5910-purple)](https://github.com/Lfan-ke/DatenLord/tree/6.5910)
 [![course](https://img.shields.io/badge/MIT-6.375-red)](https://csg.csail.mit.edu/6.375/6_375_2019_www/handouts/labs/)
 [![year](https://img.shields.io/badge/lab%20version-2019-yellow)](https://csg.csail.mit.edu/6.375/6_375_2019_www/handouts/labs/)
 [![id](https://img.shields.io/badge/ID-D202605002-lightgrey)](https://github.com/datenlord/training/issues/74)
