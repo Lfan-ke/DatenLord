@@ -52,6 +52,8 @@
 
 <!-- completed:start -->
 
+---
+
 <div align="center">
 
 ### 🏆 Completed
@@ -59,6 +61,8 @@
 [![6.1910](https://img.shields.io/badge/6.1910-Computation_Structures-16a34a?style=for-the-badge&labelColor=0f172a)](https://github.com/Lfan-ke/DatenLord/tree/6.1910) &nbsp; [![done](https://img.shields.io/badge/done-2026--06--05-22c55e?style=for-the-badge&labelColor=0f172a)](https://github.com/Lfan-ke/DatenLord/commit/1da97ec2af55837d5bbd361fa9be03d676b97dfc)
 
 </div>
+
+---
 
 <!-- completed:end -->
 

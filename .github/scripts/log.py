@@ -239,10 +239,12 @@ def update_completed(head, entry_lines, repo_url):
             stamp = f'[![done]({bdg("done", date, "22c55e")})]({commit_url})'
             rows.append(course + ' &nbsp; ' + stamp)
         block = ('<!-- completed:start -->\n\n'
+                 + '---\n\n'
                  + '<div align="center">\n\n'
                  + '### 🏆 Completed\n\n'
                  + '\n\n'.join(rows) + '\n\n'
                  + '</div>\n\n'
+                 + '---\n\n'
                  + '<!-- completed:end -->')
     else:
         block = '<!-- completed:start -->\n<!-- completed:end -->'
