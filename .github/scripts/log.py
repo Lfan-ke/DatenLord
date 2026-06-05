@@ -109,8 +109,8 @@ def filestat(sha):
 def entry_line(branch, sha, msg, ts, repo_url):
     short = sha[:7]
     title = msg.split('\n', 1)[0].replace('|', '\\|')
-    if len(title) > 38:
-        title = title[:35] + '...'
+    if len(title) > 33:
+        title = title[:30].rstrip() + '...'
     ins, dele = numstat(sha)
     fa, fm, fd = filestat(sha)
     return (f"| `{fmt_ts_min(ts)}` | `{branch}` | [`{short}`]({repo_url}/commit/{sha})"
@@ -146,10 +146,10 @@ def write_log(head, entries, footer=''):
     out = head.rstrip() + '\n\n' + SECTION + '\n\n' + HINT + '\n\n'
     if entries:
         out += TABLE_HEAD + '\n' + '\n'.join(entries[:2]) + '\n\n'
-    out += MARKER + '<br/>\n\n'
+    out += MARKER + '\n\n'
     rest = entries[2:]
     if rest:
-        out += '<details>\n\n<summary><b>Older records</b></summary>\n\n<br />\n\n'
+        out += f'<details>\n<summary><b>Older records</b> · {len(rest)} more</summary>\n\n'
         out += TABLE_HEAD + '\n' + '\n'.join(rest) + '\n\n</details>\n'
     if footer:
         out += '\n' + footer + '\n'
@@ -209,6 +209,38 @@ def refresh_code_badge(text, entry_lines):
     ins, dele = total_delta(entry_lines)
     new_msg = f'%2B{humanize(ins)}%20%7C%20%E2%88%92{humanize(dele)}'
     return CODE_BADGE_RE.sub(r'\g<1>' + new_msg + r'-22c55e\g<2>', text)
+
+
+DONE_CELL_RE = re.compile(r'(<!--done:(?P<branch>[\w.]+)-->).*?(?=</td>)')
+
+
+def courses_done(entry_lines):
+    done = {}
+    for line in entry_lines:
+        cells = [c.strip() for c in line.strip().strip('|').split('|')]
+        if len(cells) < 4:
+            continue
+        date = cells[0].strip('`')[:10]
+        branch = cells[1].strip('`')
+        if COMPLETION in cells[3].lower():
+            done[branch] = date
+    return done
+
+
+def update_courses(head, entry_lines):
+    done = courses_done(entry_lines)
+
+    def repl(m):
+        branch = m.group('branch')
+        if branch in done:
+            d = done[branch]
+            cell = (f'<img src="https://img.shields.io/badge/done-{d.replace("-", "--")}'
+                    f'-22c55e?style=flat-square" alt="done {d}">')
+        else:
+            cell = '—'
+        return m.group(1) + cell
+
+    return DONE_CELL_RE.sub(repl, head)
 
 
 def build_comment(branch, sha, msg, author, ts, repo_url, diffstat):
@@ -352,6 +384,7 @@ def main():
         return
 
     entries = list(reversed(new_lines)) + existing
+    head = update_courses(head, entries)
     new_text = refresh_code_badge(write_log(head, entries, footer), entries)
     README.write_text(new_text, encoding='utf-8')
 
