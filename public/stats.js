@@ -372,7 +372,9 @@
 
     var scatterByBranch = {};
     data.branches.forEach(function (b) { scatterByBranch[b] = []; });
+    var scatterMax = 1;
     data.scatter.forEach(function (p) {
+      if (p.size > scatterMax) scatterMax = p.size;
       if (scatterByBranch[p.branch]) {
         scatterByBranch[p.branch].push({
           value: [p.time.replace(' ', 'T'), Math.max(p.size, 0.5)],
@@ -401,7 +403,7 @@
         { type: 'category', gridIndex: 1, data: data.bar_branch.map(function (b) { return b.branch; }), axisLabel: { color: t.sub }, axisLine: { lineStyle: { color: t.grid } } },
       ],
       yAxis: [
-        { type: 'value', gridIndex: 0, name: 'lines/commit',
+        { type: 'value', gridIndex: 0, scale: true, name: 'lines/commit',
           nameLocation: 'end', nameGap: 14,
           nameTextStyle: { color: t.sub, padding: [0, 0, 6, 0] },
           axisLabel: { color: t.sub }, splitLine: { lineStyle: { color: t.grid } } },
@@ -415,7 +417,7 @@
         return {
           name: b, type: 'scatter', xAxisIndex: 0, yAxisIndex: 0,
           data: scatterByBranch[b],
-          symbolSize: function (val) { return Math.max(10, Math.sqrt(val[1] || 1) * 3.2); },
+          symbolSize: function (val) { return 8 + Math.sqrt((val[1] || 0) / scatterMax) * 20; },
           itemStyle: { color: palette[i], opacity: 0.82, shadowBlur: 6, shadowColor: 'rgba(0,0,0,0.2)' },
         };
       }).concat([{
