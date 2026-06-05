@@ -68,7 +68,6 @@ make simulator   # → Simulation executable created: ./exe_HW_sim  ✓
 | `bsc` | 编译器/库/bluesim/bluetcl | 见 00–17 |
 | `bsc-contrib` | 额外库(AMBA/GenC…) | 见 16，`-p +:.../Libraries/<cat>` |
 | `bdw` | GUI 前端 | 见 17 |
-| `bsc-testsuite` | DejaGnu 回归测试 | `make check`（设 BSCCONTRIBDIR） |
 | Piccolo/Flute | RISC-V 核 | 本篇 |
 | SHAKTI(C/E/...class) | RISC-V SoC 家族 | 各自仓库 `make`，思路同上 |
 
