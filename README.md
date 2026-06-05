@@ -72,7 +72,7 @@
 
 ## Learning Log
 
-> Records of every commit on a course branch. A commit titled `completed: all done.` marks the course as finished.
+> Records of every commit on a course branch. A commit titled `completed: all done.` marks the course as finished. Include `[skip ci]` in a commit message to skip CI.
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | :---: | :---: | :---: | :---: | :---: | :---: |
