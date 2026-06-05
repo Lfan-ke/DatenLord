@@ -6,7 +6,7 @@
   <a href="https://github.com/datenlord/training"><img src="https://img.shields.io/badge/DatenLord-MIT_BSV-2563eb?style=for-the-badge&labelColor=0f172a" alt="DatenLord"></a>
   <a href="https://github.com/datenlord/training/issues/74"><img src="https://img.shields.io/badge/Student-D202605002-16a34a?style=for-the-badge&labelColor=0f172a" alt="Student"></a>
   <a href="https://github.com/B-Lang-org/bsc"><img src="https://img.shields.io/badge/Lang-Bluespec_SV-eab308?style=for-the-badge&labelColor=0f172a" alt="Bluespec"></a>
-  <img src="https://img.shields.io/badge/CODE-%2B75k%20%7C%20%E2%88%921.0k-22c55e?style=for-the-badge&labelColor=0f172a" alt="Code stats">
+  <img src="https://img.shields.io/badge/CODE-%2B11k%20%7C%20%E2%88%921.0k-22c55e?style=for-the-badge&labelColor=0f172a" alt="Code stats">
 </p>
 
 <sub>Bluespec SystemVerilog learning repository for <b>MIT 6.1910</b> · <b>6.1920</b> · <b>6.5910</b></sub>
@@ -84,17 +84,16 @@
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | :---: | :---: | :---: | :---: | :---: | :---: |
-| `2026-06-05 16:13` | `6.1920` | [`b95cdfe`](https://github.com/Lfan-ke/DatenLord/commit/b95cdfe432090fdc8ede2abffc31bc903b666c9c) | init: officially begin learnin... | `+0/−0` | `+0/$0/−0` |
 | `2026-06-05 13:59` | `6.1910` | [`1da97ec`](https://github.com/Lfan-ke/DatenLord/commit/1da97ec2af55837d5bbd361fa9be03d676b97dfc) | **✅ completed: all done.** | `+0/−0` | `+0/$0/−0` |
+| `2026-06-05 13:58` | `6.1910` | [`cdcd53f`](https://github.com/Lfan-ke/DatenLord/commit/cdcd53fa1f34496dc2181fe6d7ca8a629a7c99a6) | readed: all notes and execs. | `+0/−1` | `+0/$1/−0` |
 
 <!-- more -->
 
 <details>
-<summary><b>Older records</b> · 41 more</summary>
+<summary><b>Older records</b> · 31 more</summary>
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | :---: | :---: | :---: | :---: | :---: | :---: |
-| `2026-06-05 13:58` | `6.1910` | [`cdcd53f`](https://github.com/Lfan-ke/DatenLord/commit/cdcd53fa1f34496dc2181fe6d7ca8a629a7c99a6) | readed: all notes and execs. | `+0/−1` | `+0/$1/−0` |
 | `2026-06-05 00:22` | `6.1910` | [`e8110b6`](https://github.com/Lfan-ke/DatenLord/commit/e8110b626b643e9da985f552924c93fd8cfe1060) | next: some goal of additional... | `+2/−4` | `+0/$1/−0` |
 | `2026-06-05 00:10` | `6.1910` | [`c6cf0b5`](https://github.com/Lfan-ke/DatenLord/commit/c6cf0b5763fdc28ac82a03a170d37794a9688f2e) | next: i'll learning and practi... | `+0/−0` | `+0/$0/−0` |
 | `2026-06-05 00:07` | `6.1910` | [`6372e5e`](https://github.com/Lfan-ke/DatenLord/commit/6372e5ed441370e3403faeccee24826f79435498) | update: fixed errors at each n... | `+3.0k/−178` | `+94/$24/−0` |
@@ -114,26 +113,17 @@
 | `2026-05-18 23:34` | `6.1910` | [`eca70cb`](https://github.com/Lfan-ke/DatenLord/commit/eca70cbe7900b2667702c24e64bce7b664b13d16) | update: how to install the bsc | `+54/−6` | `+0/$2/−1` |
 | `2026-05-18 23:31` | `6.1910` | [`41505f4`](https://github.com/Lfan-ke/DatenLord/commit/41505f412f433aa9ad5c6b2f01e18a8ca9a2dbc5) | docs: update the notes about b... | `+870/−0` | `+3/$0/−0` |
 | `2026-05-14 09:58` | `6.1910` | [`21287fa`](https://github.com/Lfan-ke/DatenLord/commit/21287fa7ad8e40128007dbe5a7df50aad0ac9837) | learn: note that I have read t... | `+0/−0` | `+0/$0/−0` |
-| `2026-05-13 23:39` | `6.5910` | [`8d717c8`](https://github.com/Lfan-ke/DatenLord/commit/8d717c8cb020045be805205405a12d0bf9dc4f42) | baseline: v0.0.1 — env ready,... | `+0/−0` | `+0/$0/−0` |
-| `2026-05-13 23:37` | `6.1920` | [`2550d13`](https://github.com/Lfan-ke/DatenLord/commit/2550d13b65ff535ada9b57dd266316f6c825af94) | baseline: v0.0.1 — env ready,... | `+0/−0` | `+0/$0/−0` |
 | `2026-05-13 23:35` | `6.1910` | [`941c212`](https://github.com/Lfan-ke/DatenLord/commit/941c2123cce2c54b3f9262ca1d1a520387d37f6b) | baseline: v0.0.1 — env ready,... | `+0/−0` | `+0/$0/−0` |
 | `2026-05-13 20:43` | `6.1910` | [`8b65388`](https://github.com/Lfan-ke/DatenLord/commit/8b65388c772ca2e9f9ed09039844248cb0520a7d) | rename: bsc submodule → specs | `+2/−2` | `+0/$2/−0` |
 | `2026-05-13 20:40` | `6.1910` | [`f564caf`](https://github.com/Lfan-ke/DatenLord/commit/f564caf0d5feefaf71c6db4e7d833ffd87132215) | add: bsc submodule for offline... | `+4/−0` | `+2/$0/−0` |
-| `2026-05-13 19:14` | `6.5910` | [`d9e3378`](https://github.com/Lfan-ke/DatenLord/commit/d9e3378c4e7ec3c4318daf316afc382cad054ec7) | fixed: readme info. | `+1/−1` | `+0/$1/−0` |
 | `2026-05-13 19:14` | `6.1910` | [`0cec5f3`](https://github.com/Lfan-ke/DatenLord/commit/0cec5f3a599d910baecadf4c46ae9ea022a3c0a5) | fixed: readme info. | `+1/−1` | `+0/$1/−0` |
-| `2026-05-13 19:12` | `6.1920` | [`f005a41`](https://github.com/Lfan-ke/DatenLord/commit/f005a417ab4d655979a44aa8c3e1bc96dc002f9f) | fixed: readme info... | `+2/−2` | `+0/$1/−0` |
 | `2026-05-13 18:46` | `6.1910` | [`ea92bea`](https://github.com/Lfan-ke/DatenLord/commit/ea92beadef9b70f8e270c0405d0c5d139c0bce52) | fmt: readme. | `+0/−10` | `+0/$1/−0` |
-| `2026-05-13 18:43` | `6.5910` | [`f437f88`](https://github.com/Lfan-ke/DatenLord/commit/f437f882dffbca73a8b87d918b52916d123a8aa8) | init: learning environment | `+17k/−3` | `+170/$1/−0` |
-| `2026-05-13 18:41` | `6.1920` | [`95b4066`](https://github.com/Lfan-ke/DatenLord/commit/95b4066884e53e1fb1a5dc46ac375caf1cae5e35) | init: learning environment | `+47k/−5` | `+499/$1/−0` |
 | `2026-05-13 18:42` | `6.1910` | [`fd90640`](https://github.com/Lfan-ke/DatenLord/commit/fd90640d59573ecb957a5bf8ae86ec686bc376fa) | fixed: readme tutorial. | `+1/−1` | `+0/$1/−0` |
 | `2026-05-13 16:51` | `6.1910` | [`22a708d`](https://github.com/Lfan-ke/DatenLord/commit/22a708d522cf0fb4a6abf5a834b04a62a4f5f8dd) | delete: example file | `+0/−34` | `+0/$0/−1` |
 | `2026-05-12 12:28` | `6.1910` | [`8df861a`](https://github.com/Lfan-ke/DatenLord/commit/8df861a477d6dcd14ec1085c3ca78bc4377a9462) | tests: lab01 scratch notes — a... | `+34/−0` | `+1/$0/−0` |
 | `2026-05-12 00:03` | `6.1910` | [`1e47ae2`](https://github.com/Lfan-ke/DatenLord/commit/1e47ae29da8124c7502db30e5421bb42239ce47a) | tests: the ci, LGTM!!! | `+0/−0` | `+0/$0/−0` |
 | `2026-05-11 23:51` | `6.1910` | [`b99b5bb`](https://github.com/Lfan-ke/DatenLord/commit/b99b5bba11a81e1fc743433b31d5e44566c1461e) | tests: ci tested LGTM! | `+0/−0` | `+0/$0/−0` |
-| `2026-05-11 23:24` | `6.1920` | [`e32d8a7`](https://github.com/Lfan-ke/DatenLord/commit/e32d8a7f5729ad5faa59b557e86f47d10a95f2d6) | tests: change something to tri... | `+3/−1` | `+0/$1/−0` |
 | `2026-05-11 19:40` | `6.1910` | [`6a58165`](https://github.com/Lfan-ke/DatenLord/commit/6a581652d380b9ea4f1dfe8d218f8b863fb7e06b) | tests: change something to tri... | `+50/−3` | `+1/$1/−0` |
-| `2026-05-11 15:31` | `6.5910` | [`bce5409`](https://github.com/Lfan-ke/DatenLord/commit/bce5409c278c090845b45dee7477cbfe97014806) | init: learning branch for MIT... | `+45/−0` | `+1/$0/−0` |
-| `2026-05-11 15:31` | `6.1920` | [`0ac5192`](https://github.com/Lfan-ke/DatenLord/commit/0ac51923423017b5cd094936e54d2fad05530c19) | init: learning branch for MIT... | `+45/−0` | `+1/$0/−0` |
 | `2026-05-11 15:31` | `6.1910` | [`be3111b`](https://github.com/Lfan-ke/DatenLord/commit/be3111bbf051acb800e1da89fd2a7d069ba3e247) | init: learning branch for MIT... | `+0/−0` | `+0/$0/−0` |
 
 </details>
