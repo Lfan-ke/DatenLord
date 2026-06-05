@@ -15,14 +15,16 @@ Pipelined RISC-V processor in BSV. **2016 Fall** edition. Official course: <http
 
 | Path | Contents |
 | :---: | :---: |
+| `labs/lab-0` | Getting Started — toolchain & flow setup (no graded BSV) |
 | `labs/lab-1` | Multiplexers · Adders · Barrel shifter |
-| `labs/lab-2` | FFT · FIFO · EHR |
+| `labs/lab-2` | FFT |
 | `labs/lab-3` | Multipliers (combinational / sequential / Booth) |
-| `labs/lab-4` | `MyFifo` — concurrent FIFO with EHR |
-| `labs/lab-5` | Single-cycle RISC-V + RISC-V test programs |
-| `labs/lab-6` | Pipelined RISC-V |
-| `labs/lab-7` | RISC-V + caches |
-| `labs/Proj`  | Proj1-2 Combined — pipeline, caches & branch prediction, multicore + cache coherence |
+| `labs/lab-4` | FIFO & EHR (`MyFifo`) |
+| `labs/lab-5` | RISC-V — multi-cycle / two-stage pipeline |
+| `labs/lab-6` | RISC-V — six-stage pipeline & branch prediction |
+| `labs/lab-7` | RISC-V — caches |
+| `labs/lab-8` | RISC-V — exceptions (`ExcepProc` + CSR traps) |
+| `labs/Proj`  | Project Part 1–2 — pipeline, caches, branch prediction, multicore + coherence |
 | `notes/`     | Personal study notes |
 
 ## Build
