@@ -227,13 +227,23 @@ def update_completed(head, entry_lines, repo_url):
             m = re.search(r'\(([^)]+)\)', cells[2])
             done.setdefault(branch, (date, m.group(1) if m else ''))
     if done:
-        bs = sorted(done)
-        header = '| ' + ' | '.join(f'[`{b}`]({repo_url}/tree/{b})' for b in bs) + ' |'
-        sep = '| ' + ' | '.join(':---:' for _ in bs) + ' |'
-        row = '| ' + ' | '.join(f'done [{done[b][0]}]({done[b][1]})' for b in bs) + ' |'
+        def bdg(label, value, color):
+            l = label.replace(' ', '_').replace('-', '--')
+            v = value.replace(' ', '_').replace('-', '--')
+            return f'https://img.shields.io/badge/{l}-{v}-{color}?style=for-the-badge&labelColor=0f172a'
+        rows = []
+        for b in sorted(done):
+            date, commit_url = done[b]
+            desc = COURSE_DESC.get(b, 'completed')
+            course = f'[![{b}]({bdg(b, desc, "16a34a")})]({repo_url}/tree/{b})'
+            stamp = f'[![done]({bdg("done", date, "22c55e")})]({commit_url})'
+            rows.append(course + ' &nbsp; ' + stamp)
         block = ('<!-- completed:start -->\n\n'
-                 + header + '\n' + sep + '\n' + row
-                 + '\n\n<!-- completed:end -->')
+                 + '<div align="center">\n\n'
+                 + '### 🏆 Completed\n\n'
+                 + '\n\n'.join(rows) + '\n\n'
+                 + '</div>\n\n'
+                 + '<!-- completed:end -->')
     else:
         block = '<!-- completed:start -->\n<!-- completed:end -->'
     return COMPLETED_RE.sub(lambda _: block, head)
