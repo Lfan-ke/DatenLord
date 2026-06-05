@@ -46,11 +46,11 @@ REPO = 'Lfan-ke/DatenLord'
 REPO_URL = f'https://github.com/{REPO}'
 ISSUE_URL = 'https://github.com/datenlord/training/issues/74'
 COMPLETION = 'completed: all done.'
-CHART_AFTER = '2026-05-13 23:59'
 
 
 def chart_entries(entries):
-    return [e for e in entries if e['time'] > CHART_AFTER]
+    # Chart every recorded commit, starting from the very first CI run.
+    return list(entries)
 
 
 ROW_RE = re.compile(
@@ -138,8 +138,8 @@ COURSES = [
      'icon': 'material-cog-transfer',
      'res_label': 'csg.csail.mit.edu/6.175',
      'res_url': 'http://csg.csail.mit.edu/6.175/index.html'},
-    {'old': '6.375', 'new': '6.5900', 'name': 'Computer System Architecture',
-     'tag': 'Memory hierarchy · OoO execution · vector & GPU',
+    {'old': '6.375', 'new': '6.5910', 'name': 'Complex Digital Systems',
+     'tag': 'Chip design with Bluespec · RTL synthesis · FPGA / ASIC flow',
      'icon': 'material-server-network',
      'res_label': 'csg.csail.mit.edu/6.375',
      'res_url': 'http://csg.csail.mit.edu/6.375/6_375_2019_www/index.html'},
@@ -444,7 +444,7 @@ def render_index(entries):
         '6.175 Labs 0-4, 6.375 Labs 1-4, 6.175 Labs 5-8 and Proj 1-2, then the remaining 6.375 Lab 5.\n\n'
         '    If course as finished, the README entry is highlighted and the issue comment becomes a celebration block.\n\n'
         '## :material-chart-timeline-variant: At a Glance\n\n'
-        f'<sub>Since `{CHART_AFTER}` UTC+8 · earlier bulk-init commits excluded as baseline</sub>\n\n'
+        '<sub>Every commit since the first CI run is recorded and charted</sub>\n\n'
         + stats_grid(entries) + '\n\n'
         '## :material-pulse: Recent Commits\n\n' + recent_table(entries, 5) + '\n\n'
         '## :material-library-shelves: Onboarding & Resources\n\n' + resources_section() + '\n\n'
@@ -686,8 +686,8 @@ def render_stats(entries, color_map=None):
         '---\nhide:\n  - toc\n---\n\n'
         '# :material-view-dashboard-variant: Dashboard\n\n'
         + stats_grid(entries) + '\n\n'
-        f'!!! note "Baseline"\n'
-        f'    Charts and aggregates below cover commits after `{CHART_AFTER}` (UTC+8). Earlier commits — the bulk lab-init imports — are treated as a baseline and excluded so the visualizations stay readable.\n\n'
+        f'!!! note "Coverage"\n'
+        f'    Charts and aggregates below cover every commit, starting from the very first CI run.\n\n'
         '### :material-trophy-variant: Commit Score · per-branch contribution to ' + str(push_total) + ' commits\n\n'
         '<div id="chart-score" class="echart" style="height:380px"></div>\n\n'
         '### :material-chart-line-stacked: Cumulative Code Volume · Step lines per branch\n\n'
