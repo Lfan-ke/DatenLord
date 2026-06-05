@@ -84,16 +84,17 @@
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | :---: | :---: | :---: | :---: | :---: | :---: |
+| `2026-06-06 00:03` | `6.1920` | [`ae6df12`](https://github.com/Lfan-ke/DatenLord/commit/ae6df12f85fdd13c14118f0de388b135ef23665a) | init: officially begin learnin... | `+0/−0` | `+0/$0/−0` |
 | `2026-06-05 13:59` | `6.1910` | [`1da97ec`](https://github.com/Lfan-ke/DatenLord/commit/1da97ec2af55837d5bbd361fa9be03d676b97dfc) | **✅ completed: all done.** | `+0/−0` | `+0/$0/−0` |
-| `2026-06-05 13:58` | `6.1910` | [`cdcd53f`](https://github.com/Lfan-ke/DatenLord/commit/cdcd53fa1f34496dc2181fe6d7ca8a629a7c99a6) | readed: all notes and execs. | `+0/−1` | `+0/$1/−0` |
 
 <!-- more -->
 
 <details>
-<summary><b>Older records</b> · 31 more</summary>
+<summary><b>Older records</b> · 32 more</summary>
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | :---: | :---: | :---: | :---: | :---: | :---: |
+| `2026-06-05 13:58` | `6.1910` | [`cdcd53f`](https://github.com/Lfan-ke/DatenLord/commit/cdcd53fa1f34496dc2181fe6d7ca8a629a7c99a6) | readed: all notes and execs. | `+0/−1` | `+0/$1/−0` |
 | `2026-06-05 00:22` | `6.1910` | [`e8110b6`](https://github.com/Lfan-ke/DatenLord/commit/e8110b626b643e9da985f552924c93fd8cfe1060) | next: some goal of additional... | `+2/−4` | `+0/$1/−0` |
 | `2026-06-05 00:10` | `6.1910` | [`c6cf0b5`](https://github.com/Lfan-ke/DatenLord/commit/c6cf0b5763fdc28ac82a03a170d37794a9688f2e) | next: i'll learning and practi... | `+0/−0` | `+0/$0/−0` |
 | `2026-06-05 00:07` | `6.1910` | [`6372e5e`](https://github.com/Lfan-ke/DatenLord/commit/6372e5ed441370e3403faeccee24826f79435498) | update: fixed errors at each n... | `+3.0k/−178` | `+94/$24/−0` |
