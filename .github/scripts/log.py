@@ -12,12 +12,12 @@ MARKER = '<!-- more -->'
 SECTION = '## Learning Log'
 TABLE_HEAD = '| Time | Batch | Hash | Summary | Δ | Files |\n| :---: | :---: | :---: | :---: | :---: | :---: |'
 HINT = '> Records of every commit on a course branch. A commit titled `completed: all done.` marks the course as finished. Include `[skip ci]` in a commit message to skip CI.'
-COURSE_NAME = {'6.1910': 'MIT 6.1910', '6.1920': 'MIT 6.1920', '6.5900': 'MIT 6.5900'}
-COURSE_OLD = {'6.1910': '6.004', '6.1920': '6.175', '6.5900': '6.375'}
+COURSE_NAME = {'6.1910': 'MIT 6.1910', '6.1920': 'MIT 6.1920', '6.5910': 'MIT 6.5910'}
+COURSE_OLD = {'6.1910': '6.004', '6.1920': '6.175', '6.5910': '6.375'}
 COURSE_DESC = {
     '6.1910': 'Computation Structures',
     '6.1920': 'Constructive Computer Architecture',
-    '6.5900': 'Computer System Architecture',
+    '6.5910': 'Complex Digital Systems',
 }
 ROW_RE = re.compile(r'^\| `\d{4}-')
 COMPLETION = 'completed: all done.'
