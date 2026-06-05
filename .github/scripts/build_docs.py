@@ -33,6 +33,13 @@ def md_to_html(text):
     _MD.reset()
     return _MD.convert(normalize_md(text))
 
+
+_BOLD_RE = re.compile(r'\*\*(.+?)\*\*')
+
+
+def inline_title(text):
+    return _BOLD_RE.sub(r'<b>\1</b>', html_escape(text))
+
 README = Path('README.md')
 DOCS = Path('public')
 REPO = 'Lfan-ke/DatenLord'
@@ -84,6 +91,17 @@ def commit_message(sha):
             capture_output=True, text=True, check=False,
         )
         return r.stdout.rstrip()
+    except Exception:
+        return ''
+
+
+def commit_subject(sha):
+    try:
+        r = subprocess.run(
+            ['git', 'log', '-1', '--format=%s', sha],
+            capture_output=True, text=True, check=False,
+        )
+        return r.stdout.strip()
     except Exception:
         return ''
 
@@ -183,7 +201,8 @@ def parse_entries():
         d['files_modified'] = fm
         d['files_deleted'] = fd
         d.update(shortstat(d['sha']))
-        _, body, trailers = split_msg(commit_message(d['sha']))
+        ftitle, body, trailers = split_msg(commit_message(d['sha']))
+        d['full_title'] = commit_subject(d['sha']) or ftitle or d['title']
         d['body'] = body
         d['trailers'] = trailers
         out.append(d)
@@ -353,7 +372,7 @@ def timeline_html(entries, color_map=None):
             '<span class="dl-tl-sep"></span>',
             f'<a class="dl-tl-hash" href="{html_escape(e["url"])}" target="_blank" rel="noopener">{html_escape(e["sha"][:7])}</a>',
             '</div>',
-            f'<div class="dl-tl-heading">{html_escape(e["title"])}</div>',
+            f'<div class="dl-tl-heading" title="{html_escape(e.get("full_title") or e["title"])}">{inline_title(e.get("full_title") or e["title"])}</div>',
         ]
         if e.get('body'):
             out += ['<div class="dl-tl-body">', md_to_html(e['body']), '</div>']

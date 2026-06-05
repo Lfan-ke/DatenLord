@@ -385,9 +385,11 @@
   line-height: 1.45;
   margin: 0 0 0.55em;
   color: var(--md-default-fg-color);
-  word-break: break-word;
   position: relative;
   z-index: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .md-typeset .dl-tl-entry.is-completion .dl-tl-heading {

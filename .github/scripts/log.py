@@ -109,8 +109,8 @@ def filestat(sha):
 def entry_line(branch, sha, msg, ts, repo_url):
     short = sha[:7]
     title = msg.split('\n', 1)[0].replace('|', '\\|')
-    if len(title) > 38:
-        title = title[:35] + '...'
+    if len(title) > 36:
+        title = title[:33].rstrip() + '...'
     ins, dele = numstat(sha)
     fa, fm, fd = filestat(sha)
     return (f"| `{fmt_ts_min(ts)}` | `{branch}` | [`{short}`]({repo_url}/commit/{sha})"
