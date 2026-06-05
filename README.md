@@ -68,8 +68,8 @@
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | :---: | :---: | :---: | :---: | :---: | :---: |
-| `2026-06-05 00:10` | `6.1910` | [`c6cf0b5`](https://github.com/Lfan-ke/DatenLord/commit/c6cf0b5763fdc28ac82a03a170d37794a9688f2e) | next: i'll learning and practice of... | `+0/−0` | `+0/$0/−0` |
-| `2026-06-05 00:07` | `6.1910` | [`6372e5e`](https://github.com/Lfan-ke/DatenLord/commit/6372e5ed441370e3403faeccee24826f79435498) | update: fixed errors at each notes,... | `+3.0k/−178` | `+94/$24/−0` |
+| `2026-06-05 13:59` | `6.1910` | [`1da97ec`](https://github.com/Lfan-ke/DatenLord/commit/1da97ec2af55837d5bbd361fa9be03d676b97dfc) | **✅ completed: all done.** | `+0/−0` | `+0/$0/−0` |
+| `2026-06-05 13:58` | `6.1910` | [`cdcd53f`](https://github.com/Lfan-ke/DatenLord/commit/cdcd53fa1f34496dc2181fe6d7ca8a629a7c99a6) | readed: all notes and execs. | `+0/−1` | `+0/$1/−0` |
 
 <!-- more --><br/>
 
@@ -81,6 +81,9 @@
 
 | Time | Batch | Hash | Summary | Δ | Files |
 | :---: | :---: | :---: | :---: | :---: | :---: |
+| `2026-06-05 00:22` | `6.1910` | [`e8110b6`](https://github.com/Lfan-ke/DatenLord/commit/e8110b626b643e9da985f552924c93fd8cfe1060) | next: some goal of additional expla... | `+2/−4` | `+0/$1/−0` |
+| `2026-06-05 00:10` | `6.1910` | [`c6cf0b5`](https://github.com/Lfan-ke/DatenLord/commit/c6cf0b5763fdc28ac82a03a170d37794a9688f2e) | next: i'll learning and practice of... | `+0/−0` | `+0/$0/−0` |
+| `2026-06-05 00:07` | `6.1910` | [`6372e5e`](https://github.com/Lfan-ke/DatenLord/commit/6372e5ed441370e3403faeccee24826f79435498) | update: fixed errors at each notes,... | `+3.0k/−178` | `+94/$24/−0` |
 | `2026-06-03 19:54` | `6.1910` | [`fdbcd26`](https://github.com/Lfan-ke/DatenLord/commit/fdbcd264977cab53feb49137773ce08f29fe56f0) | update: fixed error on notes and fo... | `+998/−749` | `+21/$34/−7` |
 | `2026-06-03 10:13` | `6.1910` | [`9aed25c`](https://github.com/Lfan-ke/DatenLord/commit/9aed25cf5f0a597789ffc0a9edf614f9c56b5cc7) | notes: add some notes of mcd etc... | `+1.2k/−4` | `+16/$7/−0` |
 | `2026-05-30 01:26` | `6.1910` | [`7732208`](https://github.com/Lfan-ke/DatenLord/commit/77322086c64b59f9a781adb680b955e10f3a66af) | notes: lec 11 interop c / interfaci... | `+316/−0` | `+3/$2/−0` |
