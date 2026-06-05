@@ -1,3 +1,5 @@
+<div align="center">
+
 # MIT 6.004 / 6.1910 — Computation Structures and BSV
 
 [![branch](https://img.shields.io/badge/branch-6.1910-blue)](https://github.com/Lfan-ke/DatenLord/tree/6.1910)
@@ -8,10 +10,12 @@
 
 Self-paced Bluespec SystemVerilog onboarding for the DatenLord MIT architecture program.
 
+</div>
+
 ## Layout
 
 | Path | Source |
-|---|---|
+| :---: | :---: |
 | `tutorial/` | Snapshot of [`rsnikhil/Bluespec_BSV_Tutorial`](https://github.com/rsnikhil/Bluespec_BSV_Tutorial). |
 | `tutorial/Reference/Lec01..Lec13_*.pdf` | 13-lecture theory backbone by R. S. Nikhil (BSV co-designer). |
 | `tutorial/Example_Programs/Eg02..Eg09` | Per-topic labs with PDF spec + reference variants. |
