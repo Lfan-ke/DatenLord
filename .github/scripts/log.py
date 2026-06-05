@@ -211,36 +211,31 @@ def refresh_code_badge(text, entry_lines):
     return CODE_BADGE_RE.sub(r'\g<1>' + new_msg + r'-22c55e\g<2>', text)
 
 
-DONE_CELL_RE = re.compile(r'(<!--done:(?P<branch>[\w.]+)-->).*?(?=</td>)')
+COMPLETED_RE = re.compile(r'<!-- completed:start -->.*?<!-- completed:end -->', re.DOTALL)
 
 
-def courses_done(entry_lines):
+def update_completed(head, entry_lines, repo_url):
     done = {}
     for line in entry_lines:
         cells = [c.strip() for c in line.strip().strip('|').split('|')]
         if len(cells) < 4:
             continue
-        date = cells[0].strip('`')[:10]
-        branch = cells[1].strip('`')
         if COMPLETION in cells[3].lower():
-            done[branch] = date
-    return done
-
-
-def update_courses(head, entry_lines):
-    done = courses_done(entry_lines)
-
-    def repl(m):
-        branch = m.group('branch')
-        if branch in done:
-            d = done[branch]
-            cell = (f'<img src="https://img.shields.io/badge/done-{d.replace("-", "--")}'
-                    f'-22c55e?style=flat-square" alt="done {d}">')
-        else:
-            cell = '—'
-        return m.group(1) + cell
-
-    return DONE_CELL_RE.sub(repl, head)
+            branch = cells[1].strip('`')
+            date = cells[0].strip('`')[:10]
+            m = re.search(r'\(([^)]+)\)', cells[2])
+            done.setdefault(branch, (date, m.group(1) if m else ''))
+    if done:
+        bs = sorted(done)
+        header = '| ' + ' | '.join(f'[`{b}`]({repo_url}/tree/{b})' for b in bs) + ' |'
+        sep = '| ' + ' | '.join(':---:' for _ in bs) + ' |'
+        row = '| ' + ' | '.join(f'done [{done[b][0]}]({done[b][1]})' for b in bs) + ' |'
+        block = ('<!-- completed:start -->\n\n'
+                 + header + '\n' + sep + '\n' + row
+                 + '\n\n<!-- completed:end -->')
+    else:
+        block = '<!-- completed:start -->\n<!-- completed:end -->'
+    return COMPLETED_RE.sub(lambda _: block, head)
 
 
 def build_comment(branch, sha, msg, author, ts, repo_url, diffstat):
@@ -384,7 +379,7 @@ def main():
         return
 
     entries = list(reversed(new_lines)) + existing
-    head = update_courses(head, entries)
+    head = update_completed(head, entries, repo_url)
     new_text = refresh_code_badge(write_log(head, entries, footer), entries)
     README.write_text(new_text, encoding='utf-8')
 
