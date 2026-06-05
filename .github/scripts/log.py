@@ -21,6 +21,7 @@ COURSE_DESC = {
 }
 ROW_RE = re.compile(r'^\| `\d{4}-')
 COMPLETION = 'completed: all done.'
+SKIP_CI = re.compile(r'\[(?:skip ci|ci skip|no ci|skip actions|actions skip)\]', re.I)
 TRAILER_RE = re.compile(r'^[A-Za-z][A-Za-z0-9-]*:\s+\S')
 
 
@@ -347,6 +348,8 @@ def diffstat(sha):
 
 
 def keep_commit(c):
+    if SKIP_CI.search(c.get('message') or ''):
+        return False
     if (c.get('author') or {}).get('name', '') == 'github-actions[bot]':
         return False
     files = (c.get('added') or []) + (c.get('removed') or []) + (c.get('modified') or [])
