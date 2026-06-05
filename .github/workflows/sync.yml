@@ -1,0 +1,61 @@
+name: sync
+
+on:
+  push:
+    branches-ignore: ['gh-pages']
+    paths: ['.github/**']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  fanout:
+    if: github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: git fetch origin '+refs/heads/*:refs/remotes/origin/*' --no-tags
+      - run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          MAIN=$(git rev-parse HEAD)
+          for b in $(git for-each-ref --format='%(refname:short)' refs/remotes/origin | sed 's#^origin/##' | grep -vxE 'main|gh-pages|HEAD'); do
+            echo "→ $b"
+            git checkout -B "$b" "origin/$b"
+            rm -rf .github
+            git checkout "$MAIN" -- .github
+            git add -A .github
+            if git diff --cached --quiet HEAD -- .github; then
+              echo "   up to date"
+            else
+              git commit -m "chore(sync): .github/ from main@${MAIN:0:7}"
+              git push origin "$b"
+            fi
+          done
+
+  guard:
+    if: github.ref_name != 'main' && github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: git fetch origin '+refs/heads/*:refs/remotes/origin/*' --no-tags
+      - run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          rm -rf .github
+          git checkout origin/main -- .github
+          git add -A .github
+          if git diff --cached --quiet HEAD -- .github; then
+            echo "up to date"
+          else
+            git commit -m "chore(sync): revert .github/ to main"
+            git push origin HEAD:${{ github.ref_name }}
+          fi
