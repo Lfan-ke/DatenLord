@@ -140,7 +140,7 @@ COURSES = [
      'res_url': 'http://csg.csail.mit.edu/6.175/index.html'},
     {'old': '6.375', 'new': '6.5910', 'name': 'Complex Digital Systems',
      'tag': 'Chip design with Bluespec · RTL synthesis · FPGA / ASIC flow',
-     'icon': 'material-server-network',
+     'icon': 'material-chip',
      'res_label': 'csg.csail.mit.edu/6.375',
      'res_url': 'http://csg.csail.mit.edu/6.375/6_375_2019_www/index.html'},
 ]
