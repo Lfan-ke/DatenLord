@@ -23,7 +23,6 @@
 <th align="center">Branch</th>
 <th align="center">Description</th>
 <th align="center">Resource</th>
-<th align="center">Completed</th>
 </tr></thead>
 <tbody>
 <tr>
@@ -31,21 +30,18 @@
 <td align="center"><a href="https://github.com/Lfan-ke/DatenLord/tree/6.1910"><code>6.1910</code></a></td>
 <td align="center">Computation Structures</td>
 <td align="center"><a href="https://www.bilibili.com/video/BV197411s736/?share_source=copy_web&vd_source=624515ccd648178974a2607007511e63">Bilibili</a></td>
-<td align="center"><!--done:6.1910--><img src="https://img.shields.io/badge/done-2026--06--05-22c55e?style=flat-square" alt="done 2026-06-05"></td>
 </tr>
 <tr>
 <td align="center"><b>MIT 6.175 / 6.1920</b></td>
 <td align="center"><a href="https://github.com/Lfan-ke/DatenLord/tree/6.1920"><code>6.1920</code></a></td>
 <td align="center">Constructive Computer Architecture</td>
 <td align="center"><a href="http://csg.csail.mit.edu/6.175/index.html">csg.csail.mit.edu/6.175</a></td>
-<td align="center"><!--done:6.1920-->—</td>
 </tr>
 <tr>
 <td align="center"><b>MIT 6.375 / 6.5900</b></td>
 <td align="center"><a href="https://github.com/Lfan-ke/DatenLord/tree/6.5900"><code>6.5900</code></a></td>
 <td align="center">Computer System Architecture</td>
 <td align="center"><a href="http://csg.csail.mit.edu/6.375/6_375_2019_www/index.html">csg.csail.mit.edu/6.375</a></td>
-<td align="center"><!--done:6.5900-->—</td>
 </tr>
 </tbody>
 </table>
@@ -53,6 +49,14 @@
 > [!TIP]
 > After learning BSV, the recommended sequence is: 6.175 Labs 0-4, 6.375 Labs 1-4, 6.175 Labs 5-8 and Proj 1-2, then the remaining 6.375 Lab 5.
 > If course as finished, the README entry is highlighted and the issue comment becomes a celebration block.
+
+<!-- completed:start -->
+
+| [`6.1910`](https://github.com/Lfan-ke/DatenLord/tree/6.1910) |
+| :---: |
+| done [2026-06-05](https://github.com/Lfan-ke/DatenLord/commit/1da97ec2af55837d5bbd361fa9be03d676b97dfc) |
+
+<!-- completed:end -->
 
 ## Onboarding
 
