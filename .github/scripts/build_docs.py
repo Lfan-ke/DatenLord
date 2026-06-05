@@ -500,8 +500,8 @@ def render_stats(entries, color_map=None):
         d1 = date.fromisoformat(all_dates_raw[-1])
     else:
         d0 = d1 = date.today()
-    d_start = d0 - timedelta(days=3)
-    d_end = min(d1 + timedelta(days=3), date.today())
+    d_start = d0
+    d_end = min(d1, date.today())
     date_list = []
     cur = d_start
     while cur <= d_end:
